@@ -27,8 +27,8 @@ public class DataOutputProxy<T> extends DataOutputStream implements SinkTarget<T
     }
 
     @Override
-    public T getTarget() {
-	return realTarget.getTarget();
+    public T getSubject() {
+	return realTarget.getSubject();
     }
 
 }

@@ -5,13 +5,17 @@ import java.io.IOException;
 import java.io.Reader;
 
 import iostream.Closer;
+import iostream.SinkTarget;
 
-public class BufferedReaderProxy extends BufferedReader {
+public class BufferedReaderProxy<T> extends BufferedReader implements SinkTarget<T> {
 
     final Closer closer;
+    
+    final SinkTarget<T> realTarget;    
 
-    public BufferedReaderProxy(Closer cl, Reader r) throws IOException {
+    public BufferedReaderProxy(SinkTarget<T> t, Closer cl, Reader r) throws IOException {
 	super(r);
+	realTarget = t;	
 	cl.register(r);
 	closer = cl;
     }
@@ -19,5 +23,10 @@ public class BufferedReaderProxy extends BufferedReader {
     public void close() {
 	closer.closeAll();
     }
+
+    @Override
+    public T getSubject() {
+	return realTarget.getSubject();
+    }    
 
 }

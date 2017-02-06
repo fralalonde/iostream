@@ -6,13 +6,11 @@ import java.io.Writer;
 
 import iostream.Closer;
 import iostream.SinkTarget;
-import lombok.Getter;
 
 public class BufferedWriterProxy<T> extends BufferedWriter implements SinkTarget<T> {
 
     final Closer closer;
 
-    @Getter
     final SinkTarget<T> realTarget;
 
     public BufferedWriterProxy(SinkTarget<T> t, Closer cl, Writer wr) throws IOException {
@@ -27,8 +25,8 @@ public class BufferedWriterProxy<T> extends BufferedWriter implements SinkTarget
     }
 
     @Override
-    public T getTarget() {
-	return realTarget.getTarget();
+    public T getSubject() {
+	return realTarget.getSubject();
     }
 
 

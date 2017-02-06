@@ -27,8 +27,8 @@ public class BufferedOutputProxy<T> extends BufferedOutputStream implements Sink
     }
 
     @Override
-    public T getTarget() {
-	return realTarget.getTarget();
+    public T getSubject() {
+	return realTarget.getSubject();
     }
     
 }

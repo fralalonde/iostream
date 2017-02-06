@@ -6,13 +6,11 @@ import java.io.Writer;
 
 import iostream.Closer;
 import iostream.SinkTarget;
-import lombok.Getter;
 
 public class PrintWriterProxy<T> extends PrintWriter implements SinkTarget<T> {
 
     final Closer closer;
 
-    @Getter
     final SinkTarget<T> realTarget;
 
     public PrintWriterProxy(SinkTarget<T> t, Closer cl, Writer w) {
@@ -48,8 +46,8 @@ public class PrintWriterProxy<T> extends PrintWriter implements SinkTarget<T> {
     }
 
     @Override
-    public T getTarget() {
-	return realTarget.getTarget();
+    public T getSubject() {
+	return realTarget.getSubject();
     }
 
 }

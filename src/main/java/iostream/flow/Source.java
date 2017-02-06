@@ -6,7 +6,7 @@ import java.io.Reader;
 
 import iostream.CloseChain;
 
-public interface Source extends ByteSource, CharSource {
+public interface Source<T> extends ByteSource<T>, CharSource<T> {
 
     default Reader getNativeReaderOrNull(CloseChain toClose) throws IOException {
 	return null;

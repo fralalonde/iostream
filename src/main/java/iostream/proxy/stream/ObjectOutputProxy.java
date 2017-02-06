@@ -27,8 +27,8 @@ public class ObjectOutputProxy<T> extends ObjectOutputStream implements SinkTarg
     }
 
     @Override
-    public T getTarget() {
-	return realTarget.getTarget();
+    public T getSubject() {
+	return realTarget.getSubject();
     }
    
 }

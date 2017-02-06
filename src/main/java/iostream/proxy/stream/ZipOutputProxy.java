@@ -34,8 +34,8 @@ public class ZipOutputProxy<T> extends ZipOutputStream implements SinkTarget<T> 
     }
 
     @Override
-    public T getTarget() {
-	return realTarget.getTarget();
+    public T getSubject() {
+	return realTarget.getSubject();
     }
 
 }
