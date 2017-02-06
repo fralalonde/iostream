@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.io.Writer;
 
 import iostream.Closer;
-import iostream.SinkTarget;
+import iostream.SubjectHolder;
 
-public class BufferedWriterProxy<T> extends BufferedWriter implements SinkTarget<T> {
+public class BufferedWriterProxy<T> extends BufferedWriter implements SubjectHolder<T> {
 
     final Closer closer;
 
-    final SinkTarget<T> realTarget;
+    final SubjectHolder<T> realTarget;
 
-    public BufferedWriterProxy(SinkTarget<T> t, Closer cl, Writer wr) throws IOException {
+    public BufferedWriterProxy(SubjectHolder<T> t, Closer cl, Writer wr) throws IOException {
 	super(wr);
 	realTarget = t;
 	cl.register(wr);

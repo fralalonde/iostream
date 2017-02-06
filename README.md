@@ -8,26 +8,27 @@ _"It's the little things"_
 
 ## Things you can do with it
 
-Byte arrays, Files and Strings are currently implememted.  Non-deprecated Java classes semantics are preserved. 
+Byte arrays, Files and Strings are currently implemented. Non-deprecated Java classes semantics are preserved. 
 
 ```java
-IoStreams.file("doum.txt").printWriter();
-IoStreams.file("doum.txt").zipOutput().getSubject();
-IoStreams.file("doum.txt").zipInput();
-IoStreams.file("dam.txt", true).bufferedWriter();
-IoStreams.file("doum.txt").bufferedInput();
+Writer w = IoStreams.file("doum.txt").printWriter();
+w.append("aa");
 
-IoStreams.tempFile().dataOutput();
+IoStreams.bytes().output();
+byte[] bytes = IoStreams.bytes().dataOutput().getSubject();     
+
+IoStreams.file("doum.zip").zipInput();
+IoStreams.file("dam.txt", true).bufferedWriter();
+
+DataOutputProxy<File> tmpout = IoStreams.tempFile().dataOutput();
+tmpout.write(42);
+String tmpFilename =tmpout.getSubject().getAbsolutePath();
 
 IoStreams.string("agaga gogo").bufferedReader();
 IoStreams.string("agaga gogo").reader();
 
-IoStreams.string().bufferedWriter().getSubject();
+String str = IoStreams.string().bufferedWriter().getSubject();
 
-IoStreams.bytes().dataOutput();
-IoStreams.bytes().output();
-
-IoStreams.bytes(new byte[] { 0, 1, 2 }).dataOutput();
 IoStreams.bytes(new byte[] { 0, 1, 2 }).objectInput();
 ```
 

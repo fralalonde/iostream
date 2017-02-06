@@ -5,24 +5,22 @@ import java.nio.charset.Charset;
 import java.util.zip.ZipOutputStream;
 
 import iostream.Closer;
-import iostream.SinkTarget;
-import lombok.Getter;
+import iostream.SubjectHolder;
 
-public class ZipOutputProxy<T> extends ZipOutputStream implements SinkTarget<T> {
+public class ZipOutputProxy<T> extends ZipOutputStream implements SubjectHolder<T> {
 
     final Closer closer;
 
-    @Getter
-    final SinkTarget<T> realTarget;
+    final SubjectHolder<T> realTarget;
 
-    public ZipOutputProxy(SinkTarget<T> t, Closer cl, OutputStream os) {
+    public ZipOutputProxy(SubjectHolder<T> t, Closer cl, OutputStream os) {
 	super(os);
 	realTarget = t;
 	cl.register(os);
 	closer = cl;
     }
 
-    public ZipOutputProxy(SinkTarget<T> t, Closer cl, OutputStream os, Charset cs) {
+    public ZipOutputProxy(SubjectHolder<T> t, Closer cl, OutputStream os, Charset cs) {
 	super(os, cs);
 	realTarget = t;
 	cl.register(os);

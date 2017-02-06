@@ -1,34 +1,39 @@
 package iostream;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Writer;
+import java.nio.file.Files;
 
 import org.junit.Test;
 
+import iostream.proxy.stream.DataOutputProxy;
 import iostream.proxy.writer.PrintWriterProxy;
 
 public class IoStreamsTest {
 
     @Test
     public void test() throws IOException {
-	IoStreams.file("doum.txt").printWriter();
-	IoStreams.file("doum.txt").zipOutput().getSubject();
-	IoStreams.file("doum.txt").zipInput();
+	Writer w = IoStreams.file("doum.txt").printWriter();
+	w.append("aa");
+	
+	IoStreams.bytes().output();
+	byte[] bytes = IoStreams.bytes().dataOutput().getSubject(); 	
+	
+	IoStreams.file("doum.zip").zipInput();
 	IoStreams.file("dam.txt", true).bufferedWriter();
-	IoStreams.file("doum.txt").bufferedInput();
 
-	IoStreams.tempFile().dataOutput();
+	DataOutputProxy<File> tmpout = IoStreams.tempFile().dataOutput();
+	tmpout.write(42);
+	String tmpFilename =tmpout.getSubject().getAbsolutePath();
 
 	IoStreams.string("agaga gogo").bufferedReader();
 	IoStreams.string("agaga gogo").reader();
 
-	IoStreams.string().bufferedWriter().getSubject();
-
-	IoStreams.bytes().dataOutput();
-	IoStreams.bytes().output();
-
-	IoStreams.bytes(new byte[] { 0, 1, 2 }).dataOutput();
+	String str = IoStreams.string().bufferedWriter().getSubject();
+	
 	IoStreams.bytes(new byte[] { 0, 1, 2 }).objectInput();
     }
 

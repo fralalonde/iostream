@@ -5,36 +5,36 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import iostream.Closer;
-import iostream.SinkTarget;
+import iostream.SubjectHolder;
 
-public class PrintWriterProxy<T> extends PrintWriter implements SinkTarget<T> {
+public class PrintWriterProxy<T> extends PrintWriter implements SubjectHolder<T> {
 
     final Closer closer;
 
-    final SinkTarget<T> realTarget;
+    final SubjectHolder<T> realTarget;
 
-    public PrintWriterProxy(SinkTarget<T> t, Closer cl, Writer w) {
+    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, Writer w) {
 	super(w);
 	realTarget = t;
 	cl.register(w);
 	closer = cl;
     }
 
-    public PrintWriterProxy(SinkTarget<T> t, Closer cl, OutputStream os) {
+    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, OutputStream os) {
 	super(os);
 	realTarget = t;
 	cl.register(os);
 	closer = cl;
     }
 
-    public PrintWriterProxy(SinkTarget<T> t, Closer cl, Writer w, boolean autoFlush) {
+    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, Writer w, boolean autoFlush) {
 	super(w, autoFlush);
 	realTarget = t;
 	cl.register(w);
 	closer = cl;
     }
 
-    public PrintWriterProxy(SinkTarget<T> t, Closer cl, OutputStream os, boolean autoFlush) {
+    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, OutputStream os, boolean autoFlush) {
 	super(os, autoFlush);
 	realTarget = t;
 	cl.register(os);

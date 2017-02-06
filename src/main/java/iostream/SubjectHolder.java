@@ -1,6 +1,6 @@
 package iostream;
 
-public interface SinkTarget<T> {
+public interface SubjectHolder<T> {
 
     T getSubject();
     

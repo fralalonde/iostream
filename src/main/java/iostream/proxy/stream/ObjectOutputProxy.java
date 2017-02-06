@@ -5,17 +5,15 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 import iostream.Closer;
-import iostream.SinkTarget;
-import lombok.Getter;
+import iostream.SubjectHolder;
 
-public class ObjectOutputProxy<T> extends ObjectOutputStream implements SinkTarget<T> {
+public class ObjectOutputProxy<T> extends ObjectOutputStream implements SubjectHolder<T> {
 
     final Closer closer;
 
-    @Getter
-    final SinkTarget<T> realTarget;
+    final SubjectHolder<T> realTarget;
 
-    public ObjectOutputProxy(SinkTarget<T> t, Closer cl, OutputStream os) throws IOException {
+    public ObjectOutputProxy(SubjectHolder<T> t, Closer cl, OutputStream os) throws IOException {
 	super(os);
 	realTarget = t;
 	cl.register(os);

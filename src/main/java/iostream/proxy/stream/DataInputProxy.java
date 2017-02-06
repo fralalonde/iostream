@@ -5,21 +5,28 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import iostream.Closer;
+import iostream.SubjectHolder;
 
-public class DataInputProxy extends DataInputStream {
+public class DataInputProxy<T> extends DataInputStream implements SubjectHolder<T> {
 
     final Closer closer;
 
-    public DataInputProxy(Closer cl, InputStream is) throws IOException {
-        super(is);
-        cl.register(is);
-        closer = cl;
+    final SubjectHolder<T> realTarget;
+
+    public DataInputProxy(SubjectHolder<T> t, Closer cl, InputStream is) throws IOException {
+	super(is);
+	realTarget = t;
+	cl.register(is);
+	closer = cl;
     }
-    
 
     public void close() {
-        closer.closeAll();	    
+	closer.closeAll();
     }
 
-    
+    @Override
+    public T getSubject() {
+	return realTarget.getSubject();
+    }
+
 }
