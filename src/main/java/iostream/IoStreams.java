@@ -13,18 +13,27 @@ import iostream.target.string.OutStringTarget;
 import iostream.target.string.StringInBuilder;
 import iostream.target.string.StringOutBuilder;
 
-public class IoStream {
+public class IoStreams {
 
     public static FileBuilder file(String name) {
-	return new FileBuilder(new FileTarget(new File(name)));
+	return new FileBuilder(new FileTarget(new File(name), false));
     }
+    
+    public static OutBuilder<File> file(String name, boolean append) {
+	return new OutBuilder<>(new FileTarget(new File(name), append));
+    }
+    
 
     public static FileBuilder file(File file) {
-	return new FileBuilder(new FileTarget(file));
+	return new FileBuilder(new FileTarget(file, false));
     }
 
+    public static OutBuilder<File> file(File file, boolean append) {
+	return new OutBuilder<>(new FileTarget(file, append));
+    }
+    
     public static OutBuilder<File> tempFile() throws IOException {
-	return new OutBuilder<>(new FileTarget(File.createTempFile(IoStream.class.getSimpleName(), "tmp")));
+	return new OutBuilder<>(new FileTarget(File.createTempFile(IoStreams.class.getSimpleName(), "tmp"), false));
     }
 
     public static StringInBuilder string(String str) {
