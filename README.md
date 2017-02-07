@@ -63,7 +63,7 @@ writer1.close();
 Not only is the `IoStream` code prettier, it's also safer.   
 
 ### try-with syntax
-Obviously, `IoStream` go hand in hand with the try-with syntax introduced in JDK 7.
+Obviously, `IoStream` goes hand in hand with the try-with syntax introduced in JDK 7.
 ```java
 try (Writer w = IoStream.file("mouha.txt").printWriter()) {
     w.append("haha");
@@ -128,6 +128,7 @@ IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```java
 IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
 InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream(); 
+```
 
 ## FAQ
 ### Why not guava?
