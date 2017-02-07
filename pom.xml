@@ -34,13 +34,6 @@
 				<version>1.7.1</version>
 				<scope>test</scope>
 			</dependency>
-			<!-- 
-            <dependency>
-                <groupId>fralaonde</groupId>
-                <artifactId>iostream</artifactId>
-                <version>0.2-SNAPSHOT</version>
-            </dependency>
-			 -->
 		</dependencies>
 	</dependencyManagement>
 
