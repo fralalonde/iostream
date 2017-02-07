@@ -19,9 +19,14 @@ public interface OutStreamBuilder<T> {
 	return new ZipOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose));	
     }
 
-    default ZipOutputProxy<T> zipOutputStream(Charset cs)  throws IOException {
+    default ZipOutputProxy<T> zipOutputStream(Charset charset)  throws IOException {
 	Closer toClose = new Closer();
-	return new ZipOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose), cs);	
+	return new ZipOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose), charset);	
+    }
+
+    default ZipOutputProxy<T> zipOutputStream(String charsetName)  throws IOException {
+	Closer toClose = new Closer();
+	return new ZipOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose), Charset.forName(charsetName));	
     }
     
     default BufferedOutputProxy<T> bufferedOutputStream() throws IOException {

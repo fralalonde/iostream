@@ -19,9 +19,14 @@ public interface InStreamBuilder<T> {
 	return new ZipInputProxy<>(getByteSource(), toClose, getByteSource().getInputStream(toClose));
     }
 
-    default ZipInputProxy<T> zipInputStream(Charset cs) throws IOException {
+    default ZipInputProxy<T> zipInputStream(Charset charset) throws IOException {
 	Closer toClose = new Closer();
-	return new ZipInputProxy<>(getByteSource(), toClose, getByteSource().getInputStream(toClose), cs);
+	return new ZipInputProxy<>(getByteSource(), toClose, getByteSource().getInputStream(toClose), charset);
+    }
+
+    default ZipInputProxy<T> zipInputStream(String charsetName) throws IOException {
+	Closer toClose = new Closer();
+	return new ZipInputProxy<>(getByteSource(), toClose, getByteSource().getInputStream(toClose), Charset.forName(charsetName));
     }
     
     default BufferedInputProxy<T> bufferedInputStream() throws IOException {

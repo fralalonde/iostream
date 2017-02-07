@@ -3,11 +3,13 @@ package iostream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import iostream.proxy.stream.DataOutputProxy;
 import iostream.proxy.writer.PrintWriterProxy;
@@ -57,12 +59,13 @@ public class Samples {
     }
 
     public void files() throws IOException {
+	FileOutputStream out = IoStreams.file("noooes.txt").outputStream();
+	
 	try (PrintWriter w = IoStreams.file("mouha.txt").printWriter()) {
 	    w.append("haha");
-	}
-	
+	}	
 
-	IoStreams.file("doum.zip").zipInputStream();
+	IoStreams.file("doum.zip").zipInputStream(Charset.forName("UTF-8"));
 	IoStreams.file("dam.txt", true).bufferedWriter();
 
 	DataOutputProxy<File> tmpout = IoStreams.tempFile().dataOutputStream();

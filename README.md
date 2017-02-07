@@ -1,4 +1,4 @@
-# iostreams
+# IoStreams
 Better ergonomics for Java IO stream handling. 
 * Single root class fluent builder. 
 * Closes the stack of multiple closeable at once. 
@@ -26,7 +26,7 @@ Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know w
       
 ## How does it work?
 
-First, _iostreams_ wraps the *streams and their charset aware sibblings in a more palatable fluent-builder (or _Factory_, for you pattern freaks) so you don't have to `new` anything when you need to do some sweet blocking I/O. Start by typing `IoStreams.` and autocomplete-away!
+First, _IoStreams_ wraps the *streams and their charset aware sibblings in a more palatable fluent-builder (or _Factory_, for you pattern freaks) so you don't have to `new` anything when you need to do some sweet blocking I/O. Start by typing `IoStreams.` and autocomplete-away!
 ```java
 import iostream.IoStreams;
 ``` 
@@ -38,7 +38,7 @@ PrintWriter writer = IoStreams.file("yesss.txt").printWriter();
 ```
 You can also build resource-native classes such as `FileOutputStream` if that's all you need and the resource provides it "natively", i.e. JDK has a class supporting that case.
 ```java
-OutputStream out = IoStreams.file("noooes.txt").outputStream();
+FileOutputStream out = IoStreams.file("noooes.txt").outputStream();
 ``` 
 If a resource only implements streams (like `socket()`), and you require a `Writer` or a `Reader` char-oriented access, the builder will transparently insert an OutputStreamWriter or InputStreamReader adapter for you.
 ```java
@@ -46,7 +46,7 @@ BufferedWriter writer = IoStreams.socket("spamaway.net", 25).bufferedWriter();
 ``` 
 
 ### Closing
-Next, when you're done reading or writing, you need to `close()` streams and readers and writers that were created. This is where `iostreams` shines compared to good ol'Java. Closing the single construct that was returned by IoStreams will close all objects that were created in one swoop, from the outmost object down to the inner resource. 
+Next, when you're done reading or writing, you need to `close()` streams and readers and writers that were created. This is where `IoStreams` shines compared to good ol'Java. Closing the single construct that was returned by IoStreams will close all objects that were created in one swoop, from the outmost object down to the inner resource. 
 ```java
 Writer writer = IoStreams.file("a.txt").printWriter();
 // ... 
@@ -60,7 +60,7 @@ Writer writer2 = new BufferedWriter(writer1);
 writer2.close();
 writer1.close();
 ```
-Not only is the `iostreams` code prettier, it's also safer.   
+Not only is the `IoStreams` code prettier, it's also safer.   
 
 ### try-with syntax
 Obviously, `IoStreams` go hand in hand with the try-with syntax introduced in JDK 7.
@@ -71,7 +71,7 @@ try (Writer w = IoStreams.file("mouha.txt").printWriter()) {
 ```
 
 ### Retrieving results 
-Finally, it is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays or temp files. Then again, iostreams makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Proxy` classes, all of which actually subclass the JDK own classes. This done to provide you with the  `getResource()` method, which return type follows the resource type you built.
+Finally, it is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays or temp files. Then again, `IoStreams` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Proxy<>` classes, all of which actually subclass the JDK own classes. This done to provide you with the  `getResource()` method, which return type follows the resource type you built.
 ```java
 PrintWriterProxy<byte[]> writer = IoStreams.bytes().printWriter();
 // ...
@@ -94,11 +94,13 @@ Byte arrays, Files and Strings and Sockets are currently implemented. Non-deprec
 
 ### Files
 ```java
+FileOutputStream out = IoStreams.file("noooes.txt").outputStream();
+
 try (PrintWriter w = IoStreams.file("mouha.txt").printWriter()) {
     w.append("haha");
-}
+}   
 
-IoStreams.file("doum.zip").zipInputStream();
+IoStreams.file("doum.zip").zipInputStream(Charset.forName("UTF-8"));
 IoStreams.file("dam.txt", true).bufferedWriter();
 
 DataOutputProxy<File> tmpout = IoStreams.tempFile().dataOutputStream();
