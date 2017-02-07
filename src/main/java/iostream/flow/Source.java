@@ -8,13 +8,8 @@ import iostream.CloseChain;
 
 public interface Source<T> extends ByteSource<T>, CharSource<T> {
 
-    default Reader getNativeReaderOrNull(CloseChain toClose) throws IOException {
-	return null;
-    }
-
     default Reader getReader(CloseChain toClose) throws IOException {
-	Reader nativeReader = getNativeReaderOrNull(toClose);
-	return nativeReader != null ? nativeReader : new InputStreamReader(getInputStream(toClose));
+	return new InputStreamReader(getInputStream(toClose));
     }
 
 }

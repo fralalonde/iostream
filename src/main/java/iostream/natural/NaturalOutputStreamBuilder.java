@@ -5,6 +5,6 @@ import java.io.OutputStream;
 
 public interface NaturalOutputStreamBuilder<OS extends OutputStream> {
 
-    OS output() throws IOException;
+    OS outputStream() throws IOException;
     
 }

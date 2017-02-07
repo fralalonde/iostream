@@ -11,7 +11,7 @@ public interface ReaderBuilder<T> {
     CharSource<T> getCharSource() throws IOException;
 
     default BufferedReaderProxy<T> bufferedReader() throws IOException {
-	Closer toClose = new Closer(ex -> {});
+	Closer toClose = new Closer();
 	return new BufferedReaderProxy<>(getCharSource(), toClose, getCharSource().getReader(toClose));		
     }
 

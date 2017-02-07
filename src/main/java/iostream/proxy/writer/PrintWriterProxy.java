@@ -1,53 +1,56 @@
 package iostream.proxy.writer;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
 import iostream.Closer;
-import iostream.SubjectHolder;
+import iostream.ResourceHolder;
+import lombok.SneakyThrows;
 
-public class PrintWriterProxy<T> extends PrintWriter implements SubjectHolder<T> {
+public class PrintWriterProxy<T> extends PrintWriter implements ResourceHolder<T> {
 
     final Closer closer;
 
-    final SubjectHolder<T> realTarget;
+    final ResourceHolder<T> holder;
 
-    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, Writer w) {
+    public PrintWriterProxy(ResourceHolder<T> t, Closer cl, Writer w) {
 	super(w);
-	realTarget = t;
-	cl.register(w);
+	holder = t;
+	cl.add(w);
 	closer = cl;
     }
 
-    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, OutputStream os) {
+    public PrintWriterProxy(ResourceHolder<T> t, Closer cl, OutputStream os) {
 	super(os);
-	realTarget = t;
-	cl.register(os);
+	holder = t;
+	cl.add(os);
 	closer = cl;
     }
 
-    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, Writer w, boolean autoFlush) {
+    public PrintWriterProxy(ResourceHolder<T> t, Closer cl, Writer w, boolean autoFlush) {
 	super(w, autoFlush);
-	realTarget = t;
-	cl.register(w);
+	holder = t;
+	cl.add(w);
 	closer = cl;
     }
 
-    public PrintWriterProxy(SubjectHolder<T> t, Closer cl, OutputStream os, boolean autoFlush) {
+    public PrintWriterProxy(ResourceHolder<T> t, Closer cl, OutputStream os, boolean autoFlush) {
 	super(os, autoFlush);
-	realTarget = t;
-	cl.register(os);
+	holder = t;
+	cl.add(os);
 	closer = cl;
     }
 
+    @SneakyThrows(IOException.class)
     public void close() {
 	closer.closeAll();
     }
 
     @Override
-    public T getSubject() {
-	return realTarget.getSubject();
+    public T getResource() {
+	return holder.getResource();
     }
 
 }

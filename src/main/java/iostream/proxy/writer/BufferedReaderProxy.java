@@ -5,28 +5,28 @@ import java.io.IOException;
 import java.io.Reader;
 
 import iostream.Closer;
-import iostream.SubjectHolder;
+import iostream.ResourceHolder;
 
-public class BufferedReaderProxy<T> extends BufferedReader implements SubjectHolder<T> {
+public class BufferedReaderProxy<T> extends BufferedReader implements ResourceHolder<T> {
 
     final Closer closer;
     
-    final SubjectHolder<T> realTarget;
+    final ResourceHolder<T> holder;
 
-    public BufferedReaderProxy(SubjectHolder<T> t, Closer cl, Reader r) throws IOException {
+    public BufferedReaderProxy(ResourceHolder<T> t, Closer cl, Reader r) throws IOException {
 	super(r);
-	realTarget = t;	
-	cl.register(r);
+	holder = t;	
+	cl.add(r);
 	closer = cl;
     }
 
-    public void close() {
+    public void close() throws IOException {
 	closer.closeAll();
     }
 
     @Override
-    public T getSubject() {
-	return realTarget.getSubject();
+    public T getResource() {
+	return holder.getResource();
     }    
 
 }

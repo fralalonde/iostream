@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.Reader;
 
 import iostream.CloseChain;
-import iostream.SubjectHolder;
+import iostream.ResourceHolder;
 
-public interface CharSource<T> extends SubjectHolder<T> {
+public interface CharSource<T> extends ResourceHolder<T> {
 
     Reader getReader(CloseChain toClose) throws IOException;
 

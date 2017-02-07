@@ -5,28 +5,29 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 import iostream.Closer;
-import iostream.SubjectHolder;
+import iostream.ResourceHolder;
 
-public class ObjectInputProxy<T> extends ObjectInputStream implements SubjectHolder<T> {
+public class ObjectInputProxy<T> extends ObjectInputStream implements ResourceHolder<T> {
 
     final Closer closer;
 
-    final SubjectHolder<T> realTarget;
+    final ResourceHolder<T> holder;
 
-    public ObjectInputProxy(SubjectHolder<T> t, Closer cl, InputStream is) throws IOException {
+    public ObjectInputProxy(ResourceHolder<T> t, Closer cl, InputStream is) throws IOException {
 	super(is);
-	realTarget = t;
-	cl.register(is);
+	holder = t;
+	cl.add(is);
 	closer = cl;
     }
 
-    public void close() {
+    @Override
+    public void close() throws IOException {
 	closer.closeAll();
     }
 
     @Override
-    public T getSubject() {
-	return realTarget.getSubject();
+    public T getResource() {
+	return holder.getResource();
     }
 
 }

@@ -1,39 +1,41 @@
 package iostream.proxy.stream;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.zip.ZipOutputStream;
 
 import iostream.Closer;
-import iostream.SubjectHolder;
+import iostream.ResourceHolder;
 
-public class ZipOutputProxy<T> extends ZipOutputStream implements SubjectHolder<T> {
+public class ZipOutputProxy<T> extends ZipOutputStream implements ResourceHolder<T> {
 
     final Closer closer;
 
-    final SubjectHolder<T> realTarget;
+    final ResourceHolder<T> holder;
 
-    public ZipOutputProxy(SubjectHolder<T> t, Closer cl, OutputStream os) {
+    public ZipOutputProxy(ResourceHolder<T> t, Closer cl, OutputStream os) {
 	super(os);
-	realTarget = t;
-	cl.register(os);
+	holder = t;
+	cl.add(os);
 	closer = cl;
     }
 
-    public ZipOutputProxy(SubjectHolder<T> t, Closer cl, OutputStream os, Charset cs) {
+    public ZipOutputProxy(ResourceHolder<T> t, Closer cl, OutputStream os, Charset cs) {
 	super(os, cs);
-	realTarget = t;
-	cl.register(os);
+	holder = t;
+	cl.add(os);
 	closer = cl;
     }
 
-    public void close() {
+    @Override
+    public void close() throws IOException {
 	closer.closeAll();
     }
 
     @Override
-    public T getSubject() {
-	return realTarget.getSubject();
+    public T getResource() {
+	return holder.getResource();
     }
 
 }

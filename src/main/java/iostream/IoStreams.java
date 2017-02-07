@@ -4,54 +4,51 @@ import java.io.File;
 import java.io.IOException;
 
 import iostream.proxy.OutBuilder;
-import iostream.target.bytearray.ByteArrayBuilder;
-import iostream.target.bytearray.OutArrayBuilder;
-import iostream.target.file.FileBuilder;
-import iostream.target.file.FileTarget;
-import iostream.target.string.InStringTarget;
-import iostream.target.string.OutStringTarget;
-import iostream.target.string.StringInBuilder;
-import iostream.target.string.StringOutBuilder;
+import iostream.resource.bytearray.ByteArrayBuilder;
+import iostream.resource.bytearray.OutArrayBuilder;
+import iostream.resource.file.FileBuilder;
+import iostream.resource.file.FileResource;
+import iostream.resource.socket.SocketBuilder;
+import iostream.resource.socket.SocketResource;
+import iostream.resource.string.InStringResource;
+import iostream.resource.string.OutStringResource;
+import iostream.resource.string.StringInBuilder;
+import iostream.resource.string.StringOutBuilder;
 
 public class IoStreams {
 
     public static FileBuilder file(String name) {
-	return new FileBuilder(new FileTarget(new File(name), false));
+	return new FileBuilder(new FileResource(new File(name), false));
     }
-    
+
     public static OutBuilder<File> file(String name, boolean append) {
-	return new OutBuilder<>(new FileTarget(new File(name), append));
+	return new OutBuilder<>(new FileResource(new File(name), append));
     }
-    
 
     public static FileBuilder file(File file) {
-	return new FileBuilder(new FileTarget(file, false));
+	return new FileBuilder(new FileResource(file, false));
     }
 
     public static OutBuilder<File> file(File file, boolean append) {
-	return new OutBuilder<>(new FileTarget(file, append));
+	return new OutBuilder<>(new FileResource(file, append));
     }
-    
+
     public static OutBuilder<File> tempFile() throws IOException {
-	return new OutBuilder<>(new FileTarget(File.createTempFile(IoStreams.class.getSimpleName(), "tmp"), false));
+	return new OutBuilder<>(new FileResource(File.createTempFile(IoStreams.class.getSimpleName(), "tmp"), false));
     }
 
     public static StringInBuilder string(String str) {
-	return new StringInBuilder(new InStringTarget(str));
+	return new StringInBuilder(new InStringResource(str));
     }
 
     public static StringOutBuilder string() {
-	return new StringOutBuilder(new OutStringTarget());
+	return new StringOutBuilder(new OutStringResource());
     }
 
-    // static FileInputOrOutput console(String name) {
-    // return null;
-    // }
-    //
-    // static SocketInputOrOutput socket(String addr, int port) {
-    // return null;
-    // }
-    
+    static SocketBuilder socket(String host, int port) throws IOException {
+	return new SocketBuilder(new SocketResource(host, port));
+    }
+
     static OutArrayBuilder bytes() {
 	return new OutArrayBuilder();
     }
@@ -60,22 +57,26 @@ public class IoStreams {
 	return new ByteArrayBuilder(array);
     }
 
+    // static FileInputOrOutput console(String name) {
+    // return null;
+    // }
+    
     // static PipeInputOrOutput pipe() {
     // return null;
     // }
-    
+
     // static TargetFlow nil() {
     // return null;
     // }
-    
+
     // static TargetFlow random() {
     // return null;
     // }
-    
+
     // static OutStreamFilter stream(OutputStream os) {
     // return null;
     // }
-    
+
     // static InStreamFilter stream(InputStream is) {
     // return null;
     // }

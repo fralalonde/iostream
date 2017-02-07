@@ -4,17 +4,17 @@ import java.io.Closeable;
 
 public interface CloseChain {
 
-    <T extends Closeable> T register(T closeable);
+    <T extends Closeable> T add(T closeable);
     
-    static class Self implements CloseChain {
+    static class SingleCloseable implements CloseChain {
 
 	@Override
-	public <T extends Closeable> T register(T closeable) {
+	public <T extends Closeable> T add(T closeable) {
 	    return closeable;
 	}	
     }
     
-    static CloseChain SELF_CLOSE = new Self(); 
+    static CloseChain SELF_CLOSE = new SingleCloseable(); 
     
     
 }

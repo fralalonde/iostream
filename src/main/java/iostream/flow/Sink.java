@@ -8,13 +8,8 @@ import iostream.CloseChain;
 
 public interface Sink<T> extends ByteSink<T>, CharSink<T>  {
 
-    default Writer getNativeWriterOrNull(CloseChain toClose) throws IOException {
-	return null;
-    }
-
     default Writer getWriter(CloseChain toClose) throws IOException {
-	Writer nativeWriter = getNativeWriterOrNull(toClose);
-	return nativeWriter != null ? nativeWriter :  new OutputStreamWriter(getOutputStream(toClose));
+	return new OutputStreamWriter(getOutputStream(toClose));
     }
 
 }

@@ -5,28 +5,36 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import iostream.Closer;
-import iostream.SubjectHolder;
+import iostream.ResourceHolder;
 
-public class BufferedOutputProxy<T> extends BufferedOutputStream implements SubjectHolder<T> {
+public class BufferedOutputProxy<T> extends BufferedOutputStream implements ResourceHolder<T> {
 
     final Closer closer;
 
-    final SubjectHolder<T> realTarget;
+    final ResourceHolder<T> holder;
 
-    public BufferedOutputProxy(SubjectHolder<T> t, Closer cl, OutputStream os) throws IOException {
+    public BufferedOutputProxy(ResourceHolder<T> t, Closer cl, OutputStream os) throws IOException {
 	super(os);
-	realTarget = t;
-	cl.register(os);
+	holder = t;
+	cl.add(os);
 	closer = cl;
     }
+    
+    public BufferedOutputProxy(ResourceHolder<T> t, Closer cl, OutputStream os, int bufferSize) throws IOException {
+	super(os, bufferSize);
+	holder = t;
+	cl.add(os);
+	closer = cl;
+    }    
 
-    public void close() {
+    @Override
+    public void close() throws IOException {
 	closer.closeAll();
     }
 
     @Override
-    public T getSubject() {
-	return realTarget.getSubject();
+    public T getResource() {
+	return holder.getResource();
     }
-    
+
 }

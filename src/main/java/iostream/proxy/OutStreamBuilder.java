@@ -14,28 +14,28 @@ public interface OutStreamBuilder<T> {
 
     ByteSink<T> getByteSink() throws IOException;
     
-    default ZipOutputProxy<T> zipOutput()  throws IOException {
-	Closer toClose = new Closer(ex -> {});
+    default ZipOutputProxy<T> zipOutputStream()  throws IOException {
+	Closer toClose = new Closer();
 	return new ZipOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose));	
     }
 
-    default ZipOutputProxy<T> zipOutput(Charset cs)  throws IOException {
-	Closer toClose = new Closer(ex -> {});
+    default ZipOutputProxy<T> zipOutputStream(Charset cs)  throws IOException {
+	Closer toClose = new Closer();
 	return new ZipOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose), cs);	
     }
     
-    default BufferedOutputProxy<T> bufferedOutput() throws IOException {
-	Closer toClose = new Closer(ex -> {});
+    default BufferedOutputProxy<T> bufferedOutputStream() throws IOException {
+	Closer toClose = new Closer();
 	return new BufferedOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose));	
     }
 
-    default DataOutputProxy<T> dataOutput() throws IOException {
-	Closer toClose = new Closer(ex -> {});
+    default DataOutputProxy<T> dataOutputStream() throws IOException {
+	Closer toClose = new Closer();
 	return new DataOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose));
     }
 
-    default ObjectOutputProxy<T> objectOutput() throws IOException {
-	Closer toClose = new Closer(ex -> {});
+    default ObjectOutputProxy<T> objectOutputStream() throws IOException {
+	Closer toClose = new Closer();
 	return new ObjectOutputProxy<>(getByteSink(), toClose, getByteSink().getOutputStream(toClose));
     }
 
