@@ -1,4 +1,4 @@
-# IoStreams
+# IoStream
 Better ergonomics for Java IO stream handling. 
 * Single root class fluent builder. 
 * Closes the stack of multiple closeable at once. 
@@ -17,38 +17,38 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 ```xml
 <dependency>
     <groupId>fralaonde</groupId>
-    <artifactId>iostreams</artifactId>
+    <artifactId>iostream</artifactId>
     <version>0.2-SNAPSHOT</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `fralalonde:iostreams:0.2-SNAPSHOT`.  
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `fralalonde:iostream:0.2-SNAPSHOT`.  
       
 ## How does it work?
 
-First, _IoStreams_ wraps the *streams and their charset aware sibblings in a more palatable fluent-builder (or _Factory_, for you pattern freaks) so you don't have to `new` anything when you need to do some sweet blocking I/O. Start by typing `IoStreams.` and autocomplete-away!
+First, `IoStream` wraps the streams and their charset aware sibblings in a more palatable fluent-builder (or _Factory Method_, for you pattern freaks) so you don't have to `new` anything when you need to do some sweet blocking I/O. Start by typing `IoStream.` and autocomplete-away!
 ```java
-import iostream.IoStreams;
+import iostream.IoStream;
 ``` 
 
 ### Building
 Because streams and readers/writers are often paired together, the fluent builder guides you from the selection of the underlying resource (`File`, `byte[]`, `Socket`...) to the way of accessing it (`BufferedStream`, `ZipStream`, `Writer`...). 
 ```java
-PrintWriter writer = IoStreams.file("yesss.txt").printWriter();
+PrintWriter writer = IoStream.file("yesss.txt").printWriter();
 ```
 You can also build resource-native classes such as `FileOutputStream` if that's all you need and the resource provides it "natively", i.e. JDK has a class supporting that case.
 ```java
-FileOutputStream out = IoStreams.file("noooes.txt").outputStream();
+FileOutputStream out = IoStream.file("noooes.txt").outputStream();
 ``` 
 If a resource only implements streams (like `socket()`), and you require a `Writer` or a `Reader` char-oriented access, the builder will transparently insert an OutputStreamWriter or InputStreamReader adapter for you.
 ```java
-BufferedWriter writer = IoStreams.socket("spamaway.net", 25).bufferedWriter();
+BufferedWriter writer = IoStream.socket("spamaway.net", 25).bufferedWriter();
 ``` 
 
 ### Closing
-Next, when you're done reading or writing, you need to `close()` streams and readers and writers that were created. This is where `IoStreams` shines compared to good ol'Java. Closing the single construct that was returned by IoStreams will close all objects that were created in one swoop, from the outmost object down to the inner resource. 
+Next, when you're done reading or writing, you need to `close()` streams and readers and writers that were created. This is where `IoStream` shines compared to good ol'Java. Closing the single construct that was returned by IoStream will close all objects that were created in one swoop, from the outmost object down to the inner resource. 
 ```java
-Writer writer = IoStreams.file("a.txt").printWriter();
+Writer writer = IoStream.file("a.txt").printWriter();
 // ... 
 writer.close();
 ``` 
@@ -60,20 +60,20 @@ Writer writer2 = new BufferedWriter(writer1);
 writer2.close();
 writer1.close();
 ```
-Not only is the `IoStreams` code prettier, it's also safer.   
+Not only is the `IoStream` code prettier, it's also safer.   
 
 ### try-with syntax
-Obviously, `IoStreams` go hand in hand with the try-with syntax introduced in JDK 7.
+Obviously, `IoStream` go hand in hand with the try-with syntax introduced in JDK 7.
 ```java
-try (Writer w = IoStreams.file("mouha.txt").printWriter()) {
+try (Writer w = IoStream.file("mouha.txt").printWriter()) {
     w.append("haha");
 }
 ```
 
 ### Retrieving results 
-Finally, it is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays or temp files. Then again, `IoStreams` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Proxy<>` classes, all of which actually subclass the JDK own classes. This done to provide you with the  `getResource()` method, which return type follows the resource type you built.
+Finally, it is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays or temp files. Then again, `IoStream` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Proxy<>` classes, all of which actually subclass the JDK own classes. This done to provide you with the  `getResource()` method, which return type follows the resource type you built.
 ```java
-PrintWriterProxy<byte[]> writer = IoStreams.bytes().printWriter();
+PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter();
 // ...
 writer.close();
 byte[] myPrecious = writer.getResource();
@@ -94,40 +94,40 @@ Byte arrays, Files and Strings and Sockets are currently implemented. Non-deprec
 
 ### Files
 ```java
-FileOutputStream out = IoStreams.file("noooes.txt").outputStream();
+FileOutputStream out = IoStream.file("noooes.txt").outputStream();
 
-try (PrintWriter w = IoStreams.file("mouha.txt").printWriter()) {
+try (PrintWriter w = IoStream.file("mouha.txt").printWriter()) {
     w.append("haha");
 }   
 
-IoStreams.file("doum.zip").zipInputStream(Charset.forName("UTF-8"));
-IoStreams.file("dam.txt", true).bufferedWriter();
+IoStream.file("doum.zip").zipInputStream(Charset.forName("UTF-8"));
+IoStream.file("dam.txt", true).bufferedWriter();
 
-DataOutputProxy<File> tmpout = IoStreams.tempFile().dataOutputStream();
+DataOutputProxy<File> tmpout = IoStream.tempFile().dataOutputStream();
 tmpout.write(42);
 String tmpFilename = tmpout.getResource().getAbsolutePath();
 ```
 
 ### Strings
 ```java
-IoStreams.string("agaga gogo").bufferedReader();
-IoStreams.string("agaga gogo").reader();
+IoStream.string("agaga gogo").bufferedReader();
+IoStream.string("agaga gogo").reader();
 
-String str = IoStreams.string().bufferedWriter().getResource();
+String str = IoStream.string().bufferedWriter().getResource();
 ```
 
 ### Byte Arrays
 ```java
-IoStreams.bytes().outputStream();
-byte[] bytes = IoStreams.bytes().dataOutputStream().getResource();
+IoStream.bytes().outputStream();
+byte[] bytes = IoStream.bytes().dataOutputStream().getResource();
 
-IoStreams.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
+IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```
 
 ### Sockets
 ```java
-IoStreams.socket("gloogloo.com", 80).bufferedOutputStream();
-InputStream smtpHoneypot = IoStreams.socket("localhost", 25).inputStream(); 
+IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
+InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream(); 
 
 ## FAQ
 ### Why not guava?
@@ -145,10 +145,10 @@ The goal is to support just Java stream classes (Sockets, Pipes) with their orig
 
 ### Standard comparison
 
-IoStreams enabled-code 
+IoStream enabled-code 
 ```java
-public byte[] usingIoStreams() throws IOException {
-    PrintWriterProxy<byte[]> writer = IoStreams.bytes().printWriter();
+public byte[] usingIoStream() throws IOException {
+    PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter();
     writer.write("doodoo");
     writer.close();
     return writer.getResource();
@@ -168,11 +168,11 @@ public byte[] classicStreams() throws IOException {
 ```
 
 ### Commented
-IoStreams enabled-code 
+IoStream enabled-code 
 ```java
 public byte[] fluent() throws IOException {
     // create and combine both objects
-    PrintWriterProxy<byte[]> writer = IoStreams.bytes().printWriter();
+    PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter();
 
     // write the string
     writer.write("doodoo");
@@ -209,9 +209,9 @@ public byte[] classic() throws IOException {
 ```
 
 ### Using try-with-resources
-IoStreams enabled-code 
+IoStream enabled-code 
 ```java
-try (PrintWriterProxy<byte[]> writer = IoStreams.bytes().printWriter()) {
+try (PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter()) {
     writer.write("doodoo");
     return writer.getResource();
 }

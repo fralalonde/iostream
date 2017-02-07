@@ -15,7 +15,7 @@ import iostream.resource.string.OutStringResource;
 import iostream.resource.string.StringInBuilder;
 import iostream.resource.string.StringOutBuilder;
 
-public class IoStreams {
+public class IoStream {
 
     public static FileBuilder file(String name) {
 	return new FileBuilder(new FileResource(new File(name), false));
@@ -34,7 +34,7 @@ public class IoStreams {
     }
 
     public static OutBuilder<File> tempFile() throws IOException {
-	return new OutBuilder<>(new FileResource(File.createTempFile(IoStreams.class.getSimpleName(), "tmp"), false));
+	return new OutBuilder<>(new FileResource(File.createTempFile(IoStream.class.getSimpleName(), "tmp"), false));
     }
 
     public static StringInBuilder string(String str) {
