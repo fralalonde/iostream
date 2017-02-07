@@ -9,19 +9,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class InBytesResource implements Source<byte[]> {
-
+    
     final byte[] bytes;
-
+    
     @Override
     public ByteArrayInputStream getInputStream(CloseChain onClose) throws IOException {
-	return onClose.add(new ByteArrayInputStream(bytes));
+        return onClose.add(new ByteArrayInputStream(bytes));
     }
-
+    
     @Override
     public byte[] getResource() {
-	return bytes;
+        return bytes;
     }
-
-
-
+    
 }

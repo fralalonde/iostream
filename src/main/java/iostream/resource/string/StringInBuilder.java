@@ -10,17 +10,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class StringInBuilder implements NaturalReaderBuilder<StringReader>, ReaderBuilder<String> {
-
+    
     final InStringResource inStr;
     
     @Override
     public StringReader reader() throws IOException {
-	return inStr.getReader(CloseChain.SELF_CLOSE);
+        return inStr.getReader(CloseChain.SELF_CLOSE);
     }
-
+    
     @Override
     public InStringResource getCharSource() throws IOException {
-	return inStr;
+        return inStr;
     }
-
+    
 }

@@ -8,26 +8,25 @@ import iostream.Closer;
 import iostream.ResourceHolder;
 
 public class BufferedWriterProxy<T> extends BufferedWriter implements ResourceHolder<T> {
-
+    
     final Closer closer;
-
+    
     final ResourceHolder<T> holder;
-
+    
     public BufferedWriterProxy(ResourceHolder<T> t, Closer cl, Writer wr) throws IOException {
-	super(wr);
-	holder = t;
-	cl.add(wr);
-	closer = cl;
+        super(wr);
+        holder = t;
+        cl.add(wr);
+        closer = cl;
     }
-
+    
     public void close() throws IOException {
-	closer.closeAll();
+        closer.closeAll();
     }
-
+    
     @Override
     public T getResource() {
-	return holder.getResource();
+        return holder.getResource();
     }
-
-
+    
 }

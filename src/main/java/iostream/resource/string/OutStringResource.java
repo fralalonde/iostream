@@ -12,13 +12,13 @@ public class OutStringResource implements CharSink<String> {
     
     @Override
     public StringWriter getWriter(CloseChain onClose) throws IOException {
-	wr = new StringWriter();
-	return onClose.add(wr);
+        wr = new StringWriter();
+        return onClose.add(wr);
     }
-
+    
     @Override
     public String getResource() {
-	return wr.toString();
+        return wr.toString();
     }
-
+    
 }

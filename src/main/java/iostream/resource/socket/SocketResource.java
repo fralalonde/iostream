@@ -12,26 +12,26 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SocketResource implements ByteSink<Socket>, ByteSource<Socket> {
-
-    Socket socket;
-
-    @Override
-    public Socket getResource() {
-	return socket;
-    }
-
-    @Override
-    public OutputStream getOutputStream(CloseChain toClose) throws IOException {
-	return toClose.add(socket.getOutputStream());
-    }
-
-    @Override
-    public InputStream getInputStream(CloseChain toClose) throws IOException {
-	return toClose.add(socket.getInputStream());
-    }
+    
+    final Socket socket;
 
     public SocketResource(String host, int port) throws IOException {
-	socket = new Socket(host, port);
+        socket = new Socket(host, port);
     }
-
+        
+    @Override
+    public Socket getResource() {
+        return socket;
+    }
+    
+    @Override
+    public OutputStream getOutputStream(CloseChain toClose) throws IOException {
+        return toClose.add(socket.getOutputStream());
+    }
+    
+    @Override
+    public InputStream getInputStream(CloseChain toClose) throws IOException {
+        return toClose.add(socket.getInputStream());
+    }
+    
 }

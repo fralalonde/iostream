@@ -16,35 +16,35 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class FileResource implements Sink<File>, Source<File> {
-
+    
     @Getter
     final File target;
     
-    final boolean append;    
-
+    final boolean append;
+    
     @Override
     public FileInputStream getInputStream(CloseChain toClose) throws FileNotFoundException {
-	return toClose.add(new FileInputStream(target));	
+        return toClose.add(new FileInputStream(target));
     }
-
+    
     @Override
     public FileWriter getWriter(CloseChain onClose) throws IOException {
-	return onClose.add(new FileWriter(target, append));
+        return onClose.add(new FileWriter(target, append));
     }
-
+    
     @Override
     public FileReader getReader(CloseChain onClose) throws IOException {
-	return onClose.add(new FileReader(target));
+        return onClose.add(new FileReader(target));
     }
-
+    
     @Override
     public FileOutputStream getOutputStream(CloseChain onClose) throws FileNotFoundException {
-	return onClose.add(new FileOutputStream(target, append));
+        return onClose.add(new FileOutputStream(target, append));
     }
-
+    
     @Override
     public File getResource() {
-	return target;
+        return target;
     }
-
+    
 }

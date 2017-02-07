@@ -7,17 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class OutBuilder<T> implements WriterBuilder<T>, OutStreamBuilder<T> {
-
+    
     final Sink<T> sink;
-
+    
     @Override
     public ByteSink<T> getByteSink() {
-	return sink;
+        return sink;
     }
-
+    
     @Override
     public CharSink<T> getCharSink() {
-	return sink;
+        return sink;
     }
-
+    
 }

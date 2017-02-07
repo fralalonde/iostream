@@ -12,30 +12,31 @@ import iostream.natural.NaturalReaderBuilder;
 import iostream.proxy.InStreamBuilder;
 import iostream.proxy.ReaderBuilder;
 
-public class FileBuilder extends OutFileBuilder implements InStreamBuilder<File>, ReaderBuilder<File>, NaturalInputStreamBuilder<FileInputStream>, NaturalReaderBuilder<FileReader> {
-
+public class FileBuilder extends OutFileBuilder
+        implements InStreamBuilder<File>, ReaderBuilder<File>, NaturalInputStreamBuilder<FileInputStream>, NaturalReaderBuilder<FileReader> {
+    
     public FileBuilder(FileResource fileTarget) {
-	super(fileTarget);
+        super(fileTarget);
     }
-
+    
     @Override
     public FileInputStream inputStream() throws FileNotFoundException {
-	return fileTarget.getInputStream(CloseChain.SELF_CLOSE);
+        return fileTarget.getInputStream(CloseChain.SELF_CLOSE);
     }
     
     @Override
     public FileReader reader() throws IOException {
-	return fileTarget.getReader(CloseChain.SELF_CLOSE);
+        return fileTarget.getReader(CloseChain.SELF_CLOSE);
     }
-
+    
     @Override
     public FileResource getCharSource() throws IOException {
-	return fileTarget;
+        return fileTarget;
     }
-
+    
     @Override
     public FileResource getByteSource() {
-	return fileTarget;
+        return fileTarget;
     }
-
+    
 }

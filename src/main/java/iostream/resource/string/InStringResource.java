@@ -9,18 +9,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class InStringResource implements CharSource<String> {
-
+    
     final String str;
-
+    
     @Override
     public StringReader getReader(CloseChain onClose) throws IOException {
-	return onClose.add(new StringReader(str));
+        return onClose.add(new StringReader(str));
     }
-
+    
     @Override
     public String getResource() {
-	return str;
+        return str;
     }
-
-
+    
 }

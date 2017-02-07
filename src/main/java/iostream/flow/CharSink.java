@@ -6,8 +6,8 @@ import java.io.Writer;
 import iostream.CloseChain;
 import iostream.ResourceHolder;
 
-public interface CharSink<T> extends ResourceHolder<T>  {
-
+public interface CharSink<T> extends ResourceHolder<T> {
+    
     Writer getWriter(CloseChain toClose) throws IOException;
-
+    
 }

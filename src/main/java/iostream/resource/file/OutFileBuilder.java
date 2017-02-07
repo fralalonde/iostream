@@ -14,29 +14,30 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class OutFileBuilder implements OutStreamBuilder<File>, WriterBuilder<File>, NaturalWriterBuilder<FileWriter>, NaturalOutputStreamBuilder<FileOutputStream> {
-
+public class OutFileBuilder
+        implements OutStreamBuilder<File>, WriterBuilder<File>, NaturalWriterBuilder<FileWriter>, NaturalOutputStreamBuilder<FileOutputStream> {
+    
     @Getter
     final FileResource fileTarget;
     
     @Override
     public FileOutputStream outputStream() throws IOException {
-	return fileTarget.getOutputStream(CloseChain.SELF_CLOSE);
-    }    
+        return fileTarget.getOutputStream(CloseChain.SELF_CLOSE);
+    }
     
     @Override
     public FileWriter writer() throws IOException {
-	return fileTarget.getWriter(CloseChain.SELF_CLOSE);
+        return fileTarget.getWriter(CloseChain.SELF_CLOSE);
     }
-
+    
     @Override
     public FileResource getCharSink() {
-	return fileTarget;
+        return fileTarget;
     }
-
+    
     @Override
     public FileResource getByteSink() {
-	return fileTarget;
+        return fileTarget;
     }
-
+    
 }

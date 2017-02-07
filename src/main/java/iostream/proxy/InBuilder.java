@@ -7,17 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class InBuilder<T> implements ReaderBuilder<T>, InStreamBuilder<T> {
-
+    
     final Source<T> source;
-
+    
     @Override
     public ByteSource<T> getByteSource() {
-	return source;
+        return source;
     }
-
+    
     @Override
     public CharSource<T> getCharSource() {
-	return source;
+        return source;
     }
-
+    
 }

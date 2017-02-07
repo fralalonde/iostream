@@ -18,41 +18,41 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ByteArrayBuilder
-	implements InStreamBuilder<byte[]>, ReaderBuilder<byte[]>, WriterBuilder<byte[]>, OutStreamBuilder<byte[]>,
-	NaturalInputStreamBuilder<ByteArrayInputStream>, NaturalOutputStreamBuilder<ByteArrayOutputStream> {
-
+        implements InStreamBuilder<byte[]>, ReaderBuilder<byte[]>, WriterBuilder<byte[]>, OutStreamBuilder<byte[]>,
+        NaturalInputStreamBuilder<ByteArrayInputStream>, NaturalOutputStreamBuilder<ByteArrayOutputStream> {
+    
     final byte[] bytes;
-
+    
     @Override
     public ByteArrayInputStream inputStream() {
-	return new ByteArrayInputStream(bytes);
+        return new ByteArrayInputStream(bytes);
     }
-
+    
     @Override
     public ByteArrayOutputStream outputStream() throws IOException {
-	ByteArrayOutputStream baos = new ByteArrayOutputStream(bytes.length);
-	baos.write(bytes);
-	return baos;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(bytes.length);
+        baos.write(bytes);
+        return baos;
     }
-
+    
     @Override
     public ByteSink<byte[]> getByteSink() throws IOException {
-	return new OutBytesResource(bytes);
+        return new OutBytesResource(bytes);
     }
-
+    
     @Override
     public CharSink<byte[]> getCharSink() throws IOException {
-	return new OutBytesResource(bytes);
+        return new OutBytesResource(bytes);
     }
-
+    
     @Override
     public CharSource<byte[]> getCharSource() throws IOException {
-	return new InBytesResource(bytes);
+        return new InBytesResource(bytes);
     }
-
+    
     @Override
     public ByteSource<byte[]> getByteSource() {
-	return new InBytesResource(bytes);
+        return new InBytesResource(bytes);
     }
-
+    
 }

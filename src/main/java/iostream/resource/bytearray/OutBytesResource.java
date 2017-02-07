@@ -12,27 +12,28 @@ public class OutBytesResource implements Sink<byte[]> {
     final ByteArrayOutputStream wr;
     
     public OutBytesResource() {
-	wr = new ByteArrayOutputStream();
+        wr = new ByteArrayOutputStream();
     }
     
     /**
      * "append" constructor
+     * 
      * @param append
      * @throws IOException
      */
     public OutBytesResource(byte[] append) throws IOException {
-	wr = new ByteArrayOutputStream();
-	wr.write(append);
+        wr = new ByteArrayOutputStream();
+        wr.write(append);
     }
-
+    
     @Override
     public OutputStream getOutputStream(CloseChain onClose) throws IOException {
-	return onClose.add(wr);
+        return onClose.add(wr);
     }
-
+    
     @Override
     public byte[] getResource() {
-	return wr.toByteArray();
+        return wr.toByteArray();
     }
-
+    
 }

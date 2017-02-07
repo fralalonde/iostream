@@ -10,18 +10,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class StringOutBuilder implements WriterBuilder<String>, NaturalWriterBuilder<StringWriter> {
-
+    
     final OutStringResource outStr;
-
+    
     @Override
     public StringWriter writer() throws IOException {
-	return outStr.getWriter(CloseChain.SELF_CLOSE);
-    }
-
-    @Override
-    public OutStringResource getCharSink() throws IOException {
-	return outStr;
+        return outStr.getWriter(CloseChain.SELF_CLOSE);
     }
     
+    @Override
+    public OutStringResource getCharSink() throws IOException {
+        return outStr;
+    }
     
 }

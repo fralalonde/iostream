@@ -16,28 +16,28 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SocketBuilder implements OutStreamBuilder<Socket>, InStreamBuilder<Socket>,
-	NaturalOutputStreamBuilder<OutputStream>, NaturalInputStreamBuilder<InputStream> {
-
+        NaturalOutputStreamBuilder<OutputStream>, NaturalInputStreamBuilder<InputStream> {
+    
     final SocketResource resource;
-
+    
     @Override
     public OutputStream outputStream() throws IOException {
-	return resource.getOutputStream(CloseChain.SELF_CLOSE);
+        return resource.getOutputStream(CloseChain.SELF_CLOSE);
     }
-
+    
     @Override
     public ByteSink<Socket> getByteSink() throws IOException {
-	return resource;
+        return resource;
     }
-
+    
     @Override
     public InputStream inputStream() throws IOException {
-	return resource.getInputStream(CloseChain.SELF_CLOSE);
+        return resource.getInputStream(CloseChain.SELF_CLOSE);
     }
-
+    
     @Override
     public ByteSource<Socket> getByteSource() {
-	return resource;
+        return resource;
     }
-
+    
 }
