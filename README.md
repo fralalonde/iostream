@@ -16,13 +16,13 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 
 ```xml
 <dependency>
-    <groupId>fralaonde</groupId>
+    <groupId>net.iostream</groupId>
     <artifactId>iostream</artifactId>
     <version>0.2-SNAPSHOT</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `fralalonde:iostream:0.2-SNAPSHOT`.  
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `net.iostream:iostream:0.2-SNAPSHOT`.  
       
 ## How does it work?
 
