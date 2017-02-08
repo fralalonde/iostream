@@ -15,7 +15,7 @@ public class StringOutBuilder implements WriterBuilder<String>, NaturalWriterBui
     
     @Override
     public StringWriter writer() throws IOException {
-        return outStr.getWriter(CloseChain.SELF_CLOSE);
+        return outStr.getWriter(CloseChain.NO_PROXY);
     }
     
     @Override

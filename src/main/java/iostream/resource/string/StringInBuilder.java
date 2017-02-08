@@ -15,7 +15,7 @@ public class StringInBuilder implements NaturalReaderBuilder<StringReader>, Read
     
     @Override
     public StringReader reader() throws IOException {
-        return inStr.getReader(CloseChain.SELF_CLOSE);
+        return inStr.getReader(CloseChain.NO_PROXY);
     }
     
     @Override

@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,9 +20,10 @@ public class Closer implements CloseChain {
     }
     
     public void closeAll() throws IOException {
-        for (Closeable c : closeables) {
-            c.close();
-        }
+	ListIterator<Closeable> reverse = closeables.listIterator(closeables.size());
+	while(reverse.hasPrevious()) {
+	  reverse.previous().close();
+	}	
     }
     
 }

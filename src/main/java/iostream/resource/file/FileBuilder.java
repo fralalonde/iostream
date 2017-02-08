@@ -21,12 +21,12 @@ public class FileBuilder extends OutFileBuilder
     
     @Override
     public FileInputStream inputStream() throws FileNotFoundException {
-        return fileTarget.getInputStream(CloseChain.SELF_CLOSE);
+        return fileTarget.getInputStream(CloseChain.NO_PROXY);
     }
     
     @Override
     public FileReader reader() throws IOException {
-        return fileTarget.getReader(CloseChain.SELF_CLOSE);
+        return fileTarget.getReader(CloseChain.NO_PROXY);
     }
     
     @Override

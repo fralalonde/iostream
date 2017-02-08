@@ -22,12 +22,12 @@ public class OutFileBuilder
     
     @Override
     public FileOutputStream outputStream() throws IOException {
-        return fileTarget.getOutputStream(CloseChain.SELF_CLOSE);
+        return fileTarget.getOutputStream(CloseChain.NO_PROXY);
     }
     
     @Override
     public FileWriter writer() throws IOException {
-        return fileTarget.getWriter(CloseChain.SELF_CLOSE);
+        return fileTarget.getWriter(CloseChain.NO_PROXY);
     }
     
     @Override

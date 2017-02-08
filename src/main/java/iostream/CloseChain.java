@@ -4,7 +4,7 @@ import java.io.Closeable;
 
 public interface CloseChain {
     
-    class SingleCloseable implements CloseChain {
+    class SelfClosing implements CloseChain {
         
         @Override
         public <T extends Closeable> T add(T closeable) {
@@ -12,7 +12,7 @@ public interface CloseChain {
         }
     }
     
-    CloseChain SELF_CLOSE = new SingleCloseable();
+    CloseChain NO_PROXY = new SelfClosing();
     
     <T extends Closeable> T add(T closeable);
     

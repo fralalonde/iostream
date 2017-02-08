@@ -22,7 +22,7 @@ public class SocketBuilder implements OutStreamBuilder<Socket>, InStreamBuilder<
     
     @Override
     public OutputStream outputStream() throws IOException {
-        return resource.getOutputStream(CloseChain.SELF_CLOSE);
+        return resource.getOutputStream(CloseChain.NO_PROXY);
     }
     
     @Override
@@ -32,7 +32,7 @@ public class SocketBuilder implements OutStreamBuilder<Socket>, InStreamBuilder<
     
     @Override
     public InputStream inputStream() throws IOException {
-        return resource.getInputStream(CloseChain.SELF_CLOSE);
+        return resource.getInputStream(CloseChain.NO_PROXY);
     }
     
     @Override
