@@ -10,26 +10,26 @@ import ca.rbon.iostream.Resource;
 
 public class ZipInputProxy<T> extends ZipInputStream implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose chain;
     final Resource<T> holder;
     
     public ZipInputProxy(Resource<T> t, ChainClose cl, InputStream is) {
         super(is);
         holder = t;
         cl.add(is);
-        closer = cl;
+        chain = cl;
     }
     
     public ZipInputProxy(Resource<T> t, ChainClose cl, InputStream is, Charset cs) {
         super(is, cs);
         holder = t;
         cl.add(is);
-        closer = cl;
+        chain = cl;
     }
     
     @Override
     public void close() throws IOException {
-        closer.close();
+        chain.close();
     }
     
     @Override

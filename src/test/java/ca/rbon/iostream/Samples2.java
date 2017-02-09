@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
 
 import ca.rbon.iostream.proxy.stream.DataOutputProxy;
 import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
@@ -65,7 +64,7 @@ public class Samples2 {
             w.append("haha");
         }
         
-        IoStream2.file("doum.zip").encoding("UTF-8").zipInputStream();
+        IoStream2.file("doum.zip").zipInputStream("UTF-8");
         IoStream2.file("dam.txt").append().bufferedWriter();
         
         DataOutputProxy<File> tmpout = IoStream2.tempFile().dataOutputStream();

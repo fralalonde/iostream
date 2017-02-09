@@ -3,22 +3,20 @@ package ca.rbon.iostream.picker;
 import java.io.File;
 import java.io.IOException;
 
-import ca.rbon.iostream.fluent.CharBufferPick;
-import ca.rbon.iostream.fluent.InOutCharPick;
+import ca.rbon.iostream.fluent.CharBufSizePick;
+import ca.rbon.iostream.fluent.CharUnbufPick;
 import ca.rbon.iostream.proxy.writer.BufferedReaderProxy;
 import ca.rbon.iostream.proxy.writer.BufferedWriterProxy;
 import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
 
-public class CharFilePicker extends FilePicker implements CharBufferPick<File> {
-
+public class CharFilePicker extends FilePicker implements CharBufSizePick<File> {
+    
     public CharFilePicker(FilePicker picker) {
-        super(picker.file);
-        encoding = picker.encoding;
-        append = picker.append;
+        super(picker);
     }
-
+    
     @Override
-    public InOutCharPick<File> bufferSize(int size) {
+    public CharUnbufPick<File> bufferSize(int size) {
         bufferSize = size;
         return this;
     }
@@ -29,7 +27,6 @@ public class CharFilePicker extends FilePicker implements CharBufferPick<File> {
     }
     
     // OUTPUT
-    
     
     @Override
     public PrintWriterProxy<File> printWriter() throws IOException {
@@ -44,6 +41,6 @@ public class CharFilePicker extends FilePicker implements CharBufferPick<File> {
     @Override
     public BufferedWriterProxy<File> bufferedWriter() throws IOException {
         return super.bufferedWriter();
-    }    
+    }
     
 }

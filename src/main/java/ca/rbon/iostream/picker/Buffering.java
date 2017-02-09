@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.charset.Charset;
 
 import ca.rbon.iostream.Chain;
 
@@ -25,7 +24,7 @@ public class Buffering {
         return size;
     }
     
-    static InputStream buffer(InputStream is, Charset cs, int size, Chain chain) {
+    static InputStream buffer(InputStream is, int size, Chain chain) {
         switch (valid(size)) {
             case FORCE_UNBUFFERED:
             case AUTO_BUFFER:
@@ -72,33 +71,6 @@ public class Buffering {
             default:
                 return chain.add(new BufferedWriter(is, size));
         }
-    }
-    
-    static Reader buffer(InputStream is, Charset cs, int size, Chain chain) {
-        switch (valid(size)) {
-            case FORCE_UNBUFFERED:                
-            case AUTO_BUFFER:
-                return is;
-            case DEFAULT_BUFFER_SIZE:
-                return chain.add(new BufferedReader(is));
-            default:
-                return chain.add(new BufferedReader(is, size));
-        }
-    }
-
-    
-    static Writer buffer(OutputStream is, Charset cs, int size, Chain chain) {
-        switch (valid(size)) {
-            case FORCE_UNBUFFERED:
-            case AUTO_BUFFER:
-                return is;
-            case DEFAULT_BUFFER_SIZE:
-                return chain.add(new BufferedWriter(is));
-            default:
-                return chain.add(new BufferedWriter(is, size));
-        }
-    }
-    
-    
+    }      
     
 }

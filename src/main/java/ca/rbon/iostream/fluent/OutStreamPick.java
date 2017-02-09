@@ -5,17 +5,16 @@ import java.io.IOException;
 import ca.rbon.iostream.proxy.stream.BufferedOutputProxy;
 import ca.rbon.iostream.proxy.stream.DataOutputProxy;
 import ca.rbon.iostream.proxy.stream.ObjectOutputProxy;
-import ca.rbon.iostream.proxy.stream.ZipOutputProxy;
+import ca.rbon.iostream.proxy.stream.UnbufferedOutputProxy;
 
-public interface OutBytePick<T> {
+public interface OutStreamPick<T> {
+
+    UnbufferedOutputProxy<T> outputStream();    
     
-    ZipOutputProxy<T> zipOutputStream() throws IOException;
-        
-    BufferedOutputProxy<T> bufferedOutputStream() throws IOException;
+    BufferedOutputProxy<T> bufferedOutputStream();    
     
     DataOutputProxy<T> dataOutputStream() throws IOException;
     
     ObjectOutputProxy<T> objectOutputStream() throws IOException;
-    
     
 }

@@ -2,14 +2,18 @@ package ca.rbon.iostream;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Socket;
 
 import ca.rbon.iostream.fluent.AppendPick;
-import ca.rbon.iostream.fluent.EncodingPick;
-import ca.rbon.iostream.fluent.InOutPick;
+import ca.rbon.iostream.fluent.BufferSizePick;
+import ca.rbon.iostream.fluent.CharUnbufPick;
+import ca.rbon.iostream.fluent.OutBufferPick;
+import ca.rbon.iostream.fluent.WriterPick;
 import ca.rbon.iostream.fluent.OutEncodingPick;
-import ca.rbon.iostream.fluent.OutPick;
+import ca.rbon.iostream.picker.InOutBytesPicker;
 import ca.rbon.iostream.picker.InOutFilePicker;
+import ca.rbon.iostream.picker.InOutStringPicker;
+import ca.rbon.iostream.picker.OutBytesPicker;
+import ca.rbon.iostream.picker.OutStringPicker;
 import ca.rbon.iostream.picker.TmpFilePicker;
 
 public class IoStream2 {
@@ -21,31 +25,46 @@ public class IoStream2 {
     public static AppendPick<File> file(File file) {
         return new InOutFilePicker(file);
     }
+
+    public static AppendPick<File> file(String name, boolean append) {
+        return file(new File(name));
+    }
+        
+    public static AppendPick<File> file(File file, boolean append) {
+        return new InOutFilePicker(file);
+    }    
     
     public static OutEncodingPick<File> tempFile() throws IOException {
-        return new TmpFilePicker(File.createTempFile(IoStream.class.getSimpleName(), "tmp"));
+        return new TmpFilePicker(File.createTempFile(IoStream2.class.getSimpleName(), "tmp"));
     }
     
-    public static InOutPick<String> string(String str) {
+    public static CharUnbufPick<String> string(String str) {
+        return new InOutStringPicker(str);
     }
     
-    public static OutPick<String> string() {
+    public static WriterPick<String> string() {
+        return new OutStringPicker();
     }
     
-    public static OutPick<String> string(int intialCapacity) {
+    public static WriterPick<String> string(int intialCapacity) {
+        return new OutStringPicker(intialCapacity);
     }    
 
-    public static OutPick<String> string(String str, int intialCapacity) {
+    public static WriterPick<String> string(String str, int intialCapacity) {
+        return new OutStringPicker(str, intialCapacity);
     }    
     
-    static EncodingPick<Socket> socket(String host, int port) throws IOException {
+    static OutBufferPick<byte[]> bytes() {
+        return new OutBytesPicker();
     }
     
-    static OutEncodingPick<byte[]> bytes() {
+    static BufferSizePick<byte[]> bytes(byte[] array) {
+        return new InOutBytesPicker(array);        
     }
-    
-    static EncodingPick<byte[]> bytes(byte[] array) {
-    }
+
+//    static EncodingPick<Socket> socket(String host, int port) throws IOException {
+//    }
+//    
     
     // static FileInputOrOutput console(String name) {
     // return null;

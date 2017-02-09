@@ -1,12 +1,14 @@
 package ca.rbon.iostream.picker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.fluent.AppendPick;
-import ca.rbon.iostream.fluent.CharBufferPick;
-import ca.rbon.iostream.fluent.InOutPick;
+import ca.rbon.iostream.fluent.CharBufSizePick;
+import ca.rbon.iostream.fluent.UnbufPick;
 import ca.rbon.iostream.fluent.OutEncodingPick;
 import ca.rbon.iostream.proxy.stream.BufferedInputProxy;
 import ca.rbon.iostream.proxy.stream.BufferedOutputProxy;
@@ -17,8 +19,6 @@ import ca.rbon.iostream.proxy.stream.ObjectOutputProxy;
 import ca.rbon.iostream.proxy.stream.ZipInputProxy;
 import ca.rbon.iostream.proxy.stream.ZipOutputProxy;
 import ca.rbon.iostream.proxy.writer.BufferedReaderProxy;
-import ca.rbon.iostream.proxy.writer.BufferedWriterProxy;
-import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
 
 public class InOutFilePicker extends FilePicker implements AppendPick<File> {
     
@@ -27,13 +27,18 @@ public class InOutFilePicker extends FilePicker implements AppendPick<File> {
     }
     
     @Override
-    public CharBufferPick<File> encoding(Charset encoding) {
+    public OutputStream outputStream() throws FileNotFoundException {
+        return super.outputStream();
+    }
+    
+    @Override
+    public CharBufSizePick<File> encoding(Charset encoding) {
         this.encoding = encoding;
         return new CharFilePicker(this);
     }
     
     @Override
-    public InOutPick<File> bufferSize(int size) {
+    public UnbufPick<File> bufferSize(int size) {
         this.bufferSize = size;
         return this;
     }
@@ -46,6 +51,16 @@ public class InOutFilePicker extends FilePicker implements AppendPick<File> {
     @Override
     public ZipInputProxy<File> zipInputStream() throws IOException {
         return super.zipInputStream();
+    }
+    
+    @Override
+    public ZipInputProxy<File> zipInputStream(Charset zipEntriesCharset) throws IOException {
+        return super.zipInputStream(zipEntriesCharset);
+    }
+    
+    @Override
+    public ZipInputProxy<File> zipInputStream(String zipEntriesCharsetName) throws IOException {
+        return super.zipInputStream(zipEntriesCharsetName);
     }
     
     @Override
@@ -76,6 +91,16 @@ public class InOutFilePicker extends FilePicker implements AppendPick<File> {
     }
     
     @Override
+    public ZipOutputProxy<File> zipOutputStream(Charset zipEntriesCharset) throws IOException {
+        return super.zipOutputStream(zipEntriesCharset);
+    }
+    
+    @Override
+    public ZipOutputProxy<File> zipOutputStream(String zipEntriesCharsetName) throws IOException {
+        return super.zipOutputStream(zipEntriesCharsetName);
+    }
+    
+    @Override
     public BufferedOutputProxy<File> bufferedOutputStream() throws IOException {
         return super.bufferedOutputStream();
     }
@@ -88,21 +113,6 @@ public class InOutFilePicker extends FilePicker implements AppendPick<File> {
     @Override
     public ObjectOutputProxy<File> objectOutputStream() throws IOException {
         return super.objectOutputStream();
-    }
-    
-    @Override
-    public PrintWriterProxy<File> printWriter() throws IOException {
-        return super.printWriter();
-    }
-    
-    @Override
-    public PrintWriterProxy<File> printWriter(boolean autoflush) throws IOException {
-        return super.printWriter(autoflush);
-    }
-    
-    @Override
-    public BufferedWriterProxy<File> bufferedWriter() throws IOException {
-        return super.bufferedWriter();
     }
     
 }
