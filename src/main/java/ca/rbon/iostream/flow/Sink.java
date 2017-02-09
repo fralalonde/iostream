@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.CloseChain;
+import ca.rbon.iostream.Chain;
 
 public interface Sink<T> extends ByteSink<T>, CharSink<T> {
     
-    default Writer getWriter(CloseChain toClose) throws IOException {
+    default Writer getWriter(Chain toClose) throws IOException {
         return new OutputStreamWriter(getOutputStream(toClose));
     }
     

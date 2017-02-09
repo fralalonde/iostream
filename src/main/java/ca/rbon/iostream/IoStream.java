@@ -2,6 +2,8 @@ package ca.rbon.iostream;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.net.Socket;
 
 import ca.rbon.iostream.proxy.OutBuilder;
 import ca.rbon.iostream.resource.bytearray.ByteArrayBuilder;
@@ -42,11 +44,15 @@ public class IoStream {
     }
     
     public static StringOutBuilder string() {
-        return new StringOutBuilder(new OutStringResource());
+        return new StringOutBuilder(new OutStringResource(new StringWriter()));
     }
     
+    public static StringOutBuilder string(int intialCapacity) {
+        return new StringOutBuilder(new OutStringResource(new StringWriter(intialCapacity)));
+    }    
+    
     static SocketBuilder socket(String host, int port) throws IOException {
-        return new SocketBuilder(new SocketResource(host, port));
+        return new SocketBuilder(new SocketResource(new Socket(host, port)));
     }
     
     static OutArrayBuilder bytes() {

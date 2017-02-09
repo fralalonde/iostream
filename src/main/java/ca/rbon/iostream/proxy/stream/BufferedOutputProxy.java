@@ -3,24 +3,25 @@ package ca.rbon.iostream.proxy.stream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
-import ca.rbon.iostream.Closer;
-import ca.rbon.iostream.ResourceHolder;
+import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.Resource;
 
-public class BufferedOutputProxy<T> extends BufferedOutputStream implements ResourceHolder<T> {
+public class BufferedOutputProxy<T> extends BufferedOutputStream implements Resource<T> {
     
-    final Closer closer;
+    final ChainClose closer;
     
-    final ResourceHolder<T> holder;
+    final Resource<T> holder;
     
-    public BufferedOutputProxy(ResourceHolder<T> t, Closer cl, OutputStream os) throws IOException {
+    public BufferedOutputProxy(Resource<T> t, ChainClose cl, OutputStream os) throws IOException {
         super(os);
         holder = t;
         cl.add(os);
         closer = cl;
     }
     
-    public BufferedOutputProxy(ResourceHolder<T> t, Closer cl, OutputStream os, int bufferSize) throws IOException {
+    public BufferedOutputProxy(Resource<T> t, ChainClose cl, OutputStream os, int bufferSize) throws IOException {
         super(os, bufferSize);
         holder = t;
         cl.add(os);
@@ -29,7 +30,7 @@ public class BufferedOutputProxy<T> extends BufferedOutputStream implements Reso
     
     @Override
     public void close() throws IOException {
-        closer.closeAll();
+        closer.close();
     }
     
     @Override
@@ -37,4 +38,8 @@ public class BufferedOutputProxy<T> extends BufferedOutputStream implements Reso
         return holder.getResource();
     }
     
+    @Override
+    public Charset getEncoding() {
+        return holder.getEncoding();
+    }
 }

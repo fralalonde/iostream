@@ -5,9 +5,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import ca.rbon.iostream.CloseChain;
-import ca.rbon.iostream.natural.NaturalOutputStreamBuilder;
-import ca.rbon.iostream.natural.NaturalWriterBuilder;
+import ca.rbon.iostream.Chain;
+import ca.rbon.iostream.natural.NaturalOutputStream;
+import ca.rbon.iostream.natural.NaturalWriter;
 import ca.rbon.iostream.proxy.OutStreamBuilder;
 import ca.rbon.iostream.proxy.WriterBuilder;
 import lombok.Getter;
@@ -15,19 +15,19 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class OutFileBuilder
-        implements OutStreamBuilder<File>, WriterBuilder<File>, NaturalWriterBuilder<FileWriter>, NaturalOutputStreamBuilder<FileOutputStream> {
+        implements OutStreamBuilder<File>, WriterBuilder<File>, NaturalWriter<FileWriter>, NaturalOutputStream<FileOutputStream> {
     
     @Getter
     final FileResource fileTarget;
     
     @Override
     public FileOutputStream outputStream() throws IOException {
-        return fileTarget.getOutputStream(CloseChain.NO_PROXY);
+        return fileTarget.getOutputStream(Chain.NO_PROXY);
     }
     
     @Override
     public FileWriter writer() throws IOException {
-        return fileTarget.getWriter(CloseChain.NO_PROXY);
+        return fileTarget.getWriter(Chain.NO_PROXY);
     }
     
     @Override

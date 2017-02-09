@@ -8,8 +8,8 @@ import ca.rbon.iostream.flow.ByteSink;
 import ca.rbon.iostream.flow.ByteSource;
 import ca.rbon.iostream.flow.CharSink;
 import ca.rbon.iostream.flow.CharSource;
-import ca.rbon.iostream.natural.NaturalInputStreamBuilder;
-import ca.rbon.iostream.natural.NaturalOutputStreamBuilder;
+import ca.rbon.iostream.natural.NaturalInputStream;
+import ca.rbon.iostream.natural.NaturalOutputStream;
 import ca.rbon.iostream.proxy.InStreamBuilder;
 import ca.rbon.iostream.proxy.OutStreamBuilder;
 import ca.rbon.iostream.proxy.ReaderBuilder;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ByteArrayBuilder
         implements InStreamBuilder<byte[]>, ReaderBuilder<byte[]>, WriterBuilder<byte[]>, OutStreamBuilder<byte[]>,
-        NaturalInputStreamBuilder<ByteArrayInputStream>, NaturalOutputStreamBuilder<ByteArrayOutputStream> {
+        NaturalInputStream<ByteArrayInputStream>, NaturalOutputStream<ByteArrayOutputStream> {
     
     final byte[] bytes;
     

@@ -3,17 +3,18 @@ package ca.rbon.iostream.proxy.stream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
-import ca.rbon.iostream.Closer;
-import ca.rbon.iostream.ResourceHolder;
+import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.Resource;
 
-public class DataInputProxy<T> extends DataInputStream implements ResourceHolder<T> {
+public class DataInputProxy<T> extends DataInputStream implements Resource<T> {
     
-    final Closer closer;
+    final ChainClose closer;
     
-    final ResourceHolder<T> holder;
+    final Resource<T> holder;
     
-    public DataInputProxy(ResourceHolder<T> t, Closer cl, InputStream is) throws IOException {
+    public DataInputProxy(Resource<T> t, ChainClose cl, InputStream is) throws IOException {
         super(is);
         holder = t;
         cl.add(is);
@@ -22,7 +23,7 @@ public class DataInputProxy<T> extends DataInputStream implements ResourceHolder
     
     @Override
     public void close() throws IOException {
-        closer.closeAll();
+        closer.close();
     }
     
     @Override
@@ -30,4 +31,9 @@ public class DataInputProxy<T> extends DataInputStream implements ResourceHolder
         return holder.getResource();
     }
     
+    @Override
+    public Charset getEncoding() {
+        return holder.getEncoding();
+    }
+        
 }

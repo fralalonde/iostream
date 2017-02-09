@@ -9,18 +9,19 @@ import java.util.ListIterator;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Closer implements CloseChain {
+public class ChainClose implements Chain, Closeable {
     
-    final List<Closeable> closeables = new ArrayList<>();
+    final List<Closeable> links = new ArrayList<>();
     
     @Override
     public <T extends Closeable> T add(T closeable) {
-        closeables.add(closeable);
+        links.add(closeable);
         return closeable;
     }
     
-    public void closeAll() throws IOException {
-        ListIterator<Closeable> reverse = closeables.listIterator(closeables.size());
+    @Override
+    public void close() throws IOException {
+        ListIterator<Closeable> reverse = links.listIterator(links.size());
         while (reverse.hasPrevious()) {
             reverse.previous().close();
         }

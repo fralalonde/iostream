@@ -3,17 +3,18 @@ package ca.rbon.iostream.proxy.writer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
-import ca.rbon.iostream.Closer;
-import ca.rbon.iostream.ResourceHolder;
+import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.Resource;
 
-public class BufferedReaderProxy<T> extends BufferedReader implements ResourceHolder<T> {
+public class BufferedReaderProxy<T> extends BufferedReader implements Resource<T> {
     
-    final Closer closer;
+    final ChainClose closer;
     
-    final ResourceHolder<T> holder;
+    final Resource<T> holder;
     
-    public BufferedReaderProxy(ResourceHolder<T> t, Closer cl, Reader r) throws IOException {
+    public BufferedReaderProxy(Resource<T> t, ChainClose cl, Reader r) throws IOException {
         super(r);
         holder = t;
         cl.add(r);
@@ -21,12 +22,17 @@ public class BufferedReaderProxy<T> extends BufferedReader implements ResourceHo
     }
     
     public void close() throws IOException {
-        closer.closeAll();
+        closer.close();
     }
     
     @Override
     public T getResource() {
         return holder.getResource();
+    }
+    
+    @Override
+    public Charset getEncoding() {
+        return holder.getEncoding();
     }
     
 }

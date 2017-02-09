@@ -2,9 +2,9 @@ package ca.rbon.iostream;
 
 import java.io.Closeable;
 
-public interface CloseChain {
+public interface Chain {
     
-    class SelfClosing implements CloseChain {
+    class EmptyChain implements Chain {
         
         @Override
         public <T extends Closeable> T add(T closeable) {
@@ -12,7 +12,7 @@ public interface CloseChain {
         }
     }
     
-    CloseChain NO_PROXY = new SelfClosing();
+    Chain NO_PROXY = new EmptyChain();
     
     <T extends Closeable> T add(T closeable);
     

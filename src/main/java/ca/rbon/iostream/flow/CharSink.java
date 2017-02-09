@@ -3,11 +3,11 @@ package ca.rbon.iostream.flow;
 import java.io.IOException;
 import java.io.Writer;
 
-import ca.rbon.iostream.CloseChain;
-import ca.rbon.iostream.ResourceHolder;
+import ca.rbon.iostream.Chain;
+import ca.rbon.iostream.Resource;
 
-public interface CharSink<T> extends ResourceHolder<T> {
+public interface CharSink<T> extends Resource<T> {
     
-    Writer getWriter(CloseChain toClose) throws IOException;
+    Writer getWriter(Chain toClose) throws IOException;
     
 }

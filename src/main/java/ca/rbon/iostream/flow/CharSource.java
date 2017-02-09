@@ -3,11 +3,11 @@ package ca.rbon.iostream.flow;
 import java.io.IOException;
 import java.io.Reader;
 
-import ca.rbon.iostream.CloseChain;
-import ca.rbon.iostream.ResourceHolder;
+import ca.rbon.iostream.Chain;
+import ca.rbon.iostream.Resource;
 
-public interface CharSource<T> extends ResourceHolder<T> {
+public interface CharSource<T> extends Resource<T> {
     
-    Reader getReader(CloseChain toClose) throws IOException;
+    Reader getReader(Chain toClose) throws IOException;
     
 }

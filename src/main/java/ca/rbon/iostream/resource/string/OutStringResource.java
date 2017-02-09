@@ -2,17 +2,19 @@ package ca.rbon.iostream.resource.string;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 
-import ca.rbon.iostream.CloseChain;
+import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.flow.CharSink;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class OutStringResource implements CharSink<String> {
     
-    private StringWriter wr;
-    
+    final StringWriter wr;
+            
     @Override
-    public StringWriter getWriter(CloseChain onClose) throws IOException {
-        wr = new StringWriter();
+    public StringWriter getWriter(Chain onClose) throws IOException {
         return onClose.add(wr);
     }
     
@@ -20,5 +22,10 @@ public class OutStringResource implements CharSink<String> {
     public String getResource() {
         return wr.toString();
     }
+
+    @Override
+    public Charset getEncoding() {
+        return null;
+    }    
     
 }
