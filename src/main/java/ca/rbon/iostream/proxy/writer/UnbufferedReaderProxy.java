@@ -1,25 +1,27 @@
 package ca.rbon.iostream.proxy.writer;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.Reader;
 
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
 
-public class BufferedWriterProxy<T> extends BufferedWriter implements Resource<T> {
+public class UnbufferedReaderProxy<T> extends Reader implements Resource<T> {
+    
+    final Reader delegate;
     
     final ChainClose closer;
     
     final Resource<T> holder;
     
-    public BufferedWriterProxy(Resource<T> t, ChainClose cl, Writer wr) throws IOException {
-        super(wr);
+    public UnbufferedReaderProxy(Resource<T> t, ChainClose cl, Reader os) throws IOException {
+        delegate = os;
         holder = t;
-        cl.add(wr);
+        cl.add(os);
         closer = cl;
     }
-    
+        
+    @Override
     public void close() throws IOException {
         closer.close();
     }
@@ -29,5 +31,10 @@ public class BufferedWriterProxy<T> extends BufferedWriter implements Resource<T
         return holder.getResource();
     }
     
-    
+
+    @Override
+    public int read(char[] cbuf, int off, int len) throws IOException {
+        return delegate.read(cbuf, off, len);
+    }
+
 }
