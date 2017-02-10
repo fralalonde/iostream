@@ -9,12 +9,12 @@ import java.util.ListIterator;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ChainClose implements Chain, Closeable {
+public class ChainClose<T> implements Chain, Closeable, Resource<T> {
     
     final List<Closeable> links = new ArrayList<>();
     
     @Override
-    public <T extends Closeable> T add(T closeable) {
+    public <C extends Closeable> C add(C closeable) {
         links.add(closeable);
         return closeable;
     }
@@ -25,6 +25,11 @@ public class ChainClose implements Chain, Closeable {
         while (reverse.hasPrevious()) {
             reverse.previous().close();
         }
+    }
+
+    @Override
+    public T getResource() throws IOException {
+        return null;
     }
     
 }

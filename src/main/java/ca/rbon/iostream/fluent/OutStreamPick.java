@@ -8,12 +8,12 @@ import ca.rbon.iostream.picker.Encoding;
 import ca.rbon.iostream.proxy.stream.BufferedOutputProxy;
 import ca.rbon.iostream.proxy.stream.DataOutputProxy;
 import ca.rbon.iostream.proxy.stream.ObjectOutputProxy;
-import ca.rbon.iostream.proxy.stream.UnbufferedOutputProxy;
+import ca.rbon.iostream.proxy.stream.OutputStreamProxy;
 import ca.rbon.iostream.proxy.stream.ZipOutputProxy;
 
 public interface OutStreamPick<T> {
     
-    UnbufferedOutputProxy<T> outputStream() throws IOException;
+    OutputStreamProxy<T> outputStream() throws IOException;
     
     BufferedOutputProxy<T> bufferedOutputStream(int bufferSize) throws IOException;
     

@@ -1,19 +1,26 @@
 package ca.rbon.iostream;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.net.Socket;
 
-import ca.rbon.iostream.fluent.BiCharPick;
 import ca.rbon.iostream.fluent.BiPick;
+import ca.rbon.iostream.fluent.BiStraightPick;
+import ca.rbon.iostream.fluent.InPick;
 import ca.rbon.iostream.fluent.OutPick;
-import ca.rbon.iostream.fluent.WriterPick;
+import ca.rbon.iostream.fluent.StraightWriterPick;
 import ca.rbon.iostream.picker.BytesPicker;
+import ca.rbon.iostream.picker.ConsolePicker;
 import ca.rbon.iostream.picker.FilePicker;
+import ca.rbon.iostream.picker.PipeInPicker;
+import ca.rbon.iostream.picker.PipeOutPicker;
 import ca.rbon.iostream.picker.SocketPicker;
 import ca.rbon.iostream.picker.StringPicker;
 
-public class IoStream2 {
+public class IoStream {
     
     public static BiPick<File> file(String name) {
         return file(new File(name));
@@ -32,22 +39,22 @@ public class IoStream2 {
     }
     
     public static OutPick<File> tempFile() throws IOException {
-        return file(File.createTempFile(IoStream2.class.getSimpleName(), "tmp"));
+        return file(File.createTempFile(IoStream.class.getSimpleName(), "tmp"));
     }
     
-    public static BiCharPick<String> string(String str) {
+    public static BiStraightPick<String> string(String str) {
         return new StringPicker(str, StringPicker.DEFAULT_CAPACITY);
     }
     
-    public static WriterPick<String> string() {
+    public static StraightWriterPick<String> string() {
         return string(null, StringPicker.DEFAULT_CAPACITY);
     }
     
-    public static WriterPick<String> string(int intialCapacity) {
+    public static StraightWriterPick<String> string(int intialCapacity) {
         return string(null, intialCapacity);
     }
     
-    public static WriterPick<String> string(String str, int intialCapacity) {
+    public static StraightWriterPick<String> string(String str, int intialCapacity) {
         return new StringPicker(str, intialCapacity);
     }
     
@@ -70,18 +77,31 @@ public class IoStream2 {
     static BiPick<Socket> socket(String host, int port) throws IOException {
         return socket(new Socket(host, port));
     }
-
+    
     static BiPick<Socket> socket(Socket socket) throws IOException {
         return new SocketPicker(socket);
     }
     
-    // static FileInputOrOutput console(String name) {
-    // return null;
-    // }
+    static BiPick<Console> console() {
+        return new ConsolePicker();
+    }
     
-    // static PipeInputOrOutput pipe() {
-    // return null;
-    // }
+    static InPick<PipedInputStream> pipeInput() {
+        return new PipeInPicker(null);
+    }
+
+    static InPick<PipedInputStream> pipeInput(PipedOutputStream connect) {
+        return new PipeInPicker(connect);   
+    }
+    
+    static OutPick<PipedOutputStream> pipeOutput() {
+        return new PipeOutPicker(null);
+    }
+    
+    static OutPick<PipedOutputStream> pipeOutput(PipedInputStream connect) {
+        return new PipeOutPicker(connect);
+    }
+    
     
     // static TargetFlow nil() {
     // return null;

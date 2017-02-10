@@ -9,13 +9,10 @@ import ca.rbon.iostream.Resource;
 
 public class BufferedWriterProxy<T> extends BufferedWriter implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public BufferedWriterProxy(Resource<T> t, ChainClose cl, Writer wr) throws IOException {
-        super(wr);
-        holder = t;
+    public BufferedWriterProxy(ChainClose<T> cl, Writer wr) throws IOException {
+        super(wr);        
         cl.add(wr);
         closer = cl;
     }
@@ -25,9 +22,8 @@ public class BufferedWriterProxy<T> extends BufferedWriter implements Resource<T
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
-    
     
 }

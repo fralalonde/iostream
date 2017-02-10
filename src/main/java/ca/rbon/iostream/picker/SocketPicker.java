@@ -8,21 +8,16 @@ import java.io.Writer;
 import java.net.Socket;
 
 import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.Resource;
 import ca.rbon.iostream.fluent.BiPick;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SocketPicker extends BasePicker<Socket> implements Resource<Socket>, BiPick<Socket> {
+public class SocketPicker extends BasePicker<Socket> implements BiPick<Socket> {
     
     @NonNull
     final Socket socket;
-    
-    protected Resource<Socket> getSupplier() {
-        return this;
-    }
-    
+        
     @Override
     protected InputStream getInputStream() throws IOException {
         return socket.getInputStream();
@@ -42,11 +37,10 @@ public class SocketPicker extends BasePicker<Socket> implements Resource<Socket>
     protected Writer getWriter(Chain chain) throws IOException {
         return null;
     }
-    
+
     @Override
     public Socket getResource() {
         return socket;
     }
-
     
 }

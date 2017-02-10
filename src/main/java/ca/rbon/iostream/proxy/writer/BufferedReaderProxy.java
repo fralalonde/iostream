@@ -9,13 +9,10 @@ import ca.rbon.iostream.Resource;
 
 public class BufferedReaderProxy<T> extends BufferedReader implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public BufferedReaderProxy(Resource<T> t, ChainClose cl, Reader r) throws IOException {
-        super(r);
-        holder = t;
+    public BufferedReaderProxy(ChainClose<T> cl, Reader r) throws IOException {
+        super(r);        
         cl.add(r);
         closer = cl;
     }
@@ -25,9 +22,8 @@ public class BufferedReaderProxy<T> extends BufferedReader implements Resource<T
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
-    
     
 }

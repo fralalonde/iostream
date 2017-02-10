@@ -10,20 +10,16 @@ import ca.rbon.iostream.Resource;
 
 public class ZipOutputProxy<T> extends ZipOutputStream implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public ZipOutputProxy(Resource<T> t, ChainClose cl, OutputStream os) {
+    public ZipOutputProxy(ChainClose<T> cl, OutputStream os) {
         super(os);
-        holder = t;
         cl.add(os);
         closer = cl;
     }
     
-    public ZipOutputProxy(Resource<T> t, ChainClose cl, OutputStream os, Charset cs) {
+    public ZipOutputProxy(ChainClose<T> cl, OutputStream os, Charset cs) {
         super(os, cs);
-        holder = t;
         cl.add(os);
         closer = cl;
     }
@@ -34,9 +30,8 @@ public class ZipOutputProxy<T> extends ZipOutputStream implements Resource<T> {
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
-
     
 }

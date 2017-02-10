@@ -6,35 +6,31 @@ import java.io.InputStream;
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
 
-public class UnbufferedInputProxy<T> extends InputStream implements Resource<T> {
+public class InputStreamProxy<T> extends InputStream implements Resource<T> {
     
     final InputStream delegate;
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public UnbufferedInputProxy(Resource<T> t, ChainClose cl, InputStream os) throws IOException {
-        delegate = os;
-        holder = t;
+    public InputStreamProxy(ChainClose<T> cl, InputStream os) throws IOException {
+        delegate = os;        
         cl.add(os);
         closer = cl;
     }
-        
+    
     @Override
     public void close() throws IOException {
         closer.close();
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
     
-
     @Override
     public int read() throws IOException {
         return delegate.read();
     }
-
+    
 }

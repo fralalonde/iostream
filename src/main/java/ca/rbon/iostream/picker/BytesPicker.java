@@ -7,20 +7,16 @@ import java.io.Reader;
 import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.fluent.BiPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BytesPicker extends BasePicker<byte[]> implements Resource<byte[]>, BiPick<byte[]> {
+public class BytesPicker extends BasePicker<byte[]> implements BiPick<byte[]> {
     
     public static final int DEFAULT_CAPACITY = -1;
     
-    private static final String PREVENTED =
-            " This should error should have been prevented by the fluent IoStream builder constraints." +
-                    " Please create report this issue at https://github.com/fralalonde/iostream/issues";
-    
-    private static final String NO_BYTE_ARRAY_SET = "No byte array was provided for this operation." + PREVENTED;
+    private static final String NO_BYTE_ARRAY_SET = "No byte array was provided for this operation.";
     
     final byte[] bytes;
     
@@ -33,20 +29,15 @@ public class BytesPicker extends BasePicker<byte[]> implements Resource<byte[]>,
             return stream.toByteArray();
         }
         if (bytes == null) {
-            throw new IllegalStateException(NO_BYTE_ARRAY_SET);
+            throw new CodeFlowError(NO_BYTE_ARRAY_SET);
         }
         return bytes;
     }
     
     @Override
-    protected Resource<byte[]> getSupplier() {
-        return this;
-    }
-    
-    @Override
     protected ByteArrayInputStream getInputStream() throws IOException {
         if (bytes == null) {
-            throw new IllegalStateException(NO_BYTE_ARRAY_SET);
+            throw new CodeFlowError(NO_BYTE_ARRAY_SET);
         }
         return new ByteArrayInputStream(bytes);
     }

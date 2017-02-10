@@ -9,20 +9,16 @@ import ca.rbon.iostream.Resource;
 
 public class BufferedOutputProxy<T> extends BufferedOutputStream implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public BufferedOutputProxy(Resource<T> t, ChainClose cl, OutputStream os) throws IOException {
+    public BufferedOutputProxy(ChainClose<T> cl, OutputStream os) throws IOException {
         super(os);
-        holder = t;
         cl.add(os);
         closer = cl;
     }
     
-    public BufferedOutputProxy(Resource<T> t, ChainClose cl, OutputStream os, int bufferSize) throws IOException {
+    public BufferedOutputProxy(Resource<T> t, ChainClose<T> cl, OutputStream os, int bufferSize) throws IOException {
         super(os, bufferSize);
-        holder = t;
         cl.add(os);
         closer = cl;
     }
@@ -33,8 +29,8 @@ public class BufferedOutputProxy<T> extends BufferedOutputStream implements Reso
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
     
 }

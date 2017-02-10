@@ -9,13 +9,10 @@ import ca.rbon.iostream.Resource;
 
 public class ObjectInputProxy<T> extends ObjectInputStream implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public ObjectInputProxy(Resource<T> t, ChainClose cl, InputStream is) throws IOException {
+    public ObjectInputProxy(ChainClose<T> cl, InputStream is) throws IOException {
         super(is);
-        holder = t;
         cl.add(is);
         closer = cl;
     }
@@ -26,9 +23,8 @@ public class ObjectInputProxy<T> extends ObjectInputStream implements Resource<T
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
-    
     
 }

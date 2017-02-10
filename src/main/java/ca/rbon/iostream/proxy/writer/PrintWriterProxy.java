@@ -1,7 +1,6 @@
 package ca.rbon.iostream.proxy.writer;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -9,37 +8,25 @@ import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
 import lombok.SneakyThrows;
 
+/**
+ * DO NOT USE PrintWriter OutputStream-wrapping constructor, since they create their own BufferingOutputStream, which would resultin double-buffering.
+ * 
+ * @author fralalonde
+ * @param <T>
+ */
 public class PrintWriterProxy<T> extends PrintWriter implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public PrintWriterProxy(Resource<T> t, ChainClose cl, Writer w) {
+    public PrintWriterProxy(ChainClose<T> cl, Writer w) {
         super(w);
-        holder = t;
         cl.add(w);
         closer = cl;
     }
     
-    public PrintWriterProxy(Resource<T> t, ChainClose cl, OutputStream os) {
-        super(os);
-        holder = t;
-        cl.add(os);
-        closer = cl;
-    }
-    
-    public PrintWriterProxy(Resource<T> t, ChainClose cl, Writer w, boolean autoFlush) {
+    public PrintWriterProxy(ChainClose<T> cl, Writer w, boolean autoFlush) {
         super(w, autoFlush);
-        holder = t;
         cl.add(w);
-        closer = cl;
-    }
-    
-    public PrintWriterProxy(Resource<T> t, ChainClose cl, OutputStream os, boolean autoFlush) {
-        super(os, autoFlush);
-        holder = t;
-        cl.add(os);
         closer = cl;
     }
     
@@ -49,9 +36,8 @@ public class PrintWriterProxy<T> extends PrintWriter implements Resource<T> {
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
-    
     
 }

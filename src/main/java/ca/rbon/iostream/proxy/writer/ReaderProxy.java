@@ -6,35 +6,31 @@ import java.io.Reader;
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
 
-public class UnbufferedReaderProxy<T> extends Reader implements Resource<T> {
+public class ReaderProxy<T> extends Reader implements Resource<T> {
     
     final Reader delegate;
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public UnbufferedReaderProxy(Resource<T> t, ChainClose cl, Reader os) throws IOException {
-        delegate = os;
-        holder = t;
+    public ReaderProxy(ChainClose<T> cl, Reader os) throws IOException {
+        delegate = os;        
         cl.add(os);
         closer = cl;
     }
-        
+    
     @Override
     public void close() throws IOException {
         closer.close();
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
     
-
     @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         return delegate.read(cbuf, off, len);
     }
-
+    
 }

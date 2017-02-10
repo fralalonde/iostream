@@ -9,13 +9,10 @@ import ca.rbon.iostream.Resource;
 
 public class ObjectOutputProxy<T> extends ObjectOutputStream implements Resource<T> {
     
-    final ChainClose closer;
+    final ChainClose<T> closer;
     
-    final Resource<T> holder;
-    
-    public ObjectOutputProxy(Resource<T> t, ChainClose cl, OutputStream os) throws IOException {
-        super(os);
-        holder = t;
+    public ObjectOutputProxy(ChainClose<T> cl, OutputStream os) throws IOException {
+        super(os);        
         cl.add(os);
         closer = cl;
     }
@@ -26,9 +23,8 @@ public class ObjectOutputProxy<T> extends ObjectOutputStream implements Resource
     }
     
     @Override
-    public T getResource() {
-        return holder.getResource();
+    public T getResource() throws IOException {
+        return closer.getResource();
     }
-    
     
 }

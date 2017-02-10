@@ -14,7 +14,7 @@ public class ChainCloseTest {
     
     @Test
     public void test() throws IOException {
-        ChainClose closer = new ChainClose();
+        ChainClose<String> closer = new ChainClose<>();
         closer.add(closeable2);
         closer.add(closeable1);
         closer.close();

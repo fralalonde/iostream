@@ -4,24 +4,18 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
-import ca.rbon.iostream.picker.Encoding;
 import ca.rbon.iostream.proxy.writer.BufferedReaderProxy;
-import ca.rbon.iostream.proxy.writer.UnbufferedReaderProxy;
+import ca.rbon.iostream.proxy.writer.ReaderProxy;
 
-public interface ReaderPick<T> {
+public interface EncodingReaderPick<T> extends StraightReaderPick<T> {
     
     // UNBUFFERED
     
-    UnbufferedReaderProxy<T> reader(Charset charset) throws IOException;
+    ReaderProxy<T> reader(Charset charset) throws IOException;
     
-    default UnbufferedReaderProxy<T> reader() throws IOException {
-        return reader(Encoding.DEFAULT_CHARSET);
-    }
-    
-    default UnbufferedReaderProxy<T> reader(String charsetName) throws IOException {
+    default ReaderProxy<T> reader(String charsetName) throws IOException {
         return reader(Charset.forName(charsetName));
     }
-    
     
     // BUFFERED
     
@@ -33,14 +27,6 @@ public interface ReaderPick<T> {
     
     default BufferedReaderProxy<T> bufferedReader(String charsetName) throws IOException {
         return bufferedReader(Charset.forName(charsetName), Buffering.DEFAULT_BUFFER_SIZE);
-    }    
-    
-    default BufferedReaderProxy<T> bufferedReader(int bufferSize) throws IOException {
-        return bufferedReader(Encoding.DEFAULT_CHARSET, bufferSize);
-    }
-    
-    default BufferedReaderProxy<T> bufferedReader() throws IOException {
-        return bufferedReader(Encoding.DEFAULT_CHARSET, Buffering.DEFAULT_BUFFER_SIZE);
     }
     
 }
