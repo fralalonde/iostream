@@ -4,20 +4,20 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class BufferedInputProxy<T> extends BufferedInputStream implements Resource<T> {
+public class BufferedInputOf<T> extends BufferedInputStream implements Resource<T> {
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public BufferedInputProxy(ChainClose<T> cl, InputStream is) throws IOException {
+    public BufferedInputOf(ClosingResource<T> cl, InputStream is) throws IOException {
         super(is);        
         cl.add(is);
         closer = cl;
     }
     
-    public BufferedInputProxy(Resource<T> t, ChainClose<T> cl, InputStream is, int bufferSize) throws IOException {
+    public BufferedInputOf(Resource<T> t, ClosingResource<T> cl, InputStream is, int bufferSize) throws IOException {
         super(is, bufferSize);        
         cl.add(is);
         closer = cl;

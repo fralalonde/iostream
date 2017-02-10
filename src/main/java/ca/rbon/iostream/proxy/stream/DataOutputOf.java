@@ -4,14 +4,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class DataOutputProxy<T> extends DataOutputStream implements Resource<T> {
+public class DataOutputOf<T> extends DataOutputStream implements Resource<T> {
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public DataOutputProxy(ChainClose<T> cl, OutputStream os) throws IOException {
+    public DataOutputOf(ClosingResource<T> cl, OutputStream os) throws IOException {
         super(os);
         cl.add(os);
         closer = cl;

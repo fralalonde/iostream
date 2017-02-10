@@ -3,16 +3,16 @@ package ca.rbon.iostream.proxy.writer;
 import java.io.IOException;
 import java.io.Writer;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class WriterProxy<T> extends Writer implements Resource<T> {
+public class WriterOf<T> extends Writer implements Resource<T> {
     
     final Writer delegate;
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public WriterProxy(ChainClose<T> cl, Writer os) throws IOException {
+    public WriterOf(ClosingResource<T> cl, Writer os) throws IOException {
         delegate = os;
         cl.add(os);
         closer = cl;

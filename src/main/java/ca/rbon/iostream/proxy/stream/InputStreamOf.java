@@ -3,16 +3,16 @@ package ca.rbon.iostream.proxy.stream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class InputStreamProxy<T> extends InputStream implements Resource<T> {
+public class InputStreamOf<T> extends InputStream implements Resource<T> {
     
     final InputStream delegate;
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public InputStreamProxy(ChainClose<T> cl, InputStream os) throws IOException {
+    public InputStreamOf(ClosingResource<T> cl, InputStream os) throws IOException {
         delegate = os;        
         cl.add(os);
         closer = cl;

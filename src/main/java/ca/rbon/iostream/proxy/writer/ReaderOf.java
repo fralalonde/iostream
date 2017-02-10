@@ -3,16 +3,16 @@ package ca.rbon.iostream.proxy.writer;
 import java.io.IOException;
 import java.io.Reader;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class ReaderProxy<T> extends Reader implements Resource<T> {
+public class ReaderOf<T> extends Reader implements Resource<T> {
     
     final Reader delegate;
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public ReaderProxy(ChainClose<T> cl, Reader os) throws IOException {
+    public ReaderOf(ClosingResource<T> cl, Reader os) throws IOException {
         delegate = os;        
         cl.add(os);
         closer = cl;

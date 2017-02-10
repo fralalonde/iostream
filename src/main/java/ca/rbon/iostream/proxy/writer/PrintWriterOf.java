@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 import lombok.SneakyThrows;
 
@@ -14,17 +14,17 @@ import lombok.SneakyThrows;
  * @author fralalonde
  * @param <T>
  */
-public class PrintWriterProxy<T> extends PrintWriter implements Resource<T> {
+public class PrintWriterOf<T> extends PrintWriter implements Resource<T> {
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public PrintWriterProxy(ChainClose<T> cl, Writer w) {
+    public PrintWriterOf(ClosingResource<T> cl, Writer w) {
         super(w);
         cl.add(w);
         closer = cl;
     }
     
-    public PrintWriterProxy(ChainClose<T> cl, Writer w, boolean autoFlush) {
+    public PrintWriterOf(ClosingResource<T> cl, Writer w, boolean autoFlush) {
         super(w, autoFlush);
         cl.add(w);
         closer = cl;

@@ -9,15 +9,15 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.proxy.stream.DataOutputProxy;
-import ca.rbon.iostream.proxy.stream.OutputStreamProxy;
-import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
+import ca.rbon.iostream.proxy.stream.DataOutputOf;
+import ca.rbon.iostream.proxy.stream.OutputStreamOf;
+import ca.rbon.iostream.proxy.writer.PrintWriterOf;
 
 @SuppressWarnings("unused")
 public class Samples {
     
     public void smallSample() throws IOException {
-        try (DataOutputProxy<File> dataFile = IoStream.tempFile().dataOutputStream()) {
+        try (DataOutputOf<File> dataFile = IoStream.tempFile().dataOutputStream()) {
             dataFile.write(42);
             try (BufferedWriter bufFile = IoStream.file(dataFile.getResource()).bufferedWriter()) {
                 bufFile.append("is the answer");
@@ -41,7 +41,7 @@ public class Samples {
     
     public void iostreamResult() throws IOException {
         // IOSTREAMS
-        PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter();
+        PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
         // ...
         writer.close();
         byte[] myPrecious = writer.getResource();
@@ -58,7 +58,7 @@ public class Samples {
     }
     
     public void files() throws IOException {
-        OutputStreamProxy<File> out = IoStream.file("noooes.txt").outputStream();
+        OutputStreamOf<File> out = IoStream.file("noooes.txt").outputStream();
         
         try (PrintWriter w = IoStream.file("mouha.txt").printWriter()) {
             w.append("haha");
@@ -67,7 +67,7 @@ public class Samples {
         IoStream.file("doum.zip").zipInputStream("UTF-8");
         IoStream.file("dam.txt", true).bufferedWriter();
         
-        DataOutputProxy<File> tmpout = IoStream.tempFile().dataOutputStream();
+        DataOutputOf<File> tmpout = IoStream.tempFile().dataOutputStream();
         tmpout.write(42);
         String tmpFilename = tmpout.getResource().getAbsolutePath();
     }
@@ -94,7 +94,7 @@ public class Samples {
     
     public byte[] fluent() throws IOException {
         // create and combine both objects
-        PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter();
+        PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
         
         // write the string
         writer.write("doodoo");
@@ -127,7 +127,7 @@ public class Samples {
     }
     
     public byte[] fluent2() throws IOException {
-        PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter();
+        PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
         writer.write("doodoo");
         writer.close();
         return writer.getResource();
@@ -143,7 +143,7 @@ public class Samples {
     }
     
     public byte[] fluent3() throws IOException {
-        try (PrintWriterProxy<byte[]> writer = IoStream.bytes().printWriter()) {
+        try (PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter()) {
             writer.write("doodoo");
             return writer.getResource();
         }

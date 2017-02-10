@@ -5,55 +5,55 @@ import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
 import ca.rbon.iostream.picker.Encoding;
-import ca.rbon.iostream.proxy.writer.BufferedWriterProxy;
-import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
-import ca.rbon.iostream.proxy.writer.WriterProxy;
+import ca.rbon.iostream.proxy.writer.BufferedWriterOf;
+import ca.rbon.iostream.proxy.writer.PrintWriterOf;
+import ca.rbon.iostream.proxy.writer.WriterOf;
 
 public interface EncodingWriterPick<T> extends StraightWriterPick<T> {
     
-    WriterProxy<T> writer(Charset charset) throws IOException;
+    WriterOf<T> writer(Charset charset) throws IOException;
     
-    default WriterProxy<T> writer(String charsetName) throws IOException {
+    default WriterOf<T> writer(String charsetName) throws IOException {
         return writer(Charset.forName(charsetName));
     }
     
     // BUFFERED
     
-    BufferedWriterProxy<T> bufferedWriter(Charset charset, int bufferSize) throws IOException;
+    BufferedWriterOf<T> bufferedWriter(Charset charset, int bufferSize) throws IOException;
     
-    default BufferedWriterProxy<T> bufferedWriter(Charset charset) throws IOException {
+    default BufferedWriterOf<T> bufferedWriter(Charset charset) throws IOException {
         return bufferedWriter(Encoding.DEFAULT_CHARSET, Buffering.DEFAULT_BUFFER_SIZE);
     }
     
-    default BufferedWriterProxy<T> bufferedWriter(String charsetName) throws IOException {
+    default BufferedWriterOf<T> bufferedWriter(String charsetName) throws IOException {
         return bufferedWriter(Charset.forName(charsetName), Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     // PRINT
     
-    PrintWriterProxy<T> printWriter(Charset charset, int bufferSize) throws IOException;
+    PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException;
     
-    default PrintWriterProxy<T> printWriter(Charset charset) throws IOException {
+    default PrintWriterOf<T> printWriter(Charset charset) throws IOException {
         return printWriter(charset, Buffering.DEFAULT_BUFFER_SIZE);
     }
     
-    default PrintWriterProxy<T> printWriter(String charsetName) throws IOException {
+    default PrintWriterOf<T> printWriter(String charsetName) throws IOException {
         return printWriter(Charset.forName(charsetName), Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     // PRINT AUTOFLUSH
     
-    PrintWriterProxy<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException;
+    PrintWriterOf<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException;
     
-    default PrintWriterProxy<T> printWriter(String charsetName, int bufferSize, boolean autoflush) throws IOException {
+    default PrintWriterOf<T> printWriter(String charsetName, int bufferSize, boolean autoflush) throws IOException {
         return printWriter(Charset.forName(charsetName), bufferSize, autoflush);
     }
     
-    default PrintWriterProxy<T> printWriter(Charset charset, boolean autoflush) throws IOException {
+    default PrintWriterOf<T> printWriter(Charset charset, boolean autoflush) throws IOException {
         return printWriter(charset, Buffering.DEFAULT_BUFFER_SIZE, autoflush);
     }
     
-    default PrintWriterProxy<T> printWriter(String charsetName, boolean autoflush) throws IOException {
+    default PrintWriterOf<T> printWriter(String charsetName, boolean autoflush) throws IOException {
         return printWriter(charsetName, Buffering.DEFAULT_BUFFER_SIZE, autoflush);
     }
     

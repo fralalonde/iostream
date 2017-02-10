@@ -4,14 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class BufferedReaderProxy<T> extends BufferedReader implements Resource<T> {
+public class BufferedReaderOf<T> extends BufferedReader implements Resource<T> {
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public BufferedReaderProxy(ChainClose<T> cl, Reader r) throws IOException {
+    public BufferedReaderOf(ClosingResource<T> cl, Reader r) throws IOException {
         super(r);        
         cl.add(r);
         closer = cl;

@@ -1,17 +1,17 @@
 package ca.rbon.iostream.proxy.stream;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class DataInputProxy<T> extends DataInputStream implements Resource<T> {
+public class ObjectInputOf<T> extends ObjectInputStream implements Resource<T> {
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public DataInputProxy(ChainClose<T> cl, InputStream is) throws IOException {
+    public ObjectInputOf(ClosingResource<T> cl, InputStream is) throws IOException {
         super(is);
         cl.add(is);
         closer = cl;

@@ -8,24 +8,24 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.ChainClose;
-import ca.rbon.iostream.proxy.stream.BufferedInputProxy;
-import ca.rbon.iostream.proxy.stream.BufferedOutputProxy;
-import ca.rbon.iostream.proxy.stream.DataInputProxy;
-import ca.rbon.iostream.proxy.stream.DataOutputProxy;
-import ca.rbon.iostream.proxy.stream.InputStreamProxy;
-import ca.rbon.iostream.proxy.stream.ObjectInputProxy;
-import ca.rbon.iostream.proxy.stream.ObjectOutputProxy;
-import ca.rbon.iostream.proxy.stream.OutputStreamProxy;
-import ca.rbon.iostream.proxy.stream.ZipInputProxy;
-import ca.rbon.iostream.proxy.stream.ZipOutputProxy;
-import ca.rbon.iostream.proxy.writer.BufferedReaderProxy;
-import ca.rbon.iostream.proxy.writer.BufferedWriterProxy;
-import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
-import ca.rbon.iostream.proxy.writer.ReaderProxy;
-import ca.rbon.iostream.proxy.writer.WriterProxy;
+import ca.rbon.iostream.ClosingResource;
+import ca.rbon.iostream.proxy.stream.BufferedInputOf;
+import ca.rbon.iostream.proxy.stream.BufferedOutputOf;
+import ca.rbon.iostream.proxy.stream.DataInputOf;
+import ca.rbon.iostream.proxy.stream.DataOutputOf;
+import ca.rbon.iostream.proxy.stream.InputStreamOf;
+import ca.rbon.iostream.proxy.stream.ObjectInputOf;
+import ca.rbon.iostream.proxy.stream.ObjectOutputOf;
+import ca.rbon.iostream.proxy.stream.OutputStreamOf;
+import ca.rbon.iostream.proxy.stream.ZipInputOf;
+import ca.rbon.iostream.proxy.stream.ZipOutputOf;
+import ca.rbon.iostream.proxy.writer.BufferedReaderOf;
+import ca.rbon.iostream.proxy.writer.BufferedWriterOf;
+import ca.rbon.iostream.proxy.writer.PrintWriterOf;
+import ca.rbon.iostream.proxy.writer.ReaderOf;
+import ca.rbon.iostream.proxy.writer.WriterOf;
 
-public abstract class BasePicker<T> extends ChainClose<T> {
+public abstract class BasePicker<T> extends ClosingResource<T> {
         
     protected abstract Reader getReader(Chain ch) throws IOException;
     
@@ -61,99 +61,99 @@ public abstract class BasePicker<T> extends ChainClose<T> {
     
     // INPUT
     
-    public ZipInputProxy<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
+    public ZipInputOf<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
-                ? new ZipInputProxy<>(this, wrappedInputStream(null, bufferSize))
-                : new ZipInputProxy<>(this, wrappedInputStream(null, bufferSize), charset);
+                ? new ZipInputOf<>(this, wrappedInputStream(null, bufferSize))
+                : new ZipInputOf<>(this, wrappedInputStream(null, bufferSize), charset);
     }
     
-    public BufferedInputProxy<T> bufferedInputStream(int bufferSize) throws IOException {
-        return new BufferedInputProxy<>(this, wrappedInputStream(null, bufferSize));
+    public BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException {
+        return new BufferedInputOf<>(this, wrappedInputStream(null, bufferSize));
     }
     
-    public InputStreamProxy<T> inputStream() throws IOException {
-        return new InputStreamProxy<>(this, wrappedInputStream(null, Buffering.UNBUFFERED));
+    public InputStreamOf<T> inputStream() throws IOException {
+        return new InputStreamOf<>(this, wrappedInputStream(null, Buffering.UNBUFFERED));
     }
     
-    public DataInputProxy<T> dataInputStream(int bufferSize) throws IOException {
-        return new DataInputProxy<>(this, wrappedInputStream(null, bufferSize));
+    public DataInputOf<T> dataInputStream(int bufferSize) throws IOException {
+        return new DataInputOf<>(this, wrappedInputStream(null, bufferSize));
     }
     
-    public ObjectInputProxy<T> objectInputStream(int bufferSize) throws IOException {
-        return new ObjectInputProxy<>(this, wrappedInputStream(null, bufferSize));
+    public ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException {
+        return new ObjectInputOf<>(this, wrappedInputStream(null, bufferSize));
     }
     
-    public BufferedReaderProxy<T> bufferedReader(Charset charset, int bufferSize) throws IOException {
-        return new BufferedReaderProxy<>(this, wrappedReader(charset, bufferSize));
+    public BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException {
+        return new BufferedReaderOf<>(this, wrappedReader(charset, bufferSize));
     }
     
-    public ReaderProxy<T> reader(Charset charset) throws IOException {
-        return new ReaderProxy<>(this, wrappedReader(charset, Buffering.UNBUFFERED));
+    public ReaderOf<T> reader(Charset charset) throws IOException {
+        return new ReaderOf<>(this, wrappedReader(charset, Buffering.UNBUFFERED));
     }
     
     // OUTPUT
     
-    public ZipOutputProxy<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
+    public ZipOutputOf<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
-                ? new ZipOutputProxy<>(this, wrappedOutputStream(null, bufferSize))
-                : new ZipOutputProxy<>(this, wrappedOutputStream(null, bufferSize), charset);
+                ? new ZipOutputOf<>(this, wrappedOutputStream(null, bufferSize))
+                : new ZipOutputOf<>(this, wrappedOutputStream(null, bufferSize), charset);
     }
     
-    public BufferedOutputProxy<T> bufferedOutputStream(int bufferSize) throws IOException {
-        return new BufferedOutputProxy<>(this, wrappedOutputStream(null, bufferSize));
+    public BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException {
+        return new BufferedOutputOf<>(this, wrappedOutputStream(null, bufferSize));
     }
     
-    public OutputStreamProxy<T> outputStream() throws IOException {
-        return new OutputStreamProxy<>(this, wrappedOutputStream(null, Buffering.UNBUFFERED));
+    public OutputStreamOf<T> outputStream() throws IOException {
+        return new OutputStreamOf<>(this, wrappedOutputStream(null, Buffering.UNBUFFERED));
     }
     
-    public DataOutputProxy<T> dataOutputStream(int bufferSize) throws IOException {
-        return new DataOutputProxy<>(this, wrappedOutputStream(null, bufferSize));
+    public DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException {
+        return new DataOutputOf<>(this, wrappedOutputStream(null, bufferSize));
     }
     
-    public ObjectOutputProxy<T> objectOutputStream(int bufferSize) throws IOException {
-        return new ObjectOutputProxy<>(this, wrappedOutputStream(null, bufferSize));
+    public ObjectOutputOf<T> objectOutputStream(int bufferSize) throws IOException {
+        return new ObjectOutputOf<>(this, wrappedOutputStream(null, bufferSize));
     }
     
-    public PrintWriterProxy<T> printWriter(Charset charset, int bufferSize) throws IOException {
-        return new PrintWriterProxy<>(this, wrappedWriter(charset, bufferSize));
+    public PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException {
+        return new PrintWriterOf<>(this, wrappedWriter(charset, bufferSize));
     }
     
-    public PrintWriterProxy<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException {
-        return new PrintWriterProxy<>(this, wrappedWriter(charset, bufferSize), autoflush);
+    public PrintWriterOf<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException {
+        return new PrintWriterOf<>(this, wrappedWriter(charset, bufferSize), autoflush);
     }
     
-    public BufferedWriterProxy<T> bufferedWriter(Charset charset, int bufferSize) throws IOException {
-        return new BufferedWriterProxy<>(this, wrappedWriter(charset, bufferSize));
+    public BufferedWriterOf<T> bufferedWriter(Charset charset, int bufferSize) throws IOException {
+        return new BufferedWriterOf<>(this, wrappedWriter(charset, bufferSize));
     }
     
-    public WriterProxy<T> writer(Charset charset) throws IOException {
-        return new WriterProxy<>(this, wrappedWriter(charset, Buffering.UNBUFFERED));
+    public WriterOf<T> writer(Charset charset) throws IOException {
+        return new WriterOf<>(this, wrappedWriter(charset, Buffering.UNBUFFERED));
     }
     
     // STRAIGHT
     
-    public ReaderProxy<T> reader() throws IOException {
+    public ReaderOf<T> reader() throws IOException {
         return reader(Encoding.DEFAULT_CHARSET);
     }
     
-    public BufferedReaderProxy<T> bufferedReader(int bufferSize) throws IOException {
+    public BufferedReaderOf<T> bufferedReader(int bufferSize) throws IOException {
         return bufferedReader(Encoding.DEFAULT_CHARSET, bufferSize);
     }
     
-    public WriterProxy<T> writer() throws IOException {
+    public WriterOf<T> writer() throws IOException {
         return writer(Encoding.DEFAULT_CHARSET);
     }
     
-    public BufferedWriterProxy<T> bufferedWriter(int bufferSize) throws IOException {
+    public BufferedWriterOf<T> bufferedWriter(int bufferSize) throws IOException {
         return bufferedWriter(Encoding.DEFAULT_CHARSET, bufferSize);
     }
     
-    public PrintWriterProxy<T> printWriter(int bufferSize) throws IOException {
+    public PrintWriterOf<T> printWriter(int bufferSize) throws IOException {
         return printWriter(Encoding.DEFAULT_CHARSET, bufferSize);
     }
     
-    public PrintWriterProxy<T> printWriter(int bufferSize, boolean autoflush) throws IOException {
+    public PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException {
         return printWriter(Encoding.DEFAULT_CHARSET, bufferSize, autoflush);
     }
     

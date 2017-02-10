@@ -5,20 +5,20 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.zip.ZipOutputStream;
 
-import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class ZipOutputProxy<T> extends ZipOutputStream implements Resource<T> {
+public class ZipOutputOf<T> extends ZipOutputStream implements Resource<T> {
     
-    final ChainClose<T> closer;
+    final ClosingResource<T> closer;
     
-    public ZipOutputProxy(ChainClose<T> cl, OutputStream os) {
+    public ZipOutputOf(ClosingResource<T> cl, OutputStream os) {
         super(os);
         cl.add(os);
         closer = cl;
     }
     
-    public ZipOutputProxy(ChainClose<T> cl, OutputStream os, Charset cs) {
+    public ZipOutputOf(ClosingResource<T> cl, OutputStream os, Charset cs) {
         super(os, cs);
         cl.add(os);
         closer = cl;

@@ -3,16 +3,16 @@ package ca.rbon.iostream.fluent;
 import java.io.IOException;
 
 import ca.rbon.iostream.picker.Buffering;
-import ca.rbon.iostream.proxy.writer.BufferedReaderProxy;
-import ca.rbon.iostream.proxy.writer.ReaderProxy;
+import ca.rbon.iostream.proxy.writer.BufferedReaderOf;
+import ca.rbon.iostream.proxy.writer.ReaderOf;
 
 public interface StraightReaderPick<T> {
     
-    ReaderProxy<T> reader() throws IOException;
+    ReaderOf<T> reader() throws IOException;
     
-    BufferedReaderProxy<T> bufferedReader(int bufferSize) throws IOException;
+    BufferedReaderOf<T> bufferedReader(int bufferSize) throws IOException;
     
-    default BufferedReaderProxy<T> bufferedReader() throws IOException {
+    default BufferedReaderOf<T> bufferedReader() throws IOException {
         return bufferedReader(Buffering.DEFAULT_BUFFER_SIZE);
     }    
     
