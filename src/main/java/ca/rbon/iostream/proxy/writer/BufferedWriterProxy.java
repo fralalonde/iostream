@@ -3,7 +3,6 @@ package ca.rbon.iostream.proxy.writer;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.Charset;
 
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
@@ -30,9 +29,5 @@ public class BufferedWriterProxy<T> extends BufferedWriter implements Resource<T
         return holder.getResource();
     }
     
-    @Override
-    public Charset getEncoding() {
-        return holder.getEncoding();
-    }
     
 }

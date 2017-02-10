@@ -2,7 +2,6 @@ package ca.rbon.iostream.proxy.writer;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.Charset;
 
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
@@ -32,10 +31,6 @@ public class UnbufferedReaderProxy<T> extends Reader implements Resource<T> {
         return holder.getResource();
     }
     
-    @Override
-    public Charset getEncoding() {
-        return holder.getEncoding();
-    }
 
     @Override
     public int read(char[] cbuf, int off, int len) throws IOException {

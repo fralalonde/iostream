@@ -2,69 +2,78 @@ package ca.rbon.iostream;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 
-import ca.rbon.iostream.fluent.AppendPick;
-import ca.rbon.iostream.fluent.BufferSizePick;
-import ca.rbon.iostream.fluent.CharUnbufPick;
-import ca.rbon.iostream.fluent.OutBufferPick;
+import ca.rbon.iostream.fluent.BiCharPick;
+import ca.rbon.iostream.fluent.BiPick;
+import ca.rbon.iostream.fluent.OutPick;
 import ca.rbon.iostream.fluent.WriterPick;
-import ca.rbon.iostream.fluent.OutEncodingPick;
-import ca.rbon.iostream.picker.InOutBytesPicker;
-import ca.rbon.iostream.picker.InOutFilePicker;
-import ca.rbon.iostream.picker.InOutStringPicker;
-import ca.rbon.iostream.picker.OutBytesPicker;
-import ca.rbon.iostream.picker.OutStringPicker;
-import ca.rbon.iostream.picker.TmpFilePicker;
+import ca.rbon.iostream.picker.BytesPicker;
+import ca.rbon.iostream.picker.FilePicker;
+import ca.rbon.iostream.picker.SocketPicker;
+import ca.rbon.iostream.picker.StringPicker;
 
 public class IoStream2 {
     
-    public static AppendPick<File> file(String name) {
+    public static BiPick<File> file(String name) {
         return file(new File(name));
     }
-        
-    public static AppendPick<File> file(File file) {
-        return new InOutFilePicker(file);
-    }
-
-    public static AppendPick<File> file(String name, boolean append) {
-        return file(new File(name));
-    }
-        
-    public static AppendPick<File> file(File file, boolean append) {
-        return new InOutFilePicker(file);
-    }    
     
-    public static OutEncodingPick<File> tempFile() throws IOException {
-        return new TmpFilePicker(File.createTempFile(IoStream2.class.getSimpleName(), "tmp"));
+    public static BiPick<File> file(File file) {
+        return new FilePicker(file, false);
     }
     
-    public static CharUnbufPick<String> string(String str) {
-        return new InOutStringPicker(str);
+    public static OutPick<File> file(String name, boolean append) {
+        return file(new File(name), append);
+    }
+    
+    public static OutPick<File> file(File file, boolean append) {
+        return new FilePicker(file, append);
+    }
+    
+    public static OutPick<File> tempFile() throws IOException {
+        return file(File.createTempFile(IoStream2.class.getSimpleName(), "tmp"));
+    }
+    
+    public static BiCharPick<String> string(String str) {
+        return new StringPicker(str, StringPicker.DEFAULT_CAPACITY);
     }
     
     public static WriterPick<String> string() {
-        return new OutStringPicker();
+        return string(null, StringPicker.DEFAULT_CAPACITY);
     }
     
     public static WriterPick<String> string(int intialCapacity) {
-        return new OutStringPicker(intialCapacity);
-    }    
-
+        return string(null, intialCapacity);
+    }
+    
     public static WriterPick<String> string(String str, int intialCapacity) {
-        return new OutStringPicker(str, intialCapacity);
-    }    
-    
-    static OutBufferPick<byte[]> bytes() {
-        return new OutBytesPicker();
+        return new StringPicker(str, intialCapacity);
     }
     
-    static BufferSizePick<byte[]> bytes(byte[] array) {
-        return new InOutBytesPicker(array);        
+    static OutPick<byte[]> bytes() {
+        return bytes(BytesPicker.DEFAULT_CAPACITY);
+    }
+    
+    static OutPick<byte[]> bytes(int intialCapacity) {
+        return new BytesPicker(null, intialCapacity);
+    }
+    
+    static BiPick<byte[]> bytes(byte[] array) {
+        return bytes(array, BytesPicker.DEFAULT_CAPACITY);
+    }
+    
+    static BiPick<byte[]> bytes(byte[] array, int intialCapacity) {
+        return new BytesPicker(array, intialCapacity);
+    }
+    
+    static BiPick<Socket> socket(String host, int port) throws IOException {
+        return socket(new Socket(host, port));
     }
 
-//    static EncodingPick<Socket> socket(String host, int port) throws IOException {
-//    }
-//    
+    static BiPick<Socket> socket(Socket socket) throws IOException {
+        return new SocketPicker(socket);
+    }
     
     // static FileInputOrOutput console(String name) {
     // return null;

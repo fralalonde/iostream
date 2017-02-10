@@ -3,7 +3,6 @@ package ca.rbon.iostream.proxy.stream;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
@@ -36,11 +35,5 @@ public class BufferedInputProxy<T> extends BufferedInputStream implements Resour
     public T getResource() {
         return holder.getResource();
     }
-    
-    @Override
-    public Charset getEncoding() {
-        return holder.getEncoding();
-    }
-    
-    
+        
 }

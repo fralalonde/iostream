@@ -3,7 +3,6 @@ package ca.rbon.iostream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +10,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import ca.rbon.iostream.proxy.stream.DataOutputProxy;
+import ca.rbon.iostream.proxy.stream.UnbufferedOutputProxy;
 import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
 
 @SuppressWarnings("unused")
@@ -58,14 +58,14 @@ public class Samples2 {
     }
     
     public void files() throws IOException {
-        FileOutputStream out = IoStream2.file("noooes.txt").outputStream();
+        UnbufferedOutputProxy<File> out = IoStream2.file("noooes.txt").outputStream();
         
         try (PrintWriter w = IoStream2.file("mouha.txt").printWriter()) {
             w.append("haha");
         }
         
         IoStream2.file("doum.zip").zipInputStream("UTF-8");
-        IoStream2.file("dam.txt").append().bufferedWriter();
+        IoStream2.file("dam.txt", true).bufferedWriter();
         
         DataOutputProxy<File> tmpout = IoStream2.tempFile().dataOutputStream();
         tmpout.write(42);

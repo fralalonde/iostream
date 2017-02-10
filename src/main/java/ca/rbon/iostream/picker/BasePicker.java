@@ -25,116 +25,115 @@ import ca.rbon.iostream.proxy.writer.BufferedWriterProxy;
 import ca.rbon.iostream.proxy.writer.PrintWriterProxy;
 import ca.rbon.iostream.proxy.writer.UnbufferedReaderProxy;
 import ca.rbon.iostream.proxy.writer.UnbufferedWriterProxy;
-import lombok.Getter;
 
 public abstract class BasePicker<T> {
-        
+    
     private final ChainClose chain = new ChainClose();
     
     protected abstract Resource<T> getSupplier();
     
+    protected abstract Reader getReader(Chain ch) throws IOException;
+    
+    protected abstract Writer getWriter(Chain ch) throws IOException;
+    
+    protected abstract OutputStream getOutputStream() throws IOException;
+    
+    protected abstract InputStream getInputStream() throws IOException;
+    
     // SOURCE
     
-    protected abstract InputStream getInputStream(Charset charset, Chain chain) throws IOException;
-    
     private InputStream wrappedInputStream(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(getInputStream(charset, chain), bufferSize, chain);
+        return Buffering.buffer(getInputStream(), bufferSize, chain);
     }
-    
-    protected abstract Reader getReader(Chain chain) throws IOException;
     
     private Reader wrappedReader(Charset charset, int bufferSize) throws IOException {
         Reader natural = getReader(chain);
-        Reader encoded = natural != null ? natural : Encoding.encode(getInputStream(charset, chain), charset, chain);
-        return Buffering.buffer(encoded, bufferSize, chain);
+        Reader encoded = natural != null ? natural : Encoding.encode(chain.add(getInputStream()), charset);
+        return chain.add(Buffering.buffer(encoded, bufferSize, chain));
     }
     
     // SINK
     
-    protected abstract OutputStream getOutputStream(Charset charset, Chain chain) throws IOException;
-    
     private OutputStream wrappedOutputStream(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(getOutputStream(charset, chain), bufferSize, chain);
+        return chain.add(Buffering.buffer(getOutputStream(), bufferSize, chain));
     }
-    
-    protected abstract Writer getWriter(Chain chain) throws IOException;
     
     private Writer wrappedWriter(Charset charset, int bufferSize) throws IOException {
         Writer natural = getWriter(chain);
-        Writer encoded = natural != null ? natural : Encoding.encode(getOutputStream(charset, chain), charset, chain);
-        return Buffering.buffer(encoded, bufferSize, chain);
+        Writer encoded = natural != null ? natural : Encoding.encode(chain.add(getOutputStream()), charset);
+        return chain.add(Buffering.buffer(encoded, bufferSize, chain));
     }
     
     // INPUT
     
-    ZipInputProxy<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
+    public ZipInputProxy<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
                 ? new ZipInputProxy<>(getSupplier(), chain, wrappedInputStream(null, bufferSize))
                 : new ZipInputProxy<>(getSupplier(), chain, wrappedInputStream(null, bufferSize), charset);
     }
     
-    BufferedInputProxy<T> bufferedInputStream() throws IOException {
-        return new BufferedInputProxy<>(getSupplier(), chain, wrappedInputStream());
+    public BufferedInputProxy<T> bufferedInputStream(int bufferSize) throws IOException {
+        return new BufferedInputProxy<>(getSupplier(), chain, wrappedInputStream(null, bufferSize));
     }
     
-    UnbufferedInputProxy<T> unbufferedInputStream() throws IOException {
-        return new UnbufferedInputProxy<>(getSupplier(), chain, wrappedInputStream());
+    public UnbufferedInputProxy<T> inputStream() throws IOException {
+        return new UnbufferedInputProxy<>(getSupplier(), chain, wrappedInputStream(null, Buffering.UNBUFFERED));
     }
     
-    DataInputProxy<T> dataInputStream() throws IOException {
-        return new DataInputProxy<>(getSupplier(), chain, wrappedInputStream());
+    public DataInputProxy<T> dataInputStream(int bufferSize) throws IOException {
+        return new DataInputProxy<>(getSupplier(), chain, wrappedInputStream(null, bufferSize));
     }
     
-    ObjectInputProxy<T> objectInputStream() throws IOException {
-        return new ObjectInputProxy<>(getSupplier(), chain, wrappedInputStream());
+    public ObjectInputProxy<T> objectInputStream(int bufferSize) throws IOException {
+        return new ObjectInputProxy<>(getSupplier(), chain, wrappedInputStream(null, bufferSize));
     }
     
-    BufferedReaderProxy<T> bufferedReader() throws IOException {
-        return new BufferedReaderProxy<>(getSupplier(), chain, wrappedReader());
+    public BufferedReaderProxy<T> bufferedReader(Charset charset, int bufferSize) throws IOException {
+        return new BufferedReaderProxy<>(getSupplier(), chain, wrappedReader(charset, bufferSize));
     }
     
-    UnbufferedReaderProxy<T> unbufferedReader() throws IOException {
-        return new UnbufferedReaderProxy<>(getSupplier(), chain, wrappedReader());
+    public UnbufferedReaderProxy<T> reader(Charset charset) throws IOException {
+        return new UnbufferedReaderProxy<>(getSupplier(), chain, wrappedReader(charset, Buffering.UNBUFFERED));
     }
     
     // OUTPUT
     
-    ZipOutputProxy<T> zipOutputStream() throws IOException {
-        return encoding == null
-                ? new ZipOutputProxy<>(getSupplier(), chain, wrappedOutputStream())
-                : new ZipOutputProxy<>(getSupplier(), chain, wrappedOutputStream(), encoding);
+    public ZipOutputProxy<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
+        return charset == null
+                ? new ZipOutputProxy<>(getSupplier(), chain, wrappedOutputStream(null, bufferSize))
+                : new ZipOutputProxy<>(getSupplier(), chain, wrappedOutputStream(null, bufferSize), charset);
     }
     
-    BufferedOutputProxy<T> bufferedOutputStream() throws IOException {
-        return new BufferedOutputProxy<>(getSupplier(), chain, wrappedOutputStream());
+    public BufferedOutputProxy<T> bufferedOutputStream(int bufferSize) throws IOException {
+        return new BufferedOutputProxy<>(getSupplier(), chain, wrappedOutputStream(null, bufferSize));
     }
     
-    UnbufferedOutputProxy<T> unbufferedOutputStream() throws IOException {
-        return new UnbufferedOutputProxy<>(getSupplier(), chain, wrappedOutputStream());
+    public UnbufferedOutputProxy<T> outputStream() throws IOException {
+        return new UnbufferedOutputProxy<>(getSupplier(), chain, wrappedOutputStream(null, Buffering.UNBUFFERED));
     }
     
-    DataOutputProxy<T> dataOutputStream() throws IOException {
-        return new DataOutputProxy<>(getSupplier(), chain, wrappedOutputStream());
+    public DataOutputProxy<T> dataOutputStream(int bufferSize) throws IOException {
+        return new DataOutputProxy<>(getSupplier(), chain, wrappedOutputStream(null, bufferSize));
     }
     
-    ObjectOutputProxy<T> objectOutputStream() throws IOException {
-        return new ObjectOutputProxy<>(getSupplier(), chain, wrappedOutputStream());
+    public ObjectOutputProxy<T> objectOutputStream(int bufferSize) throws IOException {
+        return new ObjectOutputProxy<>(getSupplier(), chain, wrappedOutputStream(null, bufferSize));
     }
     
-    PrintWriterProxy<T> printWriter() throws IOException {
-        return new PrintWriterProxy<>(getSupplier(), chain, wrappedWriter());
+    public PrintWriterProxy<T> printWriter(Charset charset, int bufferSize) throws IOException {
+        return new PrintWriterProxy<>(getSupplier(), chain, wrappedWriter(charset, bufferSize));
     }
     
-    PrintWriterProxy<T> printWriter(boolean autoflush) throws IOException {
-        return new PrintWriterProxy<>(getSupplier(), chain, wrappedWriter(), autoflush);
+    public PrintWriterProxy<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException {
+        return new PrintWriterProxy<>(getSupplier(), chain, wrappedWriter(charset, bufferSize), autoflush);
     }
     
-    BufferedWriterProxy<T> bufferedWriter() throws IOException {
-        return new BufferedWriterProxy<>(getSupplier(), chain, wrappedWriter());
+    public BufferedWriterProxy<T> bufferedWriter(Charset charset, int bufferSize) throws IOException {
+        return new BufferedWriterProxy<>(getSupplier(), chain, wrappedWriter(charset, bufferSize));
     }
     
-    UnbufferedWriterProxy<T> unbufferedWriter() throws IOException {
-        return new UnbufferedWriterProxy<>(getSupplier(), chain, wrappedWriter());
+    public UnbufferedWriterProxy<T> writer(Charset charset) throws IOException {
+        return new UnbufferedWriterProxy<>(getSupplier(), chain, wrappedWriter(charset, Buffering.UNBUFFERED));
     }
     
 }

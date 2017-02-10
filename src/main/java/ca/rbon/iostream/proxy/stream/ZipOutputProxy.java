@@ -38,9 +38,5 @@ public class ZipOutputProxy<T> extends ZipOutputStream implements Resource<T> {
         return holder.getResource();
     }
 
-    @Override
-    public Charset getEncoding() {
-        return holder.getEncoding();
-    }
     
 }

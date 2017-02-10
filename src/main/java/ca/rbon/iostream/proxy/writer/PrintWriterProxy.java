@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
 
 import ca.rbon.iostream.ChainClose;
 import ca.rbon.iostream.Resource;
@@ -54,9 +53,5 @@ public class PrintWriterProxy<T> extends PrintWriter implements Resource<T> {
         return holder.getResource();
     }
     
-    @Override
-    public Charset getEncoding() {
-        return holder.getEncoding();
-    }
     
 }

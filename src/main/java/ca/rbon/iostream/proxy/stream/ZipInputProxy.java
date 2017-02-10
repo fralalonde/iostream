@@ -37,9 +37,5 @@ public class ZipInputProxy<T> extends ZipInputStream implements Resource<T> {
         return holder.getResource();
     }
 
-    @Override
-    public Charset getEncoding() {
-        return holder.getEncoding();
-    }
         
 }

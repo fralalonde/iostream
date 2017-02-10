@@ -13,12 +13,12 @@ import ca.rbon.iostream.Chain;
 
 public class Buffering {
     
-    static final int AUTO_BUFFER = 0;
-    static final int DEFAULT_BUFFER_SIZE = -1;
-    static final int FORCE_UNBUFFERED = -2;
+    public static final int DEFAULT_BUFFER_SIZE = -1;
+    
+    public static final int UNBUFFERED = -2;
     
     private static int valid(int size) {
-        if (size < FORCE_UNBUFFERED) {
+        if (size < UNBUFFERED) {
             throw new IllegalArgumentException("BufferSize '" + size + "' is invalid.");
         }
         return size;
@@ -26,8 +26,7 @@ public class Buffering {
     
     static InputStream buffer(InputStream is, int size, Chain chain) {
         switch (valid(size)) {
-            case FORCE_UNBUFFERED:
-            case AUTO_BUFFER:
+            case UNBUFFERED:
                 return is;
             case DEFAULT_BUFFER_SIZE:
                 return chain.add(new BufferedInputStream(is));
@@ -38,8 +37,7 @@ public class Buffering {
 
     static OutputStream buffer(OutputStream is, int size, Chain chain) {
         switch (valid(size)) {
-            case FORCE_UNBUFFERED:
-            case AUTO_BUFFER:
+            case UNBUFFERED:
                 return is;
             case DEFAULT_BUFFER_SIZE:
                 return chain.add(new BufferedOutputStream(is));
@@ -50,8 +48,7 @@ public class Buffering {
     
     static Reader buffer(Reader is, int size, Chain chain) {
         switch (valid(size)) {
-            case FORCE_UNBUFFERED:                
-            case AUTO_BUFFER:
+            case UNBUFFERED:                
                 return is;
             case DEFAULT_BUFFER_SIZE:
                 return chain.add(new BufferedReader(is));
@@ -63,8 +60,7 @@ public class Buffering {
     
     static Writer buffer(Writer is, int size, Chain chain) {
         switch (valid(size)) {
-            case FORCE_UNBUFFERED:
-            case AUTO_BUFFER:
+            case UNBUFFERED:
                 return is;
             case DEFAULT_BUFFER_SIZE:
                 return chain.add(new BufferedWriter(is));
