@@ -18,11 +18,11 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 <dependency>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.4-SNAPSHOT`.  
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.4`.  
       
 ## How does it work?
 
