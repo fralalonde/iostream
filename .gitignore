@@ -20,3 +20,5 @@ target/
 *.txt
 
 .checkstyle
+release.properties
+pom.xml.*
