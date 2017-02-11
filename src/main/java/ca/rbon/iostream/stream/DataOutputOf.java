@@ -1,23 +1,24 @@
-package ca.rbon.iostream.proxy.writer;
+package ca.rbon.iostream.stream;
 
-import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class BufferedWriterOf<T> extends BufferedWriter implements Resource<T> {
+public class DataOutputOf<T> extends DataOutputStream implements Resource<T> {
     
     final ClosingResource<T> closer;
     
-    public BufferedWriterOf(ClosingResource<T> cl, Writer wr) throws IOException {
-        super(wr);        
-        cl.add(wr);
+    public DataOutputOf(ClosingResource<T> cl, OutputStream os) throws IOException {
+        super(os);
         closer = cl;
     }
     
+    @Override
     public void close() throws IOException {
+        super.close();
         closer.close();
     }
     

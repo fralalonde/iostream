@@ -1,24 +1,23 @@
-package ca.rbon.iostream.proxy.stream;
+package ca.rbon.iostream.writer;
 
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Reader;
 
 import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class DataOutputOf<T> extends DataOutputStream implements Resource<T> {
+public class BufferedReaderOf<T> extends BufferedReader implements Resource<T> {
     
     final ClosingResource<T> closer;
     
-    public DataOutputOf(ClosingResource<T> cl, OutputStream os) throws IOException {
-        super(os);
-        cl.add(os);
+    public BufferedReaderOf(ClosingResource<T> cl, Reader r) throws IOException {
+        super(r);        
         closer = cl;
     }
     
-    @Override
     public void close() throws IOException {
+        super.close();
         closer.close();
     }
     

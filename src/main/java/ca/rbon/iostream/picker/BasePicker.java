@@ -9,24 +9,24 @@ import java.nio.charset.Charset;
 
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.ClosingResource;
-import ca.rbon.iostream.proxy.stream.BufferedInputOf;
-import ca.rbon.iostream.proxy.stream.BufferedOutputOf;
-import ca.rbon.iostream.proxy.stream.DataInputOf;
-import ca.rbon.iostream.proxy.stream.DataOutputOf;
-import ca.rbon.iostream.proxy.stream.InputStreamOf;
-import ca.rbon.iostream.proxy.stream.ObjectInputOf;
-import ca.rbon.iostream.proxy.stream.ObjectOutputOf;
-import ca.rbon.iostream.proxy.stream.OutputStreamOf;
-import ca.rbon.iostream.proxy.stream.ZipInputOf;
-import ca.rbon.iostream.proxy.stream.ZipOutputOf;
-import ca.rbon.iostream.proxy.writer.BufferedReaderOf;
-import ca.rbon.iostream.proxy.writer.BufferedWriterOf;
-import ca.rbon.iostream.proxy.writer.PrintWriterOf;
-import ca.rbon.iostream.proxy.writer.ReaderOf;
-import ca.rbon.iostream.proxy.writer.WriterOf;
+import ca.rbon.iostream.stream.BufferedInputOf;
+import ca.rbon.iostream.stream.BufferedOutputOf;
+import ca.rbon.iostream.stream.DataInputOf;
+import ca.rbon.iostream.stream.DataOutputOf;
+import ca.rbon.iostream.stream.InputStreamOf;
+import ca.rbon.iostream.stream.ObjectInputOf;
+import ca.rbon.iostream.stream.ObjectOutputOf;
+import ca.rbon.iostream.stream.OutputStreamOf;
+import ca.rbon.iostream.stream.ZipInputOf;
+import ca.rbon.iostream.stream.ZipOutputOf;
+import ca.rbon.iostream.writer.BufferedReaderOf;
+import ca.rbon.iostream.writer.BufferedWriterOf;
+import ca.rbon.iostream.writer.PrintWriterOf;
+import ca.rbon.iostream.writer.ReaderOf;
+import ca.rbon.iostream.writer.WriterOf;
 
 public abstract class BasePicker<T> extends ClosingResource<T> {
-        
+    
     protected abstract Reader getReader(Chain ch) throws IOException;
     
     protected abstract Writer getWriter(Chain ch) throws IOException;
@@ -34,29 +34,35 @@ public abstract class BasePicker<T> extends ClosingResource<T> {
     protected abstract OutputStream getOutputStream() throws IOException;
     
     protected abstract InputStream getInputStream() throws IOException;
-            
+    
     // SOURCE
     
     private InputStream wrappedInputStream(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(getInputStream(), bufferSize, this);
+        return Buffering.buffer(chainAdd(getInputStream()), bufferSize, this);
     }
     
     private Reader wrappedReader(Charset charset, int bufferSize) throws IOException {
         Reader natural = getReader(this);
-        Reader encoded = natural != null ? natural : Encoding.encode(this.add(getInputStream()), charset);
-        return this.add(Buffering.buffer(encoded, bufferSize, this));
+        Reader encoded = natural != null
+                ? natural
+                : Encoding.streamReader(chainAdd(getInputStream()), charset);
+        encoded = chainAdd(encoded);
+        return Buffering.buffer(encoded, bufferSize, this);
     }
     
     // SINK
     
     private OutputStream wrappedOutputStream(Charset charset, int bufferSize) throws IOException {
-        return this.add(Buffering.buffer(getOutputStream(), bufferSize, this));
+        return Buffering.buffer(chainAdd(getOutputStream()), bufferSize, this);
     }
     
     private Writer wrappedWriter(Charset charset, int bufferSize) throws IOException {
         Writer natural = getWriter(this);
-        Writer encoded = natural != null ? natural : Encoding.encode(this.add(getOutputStream()), charset);
-        return this.add(Buffering.buffer(encoded, bufferSize, this));
+        Writer encoded = natural != null
+                ? natural
+                : Encoding.streamWriter(chainAdd(getOutputStream()), charset);
+        encoded = chainAdd(encoded);
+        return Buffering.buffer(encoded, bufferSize, this);
     }
     
     // INPUT

@@ -3,9 +3,9 @@ package ca.rbon.iostream.fluent;
 import java.io.IOException;
 
 import ca.rbon.iostream.picker.Buffering;
-import ca.rbon.iostream.proxy.writer.BufferedWriterOf;
-import ca.rbon.iostream.proxy.writer.PrintWriterOf;
-import ca.rbon.iostream.proxy.writer.WriterOf;
+import ca.rbon.iostream.writer.BufferedWriterOf;
+import ca.rbon.iostream.writer.PrintWriterOf;
+import ca.rbon.iostream.writer.WriterOf;
 
 public interface StraightWriterPick<T> {
     
@@ -14,13 +14,13 @@ public interface StraightWriterPick<T> {
     BufferedWriterOf<T> bufferedWriter(int bufferSize) throws IOException;
     
     default BufferedWriterOf<T> bufferedWriter() throws IOException {
-        return bufferedWriter(Buffering.DEFAULT_BUFFER_SIZE);        
+        return bufferedWriter(Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     PrintWriterOf<T> printWriter(int bufferSize) throws IOException;
     
     default PrintWriterOf<T> printWriter() throws IOException {
-        return printWriter(Buffering.DEFAULT_BUFFER_SIZE);        
+        return printWriter(Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException;

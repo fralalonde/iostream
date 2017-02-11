@@ -22,11 +22,11 @@ public class BytesPicker extends BasePicker<byte[]> implements BiPick<byte[]> {
     
     final int initialCapacity;
     
-    ByteArrayOutputStream stream;
+    ByteArrayOutputStream outStream;
     
     public byte[] getResource() {
-        if (stream != null) {
-            return stream.toByteArray();
+        if (outStream != null) {
+            return outStream.toByteArray();
         }
         if (bytes == null) {
             throw new CodeFlowError(NO_BYTE_ARRAY_SET);
@@ -49,9 +49,10 @@ public class BytesPicker extends BasePicker<byte[]> implements BiPick<byte[]> {
     
     @Override
     protected ByteArrayOutputStream getOutputStream() throws IOException {
-        return initialCapacity > DEFAULT_CAPACITY
+        outStream = initialCapacity > DEFAULT_CAPACITY
                 ? new ByteArrayOutputStream(initialCapacity)
                 : new ByteArrayOutputStream();
+        return outStream;
     }
     
     @Override

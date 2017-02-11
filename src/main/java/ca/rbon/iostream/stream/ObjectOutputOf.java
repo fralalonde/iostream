@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy.stream;
+package ca.rbon.iostream.stream;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -13,12 +13,12 @@ public class ObjectOutputOf<T> extends ObjectOutputStream implements Resource<T>
     
     public ObjectOutputOf(ClosingResource<T> cl, OutputStream os) throws IOException {
         super(os);        
-        cl.add(os);
         closer = cl;
     }
     
     @Override
     public void close() throws IOException {
+        super.close();
         closer.close();
     }
     

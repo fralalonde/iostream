@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
-import ca.rbon.iostream.proxy.writer.BufferedReaderOf;
-import ca.rbon.iostream.proxy.writer.ReaderOf;
+import ca.rbon.iostream.writer.BufferedReaderOf;
+import ca.rbon.iostream.writer.ReaderOf;
 
 public interface EncodingReaderPick<T> extends StraightReaderPick<T> {
     

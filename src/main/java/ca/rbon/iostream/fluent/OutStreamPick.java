@@ -5,11 +5,11 @@ import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
 import ca.rbon.iostream.picker.Encoding;
-import ca.rbon.iostream.proxy.stream.BufferedOutputOf;
-import ca.rbon.iostream.proxy.stream.DataOutputOf;
-import ca.rbon.iostream.proxy.stream.ObjectOutputOf;
-import ca.rbon.iostream.proxy.stream.OutputStreamOf;
-import ca.rbon.iostream.proxy.stream.ZipOutputOf;
+import ca.rbon.iostream.stream.BufferedOutputOf;
+import ca.rbon.iostream.stream.DataOutputOf;
+import ca.rbon.iostream.stream.ObjectOutputOf;
+import ca.rbon.iostream.stream.OutputStreamOf;
+import ca.rbon.iostream.stream.ZipOutputOf;
 
 public interface OutStreamPick<T> {
     

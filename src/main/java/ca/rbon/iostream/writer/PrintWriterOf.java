@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy.writer;
+package ca.rbon.iostream.writer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,18 +20,17 @@ public class PrintWriterOf<T> extends PrintWriter implements Resource<T> {
     
     public PrintWriterOf(ClosingResource<T> cl, Writer w) {
         super(w);
-        cl.add(w);
         closer = cl;
     }
     
     public PrintWriterOf(ClosingResource<T> cl, Writer w, boolean autoFlush) {
         super(w, autoFlush);
-        cl.add(w);
         closer = cl;
     }
     
     @SneakyThrows(IOException.class)
     public void close() {
+        super.close();
         closer.close();
     }
     

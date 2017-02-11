@@ -5,11 +5,11 @@ import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
 import ca.rbon.iostream.picker.Encoding;
-import ca.rbon.iostream.proxy.stream.BufferedInputOf;
-import ca.rbon.iostream.proxy.stream.DataInputOf;
-import ca.rbon.iostream.proxy.stream.ObjectInputOf;
-import ca.rbon.iostream.proxy.stream.InputStreamOf;
-import ca.rbon.iostream.proxy.stream.ZipInputOf;
+import ca.rbon.iostream.stream.BufferedInputOf;
+import ca.rbon.iostream.stream.DataInputOf;
+import ca.rbon.iostream.stream.InputStreamOf;
+import ca.rbon.iostream.stream.ObjectInputOf;
+import ca.rbon.iostream.stream.ZipInputOf;
 
 public interface InStreamPick<T> {
     

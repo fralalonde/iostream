@@ -1,31 +1,24 @@
-package ca.rbon.iostream.proxy.stream;
+package ca.rbon.iostream.stream;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.zip.ZipInputStream;
+import java.io.ObjectInputStream;
 
 import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class ZipInputOf<T> extends ZipInputStream implements Resource<T> {
+public class ObjectInputOf<T> extends ObjectInputStream implements Resource<T> {
     
     final ClosingResource<T> closer;
     
-    public ZipInputOf(ClosingResource<T> cl, InputStream is) {
+    public ObjectInputOf(ClosingResource<T> cl, InputStream is) throws IOException {
         super(is);
-        cl.add(is);
-        closer = cl;
-    }
-    
-    public ZipInputOf(ClosingResource<T> cl, InputStream is, Charset cs) {
-        super(is, cs);
-        cl.add(is);
         closer = cl;
     }
     
     @Override
     public void close() throws IOException {
+        super.close();
         closer.close();
     }
     

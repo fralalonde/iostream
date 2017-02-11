@@ -6,15 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ChainClose implements Chain, Closeable {
     
+    @Getter
     final List<Closeable> links = new ArrayList<>();
     
     @Override
-    public <C extends Closeable> C add(C closeable) {
+    public <C extends Closeable> C chainAdd(C closeable) {
         links.add(closeable);
         return closeable;
     }

@@ -3,8 +3,8 @@ package ca.rbon.iostream.fluent;
 import java.io.IOException;
 
 import ca.rbon.iostream.picker.Buffering;
-import ca.rbon.iostream.proxy.writer.BufferedReaderOf;
-import ca.rbon.iostream.proxy.writer.ReaderOf;
+import ca.rbon.iostream.writer.BufferedReaderOf;
+import ca.rbon.iostream.writer.ReaderOf;
 
 public interface StraightReaderPick<T> {
     

@@ -1,20 +1,19 @@
-package ca.rbon.iostream.proxy.stream;
+package ca.rbon.iostream.writer;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 
 import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
 
-public class InputStreamOf<T> extends InputStream implements Resource<T> {
+public class ReaderOf<T> extends Reader implements Resource<T> {
     
-    final InputStream delegate;
+    final Reader delegate;
     
     final ClosingResource<T> closer;
     
-    public InputStreamOf(ClosingResource<T> cl, InputStream os) throws IOException {
+    public ReaderOf(ClosingResource<T> cl, Reader os) throws IOException {
         delegate = os;        
-        cl.add(os);
         closer = cl;
     }
     
@@ -29,8 +28,8 @@ public class InputStreamOf<T> extends InputStream implements Resource<T> {
     }
     
     @Override
-    public int read() throws IOException {
-        return delegate.read();
+    public int read(char[] cbuf, int off, int len) throws IOException {
+        return delegate.read(cbuf, off, len);
     }
     
 }

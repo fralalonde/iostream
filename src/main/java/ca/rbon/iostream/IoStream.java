@@ -58,47 +58,47 @@ public class IoStream {
         return new StringPicker(str, intialCapacity);
     }
     
-    static OutPick<byte[]> bytes() {
+    public static OutPick<byte[]> bytes() {
         return bytes(BytesPicker.DEFAULT_CAPACITY);
     }
     
-    static OutPick<byte[]> bytes(int intialCapacity) {
+    public static OutPick<byte[]> bytes(int intialCapacity) {
         return new BytesPicker(null, intialCapacity);
     }
     
-    static BiPick<byte[]> bytes(byte[] array) {
+    public static BiPick<byte[]> bytes(byte[] array) {
         return bytes(array, BytesPicker.DEFAULT_CAPACITY);
     }
     
-    static BiPick<byte[]> bytes(byte[] array, int intialCapacity) {
+    public static BiPick<byte[]> bytes(byte[] array, int intialCapacity) {
         return new BytesPicker(array, intialCapacity);
     }
     
-    static BiPick<Socket> socket(String host, int port) throws IOException {
+    public static BiPick<Socket> socket(String host, int port) throws IOException {
         return socket(new Socket(host, port));
     }
     
-    static BiPick<Socket> socket(Socket socket) throws IOException {
+    public static BiPick<Socket> socket(Socket socket) throws IOException {
         return new SocketPicker(socket);
     }
     
-    static BiPick<Console> console() {
+    public static BiPick<Console> console() {
         return new ConsolePicker();
     }
     
-    static InPick<PipedInputStream> pipeInput() {
+    public static InPick<PipedInputStream> pipeInput() {
         return new PipeInPicker(null);
     }
 
-    static InPick<PipedInputStream> pipeInput(PipedOutputStream connect) {
+    public static InPick<PipedInputStream> pipeInput(PipedOutputStream connect) {
         return new PipeInPicker(connect);   
     }
     
-    static OutPick<PipedOutputStream> pipeOutput() {
+    public static OutPick<PipedOutputStream> pipeOutput() {
         return new PipeOutPicker(null);
     }
     
-    static OutPick<PipedOutputStream> pipeOutput(PipedInputStream connect) {
+    public static OutPick<PipedOutputStream> pipeOutput(PipedInputStream connect) {
         return new PipeOutPicker(connect);
     }
     

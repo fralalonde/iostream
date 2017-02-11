@@ -49,7 +49,7 @@ public class StringPicker extends BasePicker<String> implements BiStraightPick<S
         if (str == null) {
             throw new CodeFlowError(NO_STRING_SET);
         }
-        return chain.add(new StringReader(str));
+        return chain.chainAdd(new StringReader(str));
     }
     
     @Override
@@ -70,7 +70,7 @@ public class StringPicker extends BasePicker<String> implements BiStraightPick<S
                     ? new StringWriter(capacity)
                     : new StringWriter();
         }
-        return chain.add(writer);
+        return chain.chainAdd(writer);
     }
     
 }

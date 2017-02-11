@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy.stream;
+package ca.rbon.iostream.stream;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -13,17 +13,16 @@ public class BufferedInputOf<T> extends BufferedInputStream implements Resource<
     
     public BufferedInputOf(ClosingResource<T> cl, InputStream is) throws IOException {
         super(is);        
-        cl.add(is);
         closer = cl;
     }
     
-    public BufferedInputOf(Resource<T> t, ClosingResource<T> cl, InputStream is, int bufferSize) throws IOException {
+    public BufferedInputOf(ClosingResource<T> cl, InputStream is, int bufferSize) throws IOException {
         super(is, bufferSize);        
-        cl.add(is);
         closer = cl;
     }
     
     public void close() throws IOException {
+        super.close();
         closer.close();
     }
     

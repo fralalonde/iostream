@@ -15,12 +15,13 @@ public class ChainCloseTest {
     @Test
     public void test() throws IOException {
         ChainClose closer = new ChainClose();
-        closer.add(closeable2);
-        closer.add(closeable1);
+        closer.chainAdd(closeable2);
+        closer.chainAdd(closeable1);
         closer.close();
         InOrder inOrder = Mockito.inOrder(closeable2, closeable1);
         inOrder.verify(closeable1).close();
         inOrder.verify(closeable2).close();
     }
+        
     
 }

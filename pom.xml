@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
@@ -78,6 +79,12 @@
             <version>3.6.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>pl.wkr</groupId>
+            <artifactId>fluent-exception-rule</artifactId>
+            <version>1.0.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,15 +102,19 @@
                         <arg>-Xlint</arg>
                         <!-- Verbose compiler messages -->
                         <arg>-Xdiags:verbose</arg>
-                        <!-- treat warnings as errors : NOTE this is hard, javac is picky -->
+                        <!-- treat warnings as errors : NOTE this is hard, 
+                            javac is picky -->
                         <arg>-Werror</arg>
                         <!-- disable anachronic serialization warnings -->
                         <arg>-Xlint:-serial</arg>
                         <!-- disable misguided annotation warnings -->
                         <arg>-Xlint:-processing</arg>
-                        <!-- disable warning about boostrap class path not set in conjunction with -source 1.7 -->
+                        <!-- disable warning about boostrap class path not 
+                            set in conjunction with -source 1.7 -->
                         <arg>-Xlint:-options</arg>
-                        <!-- disable pedantic try-with-resource unreferenced warnings because java forces the declaration of a var that nobody needs but itself -->
+                        <!-- disable pedantic try-with-resource unreferenced 
+                            warnings because java forces the declaration of a var that nobody needs but 
+                            itself -->
                         <arg>-Xlint:-try</arg>
                     </compilerArgs>
                 </configuration>
@@ -147,7 +158,7 @@
                     <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>

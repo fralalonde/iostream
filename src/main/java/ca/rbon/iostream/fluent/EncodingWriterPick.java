@@ -5,9 +5,9 @@ import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
 import ca.rbon.iostream.picker.Encoding;
-import ca.rbon.iostream.proxy.writer.BufferedWriterOf;
-import ca.rbon.iostream.proxy.writer.PrintWriterOf;
-import ca.rbon.iostream.proxy.writer.WriterOf;
+import ca.rbon.iostream.writer.BufferedWriterOf;
+import ca.rbon.iostream.writer.PrintWriterOf;
+import ca.rbon.iostream.writer.WriterOf;
 
 public interface EncodingWriterPick<T> extends StraightWriterPick<T> {
     

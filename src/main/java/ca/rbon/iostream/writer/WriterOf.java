@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy.writer;
+package ca.rbon.iostream.writer;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -14,7 +14,6 @@ public class WriterOf<T> extends Writer implements Resource<T> {
     
     public WriterOf(ClosingResource<T> cl, Writer os) throws IOException {
         delegate = os;
-        cl.add(os);
         closer = cl;
     }
     

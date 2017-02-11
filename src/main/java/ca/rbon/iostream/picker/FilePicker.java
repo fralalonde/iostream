@@ -34,7 +34,7 @@ public class FilePicker extends BasePicker<File> implements BiPick<File> {
     
     @Override
     protected OutputStream getOutputStream() throws IOException {
-        return new FileOutputStream(file);
+        return new FileOutputStream(file, append);
     }
     
     @Override
