@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Better ergonomics for Java IO stream handling</description>
@@ -30,7 +29,7 @@
         <connection>scm:git:git@github.com:fralalonde/iostream.git</connection>
         <developerConnection>scm:git:git@github.com:fralalonde/iostream.git</developerConnection>
         <url>http://github.com/fralalonde/iostream/tree/master</url>
-        <tag>iostream-0.4</tag>
+        <tag>iostream-0.6-SNAPSHOT</tag>
     </scm>
 
     <organization>
