@@ -45,7 +45,7 @@ public class IoStream {
     /**
      * Write to a file.
      * 
-     * @param file Name of file to write to.
+     * @param name Name of file to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
@@ -101,6 +101,7 @@ public class IoStream {
     /**
      * Write to a new byte array with specified initial capacity.
      * 
+     * @param intialCapacity The initial capacity of the buffer
      * @return An output picker
      */
     public static OutPick<byte[]> bytes(int intialCapacity) {
