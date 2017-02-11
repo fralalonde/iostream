@@ -10,12 +10,12 @@ import java.io.Reader;
 import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.fluent.BiPick;
+import ca.rbon.iostream.fluent.InOutPick;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class FilePicker extends BasePicker<File> implements BiPick<File> {
+public class FilePicker extends BasePicker<File> implements InOutPick<File> {
     
     @NonNull
     final File file;

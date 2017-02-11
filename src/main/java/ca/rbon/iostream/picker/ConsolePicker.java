@@ -9,11 +9,11 @@ import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.Resource;
-import ca.rbon.iostream.fluent.BiPick;
+import ca.rbon.iostream.fluent.InOutPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ConsolePicker extends BasePicker<Console> implements BiPick<Console> {
+public class ConsolePicker extends BasePicker<Console> implements InOutPick<Console> {
         
     protected Resource<Console> getSupplier() {
         return this;

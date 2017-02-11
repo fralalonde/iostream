@@ -9,7 +9,7 @@ import ca.rbon.iostream.writer.BufferedWriterOf;
 import ca.rbon.iostream.writer.PrintWriterOf;
 import ca.rbon.iostream.writer.WriterOf;
 
-public interface EncodingWriterPick<T> extends StraightWriterPick<T> {
+public interface ByteWriterPick<T> extends CharWriterPick<T> {
     
     WriterOf<T> writer(Charset charset) throws IOException;
     

@@ -7,7 +7,7 @@ import ca.rbon.iostream.picker.Buffering;
 import ca.rbon.iostream.writer.BufferedReaderOf;
 import ca.rbon.iostream.writer.ReaderOf;
 
-public interface EncodingReaderPick<T> extends StraightReaderPick<T> {
+public interface ByteReaderPick<T> extends CharReaderPick<T> {
     
     // UNBUFFERED
     

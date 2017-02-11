@@ -6,7 +6,7 @@ import ca.rbon.iostream.picker.Buffering;
 import ca.rbon.iostream.writer.BufferedReaderOf;
 import ca.rbon.iostream.writer.ReaderOf;
 
-public interface StraightReaderPick<T> {
+public interface CharReaderPick<T> {
     
     ReaderOf<T> reader() throws IOException;
     

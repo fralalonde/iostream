@@ -10,11 +10,11 @@ import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.fluent.BiStraightPick;
+import ca.rbon.iostream.fluent.InOutCharPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class StringPicker extends BasePicker<String> implements BiStraightPick<String> {
+public class StringPicker extends BasePicker<String> implements InOutCharPick<String> {
     
     public static final int DEFAULT_CAPACITY = -1;
         

@@ -8,12 +8,12 @@ import java.io.Writer;
 import java.net.Socket;
 
 import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.fluent.BiPick;
+import ca.rbon.iostream.fluent.InOutPick;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SocketPicker extends BasePicker<Socket> implements BiPick<Socket> {
+public class SocketPicker extends BasePicker<Socket> implements InOutPick<Socket> {
     
     @NonNull
     final Socket socket;

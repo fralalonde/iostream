@@ -8,11 +8,11 @@ import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.fluent.BiPick;
+import ca.rbon.iostream.fluent.InOutPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BytesPicker extends BasePicker<byte[]> implements BiPick<byte[]> {
+public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]> {
     
     public static final int DEFAULT_CAPACITY = -1;
     

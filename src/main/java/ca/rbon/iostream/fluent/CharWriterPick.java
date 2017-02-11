@@ -7,7 +7,7 @@ import ca.rbon.iostream.writer.BufferedWriterOf;
 import ca.rbon.iostream.writer.PrintWriterOf;
 import ca.rbon.iostream.writer.WriterOf;
 
-public interface StraightWriterPick<T> {
+public interface CharWriterPick<T> {
     
     WriterOf<T> writer() throws IOException;
     
