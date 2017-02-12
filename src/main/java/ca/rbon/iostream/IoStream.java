@@ -68,23 +68,48 @@ public class IoStream {
      * Write to a temporary file.
      * 
      * @return An output picker
+     * @throws IOException If the file could not be created
      */
     public static OutPick<File> tempFile() throws IOException {
         return file(File.createTempFile(IoStream.class.getSimpleName(), "tmp"));
     }
     
+    /**
+     * Read from or append to an existing string.
+     * 
+     * @param str The string to read or append to
+     * @return An input or output char picker
+     */
     public static InOutCharPick<String> string(String str) {
         return new StringPicker(str, StringPicker.DEFAULT_CAPACITY);
     }
     
+    /**
+     * Append to a new string.
+     * 
+     * @return An output char picker
+     */
     public static CharWriterPick<String> string() {
         return string(null, StringPicker.DEFAULT_CAPACITY);
     }
     
+    /**
+     * Append to a new string.
+     * 
+     * @param intialCapacity the initial size of the buffer
+     * @return An output char picker
+     */
     public static CharWriterPick<String> string(int intialCapacity) {
         return string(null, intialCapacity);
     }
     
+    /**
+     * Append to an existing string.
+     * 
+     * @param str The string to append to
+     * @param intialCapacity The initial size of the buffer
+     * @return An output char picker
+     */
     public static CharWriterPick<String> string(String str, int intialCapacity) {
         return new StringPicker(str, intialCapacity);
     }
@@ -128,10 +153,25 @@ public class IoStream {
         return new BytesPicker(array, additionalCapacity);
     }
     
+    /**
+     * Read or write from a socket.
+     * 
+     * @param host The host name to connect to
+     * @param port The port to connect to
+     * @return An input or output picker
+     * @throws IOException If the socket could not be opened
+     */
     public static InOutPick<Socket> socket(String host, int port) throws IOException {
         return socket(new Socket(host, port));
     }
     
+    /**
+     * Read or write from a socket.
+     * 
+     * @param socket The socket to use
+     * @return An input or output picker
+     * @throws IOException If the socket could not be opened
+     */
     public static InOutPick<Socket> socket(Socket socket) throws IOException {
         return new SocketPicker(socket);
     }
