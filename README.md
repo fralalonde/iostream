@@ -1,4 +1,9 @@
 # IoStream
+
+[![][travis img]][travis]
+[![Code Coverage](https://img.shields.io/codecov/c/github/fralalonde/iostream/master.svg)](https://codecov.io/github/fralalonde/iostream?branch=master)
+[![][license img]][license]
+
 Better ergonomics for Java IO stream handling. 
 * Single root class fluent builder. 
 * Closes the stack of multiple closeable at once. 
