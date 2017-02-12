@@ -13,6 +13,9 @@ import java.nio.CharBuffer;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
+import ca.rbon.iostream.writer.PrintWriterOf;
+import ca.rbon.iostream.writer.ReaderOf;
+import ca.rbon.iostream.writer.WriterOf;
 
 public class FilePickerTest {
     
