@@ -20,5 +20,6 @@ target/
 *.txt
 
 .checkstyle
-release.*
+release.properties
+*.log
 pom.xml.*

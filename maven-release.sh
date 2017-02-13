@@ -6,5 +6,7 @@ read GPG_PASSPHRASE
 stty echo
 printf "\n"
 
-mvn release:prepare-with-pom -B -e | tee release-prepare.log
-mvn release:perform -Darguments=-Dgpg.passphrase=$GPG_PASSPHRASE | tee release-perform.log
+# this will ask for release version confirmation
+# if automated version bump is needed use "mvn -B ..." (batch)
+mvn -e release:prepare release:perform -Darguments=-Dgpg.passphrase=$GPG_PASSPHRASE | tee release.log
+

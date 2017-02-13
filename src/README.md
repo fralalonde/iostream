@@ -6,12 +6,11 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 Better ergonomics for Java IO streams building and disposal.
-* Compact, fluent, safe builder for standard InputStream, OutputStream, Reader and Writer classes
-* Supports File, Byte, String, Socket, Pipe, Buffered, InputStream, OutputStream, Reader and Writer classes.
+* Compact, fluent, safe builder for JDK InputStream, OutputStream, Reader and Writer classes
+* Builds File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console resources and filters.
 * Retains default Java behavior and parameters  
 * Composed objects are closed as one element
 * Composed objects expose underlying resource for retrieval of results / follow up operations
-* No transitive dependencies 
 
 ```java
 try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter("UTF-16")) {
