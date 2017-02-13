@@ -11,10 +11,18 @@ import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
 
+/**
+ * <p>Buffering class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class Buffering {
     
+    /** Constant <code>DEFAULT_BUFFER_SIZE=-1</code> */
     public static final int DEFAULT_BUFFER_SIZE = -1;
     
+    /** Constant <code>UNBUFFERED=-2</code> */
     public static final int UNBUFFERED = -2;
     
     private static int valid(int size) {

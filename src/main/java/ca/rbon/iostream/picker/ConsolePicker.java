@@ -13,32 +13,48 @@ import ca.rbon.iostream.fluent.InOutPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+/**
+ * <p>ConsolePicker class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class ConsolePicker extends BasePicker<Console> implements InOutPick<Console> {
         
+    /**
+     * <p>getSupplier.</p>
+     *
+     * @return a {@link ca.rbon.iostream.Resource} object.
+     */
     protected Resource<Console> getSupplier() {
         return this;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
         return System.in;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Reader getReader(Chain chain) throws IOException {
         return System.console().reader();
     }
     
+    /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
         return System.err;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Writer getWriter(Chain chain) throws IOException {
         return System.console().writer();
     }
     
+    /** {@inheritDoc} */
     @Override
     public Console getResource() {
         return System.console();

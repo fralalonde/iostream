@@ -13,6 +13,12 @@ import ca.rbon.iostream.fluent.OutPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+/**
+ * <p>PipeOutPicker class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class PipeOutPicker extends BasePicker<PipedOutputStream> implements OutPick<PipedOutputStream> {
     
     private static final String NO_INPUT = "PipeOutPicker does not provide input facilities.";
@@ -21,16 +27,19 @@ public class PipeOutPicker extends BasePicker<PipedOutputStream> implements OutP
     
     PipedOutputStream output;
     
+    /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
         throw new CodeFlowError(NO_INPUT);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Reader getReader(Chain chain) throws IOException {
         throw new CodeFlowError(NO_INPUT);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected PipedOutputStream getOutputStream() throws IOException {
         if (output == null) {
@@ -41,11 +50,13 @@ public class PipeOutPicker extends BasePicker<PipedOutputStream> implements OutP
         return output;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Writer getWriter(Chain chain) throws IOException {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public PipedOutputStream getResource() throws IOException {
         return getOutputStream();

@@ -14,8 +14,15 @@ import ca.rbon.iostream.fluent.InOutCharPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+/**
+ * <p>StringPicker class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class StringPicker extends BasePicker<String> implements InOutCharPick<String> {
     
+    /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
         
     private static final String STREAM_NOT_SUPPORTED = "Byte-oriented stream operations not supported by String resources.";
@@ -28,6 +35,7 @@ public class StringPicker extends BasePicker<String> implements InOutCharPick<St
     
     StringWriter writer;
     
+    /** {@inheritDoc} */
     @Override
     public String getResource() {
         if (writer != null) {
@@ -39,11 +47,13 @@ public class StringPicker extends BasePicker<String> implements InOutCharPick<St
         return str;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
         throw new CodeFlowError(STREAM_NOT_SUPPORTED);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Reader getReader(Chain chain) throws IOException {
         if (str == null) {
@@ -52,11 +62,13 @@ public class StringPicker extends BasePicker<String> implements InOutCharPick<St
         return chain.chainAdd(new StringReader(str));
     }
     
+    /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
         throw new CodeFlowError(STREAM_NOT_SUPPORTED);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Writer getWriter(Chain chain) throws IOException {
         if (str != null) {

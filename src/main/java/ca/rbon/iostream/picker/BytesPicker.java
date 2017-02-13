@@ -12,8 +12,15 @@ import ca.rbon.iostream.fluent.InOutPick;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+/**
+ * <p>BytesPicker class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]> {
     
+    /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
     
     private static final String NO_BYTE_ARRAY_SET = "No byte array was provided for this operation.";
@@ -24,6 +31,11 @@ public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]>
     
     ByteArrayOutputStream outStream;
     
+    /**
+     * <p>getResource.</p>
+     *
+     * @return an array of byte.
+     */
     public byte[] getResource() {
         if (outStream != null) {
             return outStream.toByteArray();
@@ -34,6 +46,7 @@ public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]>
         return bytes;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected ByteArrayInputStream getInputStream() throws IOException {
         if (bytes == null) {
@@ -42,11 +55,13 @@ public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]>
         return new ByteArrayInputStream(bytes);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Reader getReader(Chain chain) throws IOException {
         return null;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected ByteArrayOutputStream getOutputStream() throws IOException {
         if (bytes != null) {
@@ -62,6 +77,7 @@ public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]>
         return outStream;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Writer getWriter(Chain chain) throws IOException {
         return null;
