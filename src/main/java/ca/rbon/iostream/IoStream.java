@@ -147,6 +147,7 @@ public class IoStream {
      * Append to an existing array with specfied additional capacity.
      * 
      * @param array The array to read from or append to
+     * @param additionalCapacity The appending buffer capacity after the first bytes have been added  
      * @return An input or output picker
      */
     public static OutPick<byte[]> bytes(byte[] array, int additionalCapacity) {

@@ -1,6 +1,7 @@
 package ca.rbon.iostream.fluent;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
@@ -12,7 +13,7 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     // UNBUFFERED
     
     /**
-     * Build an unbuffered {@link Reader} using the specified {@link Charset}.
+     * Build an unbuffered reader using the specified charset.
      * 
      * @param charset The {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
@@ -21,9 +22,9 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     ReaderOf<T> reader(Charset charset) throws IOException;
     
     /**
-     * Build an unbuffered {@link Reader} using the specified {@link Charset} name.
+     * Build an unbuffered reader using the specified charset name.
      * 
-     * @param charset The name of the {@link Charset} to use
+     * @param charsetName The name of the {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
      * @throws IOException If the reader can not be built
      */
@@ -34,7 +35,7 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     // BUFFERED
     
     /**
-     * Build an buffered {@link Reader} using the specified {@link Charset} and the specified buffer size.
+     * Build a buffered reader using the specified charset and the specified buffer size.
      * 
      * @param charset The {@link Charset} to use
      * @param bufferSize The size of the buffer to use
@@ -44,7 +45,7 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException;
     
     /**
-     * Build an buffered {@link Reader} using the specified {@link Charset} and the default buffer size.
+     * Build a buffered {@link Reader} using the specified charset and the default buffer size.
      * 
      * @param charset The {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
@@ -55,9 +56,9 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     }
     
     /**
-     * Build an buffered {@link Reader} using the specified {@link Charset} name and the default buffer size.
+     * Build an buffered {@link Reader} using the specified charset name and the default buffer size.
      * 
-     * @param charset The name of the {@link Charset} to use
+     * @param charsetName The name of the {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
      * @throws IOException If the reader can not be built
      */
