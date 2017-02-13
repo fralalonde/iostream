@@ -7,194 +7,232 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.Socket;
 
-import ca.rbon.iostream.fluent.InOutPick;
-import ca.rbon.iostream.fluent.InOutCharPick;
-import ca.rbon.iostream.fluent.InPick;
-import ca.rbon.iostream.fluent.OutPick;
-import ca.rbon.iostream.fluent.CharWriterPick;
-import ca.rbon.iostream.picker.BytesPicker;
-import ca.rbon.iostream.picker.ConsolePicker;
-import ca.rbon.iostream.picker.FilePicker;
-import ca.rbon.iostream.picker.PipeInPicker;
-import ca.rbon.iostream.picker.PipeOutPicker;
-import ca.rbon.iostream.picker.SocketPicker;
-import ca.rbon.iostream.picker.StringPicker;
+import ca.rbon.iostream.channel.CharWriterChannel;
+import ca.rbon.iostream.channel.InOutCharChannel;
+import ca.rbon.iostream.channel.InOutChannel;
+import ca.rbon.iostream.channel.InputChannel;
+import ca.rbon.iostream.channel.OutputChannel;
+import ca.rbon.iostream.channel.OutputStreamChannel;
+import ca.rbon.iostream.resource.ByteArrayResource;
+import ca.rbon.iostream.resource.ConsoleResource;
+import ca.rbon.iostream.resource.FileResource;
+import ca.rbon.iostream.resource.PipeInResource;
+import ca.rbon.iostream.resource.PipeOutResource;
+import ca.rbon.iostream.resource.SocketResource;
+import ca.rbon.iostream.resource.StringResource;
 
+/**
+ * <p>
+ * IoStream is the root object for IO streams builder methods.
+ * Creating an IO stream involves selecting a resource such as {@link #file(String)} and a channel such as {@link OutputStreamChannel#dataOutputStream()}.  
+ * </p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class IoStream {
     
     /**
-     * Stream to or from a file.
-     * 
+     * <p>Stream to or from a file.</p>
+     *
      * @param name Name of the file to use
      * @return An input or output picker
      */
-    public static InOutPick<File> file(String name) {
+    public static InOutChannel<File> file(String name) {
         return file(new File(name));
     }
     
     /**
-     * Stream to or from a file.
-     * 
+     * <p>Stream to or from a file.</p>
+     *
      * @param file File to use
      * @return An input or output picker
      */
-    public static InOutPick<File> file(File file) {
-        return new FilePicker(file, false);
+    public static InOutChannel<File> file(File file) {
+        return new FileResource(file, false);
     }
     
     /**
-     * Write to a file.
-     * 
+     * <p>Write to a file.</p>
+     *
      * @param name Name of file to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
-    public static OutPick<File> file(String name, boolean append) {
+    public static OutputChannel<File> file(String name, boolean append) {
         return file(new File(name), append);
     }
     
     /**
-     * Write to a file.
-     * 
+     * <p>Write to a file.</p>
+     *
      * @param file File to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
-    public static OutPick<File> file(File file, boolean append) {
-        return new FilePicker(file, append);
+    public static OutputChannel<File> file(File file, boolean append) {
+        return new FileResource(file, append);
     }
     
     /**
-     * Write to a temporary file.
-     * 
+     * <p>Write to a temporary file.</p>
+     *
      * @return An output picker
-     * @throws IOException If the file could not be created
+     * @throws java.io.IOException If the file could not be created
      */
-    public static OutPick<File> tempFile() throws IOException {
+    public static OutputChannel<File> tempFile() throws IOException {
         return file(File.createTempFile(IoStream.class.getSimpleName(), "tmp"));
     }
     
     /**
-     * Read from or append to an existing string.
-     * 
+     * <p>Read from or append to an existing string.</p>
+     *
      * @param str The string to read or append to
      * @return An input or output char picker
      */
-    public static InOutCharPick<String> string(String str) {
-        return new StringPicker(str, StringPicker.DEFAULT_CAPACITY);
+    public static InOutCharChannel<String> string(String str) {
+        return new StringResource(str, StringResource.DEFAULT_CAPACITY);
     }
     
     /**
-     * Append to a new string.
-     * 
+     * <p>Append to a new string.</p>
+     *
      * @return An output char picker
      */
-    public static CharWriterPick<String> string() {
-        return string(null, StringPicker.DEFAULT_CAPACITY);
+    public static CharWriterChannel<String> string() {
+        return string(null, StringResource.DEFAULT_CAPACITY);
     }
     
     /**
-     * Append to a new string.
-     * 
+     * <p>Append to a new string.</p>
+     *
      * @param intialCapacity the initial size of the buffer
      * @return An output char picker
      */
-    public static CharWriterPick<String> string(int intialCapacity) {
+    public static CharWriterChannel<String> string(int intialCapacity) {
         return string(null, intialCapacity);
     }
     
     /**
-     * Append to an existing string.
-     * 
+     * <p>Append to an existing string.</p>
+     *
      * @param str The string to append to
      * @param intialCapacity The initial size of the buffer
      * @return An output char picker
      */
-    public static CharWriterPick<String> string(String str, int intialCapacity) {
-        return new StringPicker(str, intialCapacity);
+    public static CharWriterChannel<String> string(String str, int intialCapacity) {
+        return new StringResource(str, intialCapacity);
     }
     
     /**
-     * Write to a new byte array with default initial capacity.
-     * 
+     * <p>Write to a new byte array with default initial capacity.</p>
+     *
      * @return An output picker
      */
-    public static OutPick<byte[]> bytes() {
-        return bytes(BytesPicker.DEFAULT_CAPACITY);
+    public static OutputChannel<byte[]> bytes() {
+        return bytes(ByteArrayResource.DEFAULT_CAPACITY);
     }
     
     /**
-     * Write to a new byte array with specified initial capacity.
-     * 
+     * <p>Write to a new byte array with specified initial capacity.</p>
+     *
      * @param intialCapacity The initial capacity of the buffer
      * @return An output picker
      */
-    public static OutPick<byte[]> bytes(int intialCapacity) {
-        return new BytesPicker(null, intialCapacity);
+    public static OutputChannel<byte[]> bytes(int intialCapacity) {
+        return new ByteArrayResource(null, intialCapacity);
     }
     
     /**
-     * Read from an existing array or append to it.
-     * 
+     * <p>Read from an existing array or append to it.</p>
+     *
      * @param array The array to read from or append to
      * @return An input or output picker
      */
-    public static InOutPick<byte[]> bytes(byte[] array) {
-        return new BytesPicker(array, BytesPicker.DEFAULT_CAPACITY);
+    public static InOutChannel<byte[]> bytes(byte[] array) {
+        return new ByteArrayResource(array, ByteArrayResource.DEFAULT_CAPACITY);
     }
     
     /**
-     * Append to an existing array with specfied additional capacity.
-     * 
+     * <p>Append to an existing array with specfied additional capacity.</p>
+     *
      * @param array The array to read from or append to
      * @param additionalCapacity The appending buffer capacity after the first bytes have been added  
      * @return An input or output picker
+     * @param additionalCapacity a int.
      */
-    public static OutPick<byte[]> bytes(byte[] array, int additionalCapacity) {
-        return new BytesPicker(array, additionalCapacity);
+    public static OutputChannel<byte[]> bytes(byte[] array, int additionalCapacity) {
+        return new ByteArrayResource(array, additionalCapacity);
     }
     
     /**
-     * Read or write from a socket.
-     * 
+     * <p>Read or write from a socket.</p>
+     *
      * @param host The host name to connect to
      * @param port The port to connect to
      * @return An input or output picker
-     * @throws IOException If the socket could not be opened
+     * @throws java.io.IOException If the socket could not be opened
      */
-    public static InOutPick<Socket> socket(String host, int port) throws IOException {
+    public static InOutChannel<Socket> socket(String host, int port) throws IOException {
         return socket(new Socket(host, port));
     }
     
     /**
-     * Read or write from a socket.
-     * 
+     * <p>Read or write from a socket.</p>
+     *
      * @param socket The socket to use
      * @return An input or output picker
-     * @throws IOException If the socket could not be opened
+     * @throws java.io.IOException If the socket could not be opened
      */
-    public static InOutPick<Socket> socket(Socket socket) throws IOException {
-        return new SocketPicker(socket);
+    public static InOutChannel<Socket> socket(Socket socket) throws IOException {
+        return new SocketResource(socket);
     }
     
-    public static InOutPick<Console> console() {
-        return new ConsolePicker();
+    /**
+     * <p>Read or write from the console.</p>
+     *
+     * @return a {@link ca.rbon.iostream.channel.InOutChannel} object.
+     */
+    public static InOutChannel<Console> console() {
+        return new ConsoleResource();
     }
     
-    public static InPick<PipedInputStream> pipeInput() {
-        return new PipeInPicker(null);
+    /**
+     * <p>Read from a PipeOutputStream to be built.</p>
+     *
+     * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
+     */
+    public static InputChannel<PipedInputStream> pipeInput() {
+        return new PipeInResource(null);
     }
     
-    public static InPick<PipedInputStream> pipeInput(PipedOutputStream connect) {
-        return new PipeInPicker(connect);
+    /**
+     * <p>Read from an existing PipeOutputStream.</p>
+     *
+     * @param connect a {@link java.io.PipedOutputStream} object.
+     * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
+     */
+    public static InputChannel<PipedInputStream> pipeInput(PipedOutputStream connect) {
+        return new PipeInResource(connect);
     }
     
-    public static OutPick<PipedOutputStream> pipeOutput() {
-        return new PipeOutPicker(null);
+    /**
+     * <p>Write to a PipeInputStream to be built.</p>
+     *
+     * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
+     */
+    public static OutputChannel<PipedOutputStream> pipeOutput() {
+        return new PipeOutResource(null);
     }
     
-    public static OutPick<PipedOutputStream> pipeOutput(PipedInputStream connect) {
-        return new PipeOutPicker(connect);
+    /**
+     * <p>Write to an existing PipeInputStream to be built.</p>
+     *
+     * @param connect a {@link java.io.PipedInputStream} object.
+     * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
+     */
+    public static OutputChannel<PipedOutputStream> pipeOutput(PipedInputStream connect) {
+        return new PipeOutResource(connect);
     }
     
     // static InOutPick nil() {

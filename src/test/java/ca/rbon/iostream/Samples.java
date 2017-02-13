@@ -9,18 +9,18 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.stream.DataOutputOf;
-import ca.rbon.iostream.stream.OutputStreamOf;
-import ca.rbon.iostream.writer.PrintWriterOf;
+import ca.rbon.iostream.proxy.DataOutputOf;
+import ca.rbon.iostream.proxy.OutputStreamOf;
+import ca.rbon.iostream.proxy.PrintWriterOf;
 
 @SuppressWarnings("unused")
 public class Samples {
     
     public void smallSample() throws IOException {
-        PrintWriterOf<File> writer = IoStream.file("myfile.txt").printWriter();
-        writer.write("hello");
-        writer.close();
-        File myfile = writer.getResource();        
+        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter("UTF-16")) {
+            File myFileTxt = pw.getResource();
+            pw.write("Hello from file " + myFileTxt.getName());
+        }        
     }
     
     public void smallSample2() throws IOException {

@@ -21,4 +21,5 @@ target/
 
 .checkstyle
 release.properties
+*.log
 pom.xml.*

@@ -31,13 +31,13 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 
 ```xml
 <dependency>
-    <groupId>ca.rbon</groupId>
-    <artifactId>iostream</artifactId>
-    <version>0.7.0</version>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>${project.artifactId}</artifactId>
+    <version>${project.version}</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.7.0`.
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `${project.groupId}:${project.artifactId}:${project.version}`.
 
 This library requires Java 1.8 (and nothing but).
       
@@ -105,7 +105,7 @@ byte[] myPrecious = byteArrayOutputStream.toByteArray();
 
 ## Companion libraries
 
-`IoStream` is an excellent companion to [Apache Commons IO](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) class. There is little overlap between the libraries. `IoStream` helps to build the streams while `org.apache.commons.io.IOUtils` takes care of the operations, such as `copy()`. 
+`IoStream` is an excellent companion to [Apache Commons IO's](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) `IOUtils` class. There is little overlap between the libraries. `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()`.
 
 
 ## Things you can do with it
