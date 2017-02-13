@@ -33,7 +33,7 @@ import ca.rbon.iostream.resource.StringResource;
 public class IoStream {
     
     /**
-     * Stream to or from a file.
+     * <p>Stream to or from a file.</p>
      *
      * @param name Name of the file to use
      * @return An input or output picker
@@ -43,7 +43,7 @@ public class IoStream {
     }
     
     /**
-     * Stream to or from a file.
+     * <p>Stream to or from a file.</p>
      *
      * @param file File to use
      * @return An input or output picker
@@ -53,7 +53,7 @@ public class IoStream {
     }
     
     /**
-     * Write to a file.
+     * <p>Write to a file.</p>
      *
      * @param name Name of file to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
@@ -64,7 +64,7 @@ public class IoStream {
     }
     
     /**
-     * Write to a file.
+     * <p>Write to a file.</p>
      *
      * @param file File to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
@@ -75,7 +75,7 @@ public class IoStream {
     }
     
     /**
-     * Write to a temporary file.
+     * <p>Write to a temporary file.</p>
      *
      * @return An output picker
      * @throws java.io.IOException If the file could not be created
@@ -85,7 +85,7 @@ public class IoStream {
     }
     
     /**
-     * Read from or append to an existing string.
+     * <p>Read from or append to an existing string.</p>
      *
      * @param str The string to read or append to
      * @return An input or output char picker
@@ -95,7 +95,7 @@ public class IoStream {
     }
     
     /**
-     * Append to a new string.
+     * <p>Append to a new string.</p>
      *
      * @return An output char picker
      */
@@ -104,7 +104,7 @@ public class IoStream {
     }
     
     /**
-     * Append to a new string.
+     * <p>Append to a new string.</p>
      *
      * @param intialCapacity the initial size of the buffer
      * @return An output char picker
@@ -114,7 +114,7 @@ public class IoStream {
     }
     
     /**
-     * Append to an existing string.
+     * <p>Append to an existing string.</p>
      *
      * @param str The string to append to
      * @param intialCapacity The initial size of the buffer
@@ -125,7 +125,7 @@ public class IoStream {
     }
     
     /**
-     * Write to a new byte array with default initial capacity.
+     * <p>Write to a new byte array with default initial capacity.</p>
      *
      * @return An output picker
      */
@@ -134,7 +134,7 @@ public class IoStream {
     }
     
     /**
-     * Write to a new byte array with specified initial capacity.
+     * <p>Write to a new byte array with specified initial capacity.</p>
      *
      * @param intialCapacity The initial capacity of the buffer
      * @return An output picker
@@ -144,7 +144,7 @@ public class IoStream {
     }
     
     /**
-     * Read from an existing array or append to it.
+     * <p>Read from an existing array or append to it.</p>
      *
      * @param array The array to read from or append to
      * @return An input or output picker
@@ -154,7 +154,7 @@ public class IoStream {
     }
     
     /**
-     * Append to an existing array with specfied additional capacity.
+     * <p>Append to an existing array with specfied additional capacity.</p>
      *
      * @param array The array to read from or append to
      * @return An input or output picker
@@ -165,7 +165,7 @@ public class IoStream {
     }
     
     /**
-     * Read or write from a socket.
+     * <p>Read or write from a socket.</p>
      *
      * @param host The host name to connect to
      * @param port The port to connect to
@@ -177,7 +177,7 @@ public class IoStream {
     }
     
     /**
-     * Read or write from a socket.
+     * <p>Read or write from a socket.</p>
      *
      * @param socket The socket to use
      * @return An input or output picker
@@ -188,7 +188,7 @@ public class IoStream {
     }
     
     /**
-     * <p>console.</p>
+     * <p>Read or write from the console.</p>
      *
      * @return a {@link ca.rbon.iostream.channel.InOutChannel} object.
      */
@@ -197,7 +197,7 @@ public class IoStream {
     }
     
     /**
-     * <p>pipeInput.</p>
+     * <p>Read from a PipeOutputStream to be built.</p>
      *
      * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
      */
@@ -206,7 +206,7 @@ public class IoStream {
     }
     
     /**
-     * <p>pipeInput.</p>
+     * <p>Read from an existing PipeOutputStream.</p>
      *
      * @param connect a {@link java.io.PipedOutputStream} object.
      * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
@@ -216,7 +216,7 @@ public class IoStream {
     }
     
     /**
-     * <p>pipeOutput.</p>
+     * <p>Write to a PipeInputStream to be built.</p>
      *
      * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
      */
@@ -225,7 +225,7 @@ public class IoStream {
     }
     
     /**
-     * <p>pipeOutput.</p>
+     * <p>Write to an existing PipeInputStream to be built.</p>
      *
      * @param connect a {@link java.io.PipedInputStream} object.
      * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.

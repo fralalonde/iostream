@@ -1,7 +1,7 @@
 # IoStream
 
 [![Build Status](https://travis-ci.org/fralalonde/iostream.svg?branch=master)](https://travis-ci.org/fralalonde/iostream)
-[![Code Coverage](https://img.shields.io/codecov/c/github/fralalonde/iostream/master.svg)](https://codecov.io/github/fralalonde/iostream?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/github/fralalonde/iostream.svg)](https://codecov.io/gh/fralalonde/iostream)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
@@ -105,7 +105,7 @@ byte[] myPrecious = byteArrayOutputStream.toByteArray();
 
 ## Companion libraries
 
-`IoStream` is an excellent companion to [Apache Commons IO](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) class. There is little overlap between the libraries. `IoStream` helps to build the streams while `org.apache.commons.io.IOUtils` takes care of the operations, such as `copy()`. 
+`IoStream` is an excellent companion to [Apache Commons IO's](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) `IOUtils` class. There is little overlap between the libraries. `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()`.
 
 
 ## Things you can do with it

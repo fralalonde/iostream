@@ -213,14 +213,24 @@
 
             <!-- code coverage executed by travis after build and uploaded to codecov -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.5.2</version>
-                <configuration>
-                    <quiet>true</quiet>
-                </configuration>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.7.201606060606</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
         </plugins>
 
         <!-- configure explicitly called plugins (not attached to regular lifecycle) -->
@@ -231,20 +241,27 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
-                    <configuration>
-                        <overwrite>true</overwrite>
-                        <outputDirectory>${project.basedir}</outputDirectory>
-                        <resources>
-                            <resource>
-                                <directory>${project.basedir}/src</directory>
-                                <includes>
-                                    <include>README.md</include>
-                                </includes>
-                                <filtering>true</filtering>
-                            </resource>
-                        </resources>
-                        <encoding>UTF-8</encoding>
-                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>update-README</id>
+                            <phase>deploy</phase>
+                            <goal>copy-resource</goal>
+                            <configuration>
+                                <overwrite>true</overwrite>
+                                <outputDirectory>${project.basedir}</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${project.basedir}/src</directory>
+                                        <includes>
+                                            <include>README.md</include>
+                                        </includes>
+                                        <filtering>true</filtering>
+                                    </resource>
+                                </resources>
+                                <encoding>UTF-8</encoding>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

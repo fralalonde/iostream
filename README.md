@@ -1,7 +1,7 @@
 # IoStream
 
 [![Build Status](https://travis-ci.org/fralalonde/iostream.svg?branch=master)](https://travis-ci.org/fralalonde/iostream)
-[![Code Coverage](https://img.shields.io/codecov/c/github/fralalonde/iostream/master.svg)](https://codecov.io/github/fralalonde/iostream?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/github/fralalonde/iostream.svg)](https://codecov.io/gh/fralalonde/iostream)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
