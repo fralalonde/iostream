@@ -20,5 +20,5 @@ target/
 *.txt
 
 .checkstyle
-release.properties
+release.*
 pom.xml.*
