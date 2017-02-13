@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 
 import ca.rbon.iostream.proxy.BufferedOutputOf;
 import ca.rbon.iostream.proxy.DataOutputOf;
+import ca.rbon.iostream.proxy.GZipOutputOf;
 import ca.rbon.iostream.proxy.ObjectOutputOf;
 import ca.rbon.iostream.proxy.OutputStreamOf;
 import ca.rbon.iostream.proxy.ZipOutputOf;
@@ -41,6 +42,12 @@ public interface OutputStreamChannel<T> {
     
     default ZipOutputOf<T> zipOutputStream() throws IOException {
         return zipOutputStream(Encoding.DEFAULT_CHARSET, Buffering.UNBUFFERED);
+    }
+    
+    GZipOutputOf<T> gzipOutputStream(int bufferSize) throws IOException;
+    
+    default GZipOutputOf<T> gzipOutputStream() throws IOException {
+        return gzipOutputStream(Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException;

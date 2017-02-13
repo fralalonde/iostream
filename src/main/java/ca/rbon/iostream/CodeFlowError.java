@@ -21,4 +21,15 @@ public class CodeFlowError extends RuntimeException {
         super(String.format(FLUENT_SHOULD_PREVENT, message));
     }
     
+    /**
+     * <p>Constructor for CodeFlowError.</p>
+     *
+     * @param format a {@link java.lang.String} format template.
+     * @param arg an object to format 
+     */
+    public CodeFlowError(String format, Object arg) {
+        super(String.format(FLUENT_SHOULD_PREVENT, String.format(format, arg)));
+    }
+    
+
 }

@@ -3,19 +3,23 @@ package ca.rbon.iostream;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.Socket;
 
 import ca.rbon.iostream.channel.CharWriterChannel;
-import ca.rbon.iostream.channel.InOutCharChannel;
 import ca.rbon.iostream.channel.InOutChannel;
+import ca.rbon.iostream.channel.InOutCharChannel;
 import ca.rbon.iostream.channel.InputChannel;
 import ca.rbon.iostream.channel.OutputChannel;
 import ca.rbon.iostream.channel.OutputStreamChannel;
 import ca.rbon.iostream.resource.ByteArrayResource;
 import ca.rbon.iostream.resource.ConsoleResource;
 import ca.rbon.iostream.resource.FileResource;
+import ca.rbon.iostream.resource.InputStreamResource;
+import ca.rbon.iostream.resource.OutputStreamResource;
 import ca.rbon.iostream.resource.PipeInResource;
 import ca.rbon.iostream.resource.PipeOutResource;
 import ca.rbon.iostream.resource.SocketResource;
@@ -24,7 +28,7 @@ import ca.rbon.iostream.resource.StringResource;
 /**
  * <p>
  * IoStream is the root object for IO streams builder methods.
- * Creating an IO stream involves selecting a resource such as {@link #file(String)} and a channel such as {@link OutputStreamChannel#dataOutputStream()}.  
+ * Creating an IO stream involves selecting a resource such as {@link #file(String)} and a channel such as {@link OutputStreamChannel#dataOutputStream()}.
  * </p>
  *
  * @author fralalonde
@@ -33,7 +37,9 @@ import ca.rbon.iostream.resource.StringResource;
 public class IoStream {
     
     /**
-     * <p>Stream to or from a file.</p>
+     * <p>
+     * Stream to or from a file.
+     * </p>
      *
      * @param name Name of the file to use
      * @return An input or output picker
@@ -43,7 +49,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Stream to or from a file.</p>
+     * <p>
+     * Stream to or from a file.
+     * </p>
      *
      * @param file File to use
      * @return An input or output picker
@@ -53,7 +61,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to a file.</p>
+     * <p>
+     * Write to a file.
+     * </p>
      *
      * @param name Name of file to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
@@ -64,7 +74,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to a file.</p>
+     * <p>
+     * Write to a file.
+     * </p>
      *
      * @param file File to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
@@ -75,7 +87,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to a temporary file.</p>
+     * <p>
+     * Write to a temporary file.
+     * </p>
      *
      * @return An output picker
      * @throws java.io.IOException If the file could not be created
@@ -85,7 +99,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read from or append to an existing string.</p>
+     * <p>
+     * Read from or append to an existing string.
+     * </p>
      *
      * @param str The string to read or append to
      * @return An input or output char picker
@@ -95,7 +111,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Append to a new string.</p>
+     * <p>
+     * Append to a new string.
+     * </p>
      *
      * @return An output char picker
      */
@@ -104,7 +122,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Append to a new string.</p>
+     * <p>
+     * Append to a new string.
+     * </p>
      *
      * @param intialCapacity the initial size of the buffer
      * @return An output char picker
@@ -114,7 +134,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Append to an existing string.</p>
+     * <p>
+     * Append to an existing string.
+     * </p>
      *
      * @param str The string to append to
      * @param intialCapacity The initial size of the buffer
@@ -125,7 +147,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to a new byte array with default initial capacity.</p>
+     * <p>
+     * Write to a new byte array with default initial capacity.
+     * </p>
      *
      * @return An output picker
      */
@@ -134,7 +158,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to a new byte array with specified initial capacity.</p>
+     * <p>
+     * Write to a new byte array with specified initial capacity.
+     * </p>
      *
      * @param intialCapacity The initial capacity of the buffer
      * @return An output picker
@@ -144,7 +170,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read from an existing array or append to it.</p>
+     * <p>
+     * Read from an existing array or append to it.
+     * </p>
      *
      * @param array The array to read from or append to
      * @return An input or output picker
@@ -154,10 +182,12 @@ public class IoStream {
     }
     
     /**
-     * <p>Append to an existing array with specfied additional capacity.</p>
+     * <p>
+     * Append to an existing array with specfied additional capacity.
+     * </p>
      *
      * @param array The array to read from or append to
-     * @param additionalCapacity The appending buffer capacity after the first bytes have been added  
+     * @param additionalCapacity The appending buffer capacity after the first bytes have been added
      * @return An input or output picker
      * @param additionalCapacity a int.
      */
@@ -166,7 +196,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read or write from a socket.</p>
+     * <p>
+     * Read or write from a socket.
+     * </p>
      *
      * @param host The host name to connect to
      * @param port The port to connect to
@@ -178,7 +210,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read or write from a socket.</p>
+     * <p>
+     * Read or write from a socket.
+     * </p>
      *
      * @param socket The socket to use
      * @return An input or output picker
@@ -189,7 +223,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read or write from the console.</p>
+     * <p>
+     * Read or write from the console.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.channel.InOutChannel} object.
      */
@@ -198,7 +234,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read from a PipeOutputStream to be built.</p>
+     * <p>
+     * Read from a PipeOutputStream to be built.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
      */
@@ -207,7 +245,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Read from an existing PipeOutputStream.</p>
+     * <p>
+     * Read from an existing PipeOutputStream.
+     * </p>
      *
      * @param connect a {@link java.io.PipedOutputStream} object.
      * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
@@ -217,7 +257,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to a PipeInputStream to be built.</p>
+     * <p>
+     * Write to a PipeInputStream to be built.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
      */
@@ -226,7 +268,9 @@ public class IoStream {
     }
     
     /**
-     * <p>Write to an existing PipeInputStream to be built.</p>
+     * <p>
+     * Write to an existing PipeInputStream to be built.
+     * </p>
      *
      * @param connect a {@link java.io.PipedInputStream} object.
      * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
@@ -243,12 +287,34 @@ public class IoStream {
     // return null;
     // }
     
-    // static OutPick stream(OutputStream os) {
-    // return null;
-    // }
+    /**
+     * <p>
+     * Wrap an existing output stream.
+     * </p>
+     * <p>
+     * The existing stream will <i>not</i> be closed by this wrapper.
+     * </p>
+     *
+     * @param output a {@link java.io.OutputStream} object.
+     * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
+     */    
+    public static OutputChannel<OutputStream> stream(OutputStream output) {
+        return new OutputStreamResource(output);
+    }
     
-    // static InPick stream(InputStream is) {
-    // return null;
-    // }
+    /**
+     * <p>
+     * Wrap an existing input stream.
+     * </p>
+     * <p>
+     * The existing stream will <i>not</i> be closed by this wrapper.
+     * </p>
+     *
+     * @param input a {@link java.io.InputStream} object.
+     * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
+     */   
+    public static InputChannel<InputStream> stream(InputStream input) {
+        return new InputStreamResource(input);
+    }
     
 }
