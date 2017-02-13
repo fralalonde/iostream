@@ -245,7 +245,9 @@
                         <execution>
                             <id>update-README</id>
                             <phase>deploy</phase>
-                            <goal>copy-resource</goal>
+                            <goals>
+                                <goal>copy-resource</goal>
+                            </goals>
                             <configuration>
                                 <overwrite>true</overwrite>
                                 <outputDirectory>${project.basedir}</outputDirectory>
