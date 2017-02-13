@@ -1,6 +1,7 @@
 package ca.rbon.iostream.fluent;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.picker.Buffering;
@@ -23,7 +24,7 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     /**
      * Build an unbuffered {@link Reader} using the specified {@link Charset} name.
      * 
-     * @param charset The name of the {@link Charset} to use
+     * @param charsetName The name of the {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
      * @throws IOException If the reader can not be built
      */
@@ -57,7 +58,7 @@ public interface ByteReaderPick<T> extends CharReaderPick<T> {
     /**
      * Build an buffered {@link Reader} using the specified {@link Charset} name and the default buffer size.
      * 
-     * @param charset The name of the {@link Charset} to use
+     * @param charsetName The name of the {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
      * @throws IOException If the reader can not be built
      */

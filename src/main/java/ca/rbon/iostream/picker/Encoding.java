@@ -6,8 +6,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
+/**
+ * <p>Encoding class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class Encoding {
     
+    /** Constant <code>DEFAULT_CHARSET</code> */
     public static final Charset DEFAULT_CHARSET = null;
     
     static InputStreamReader streamReader(InputStream stream, Charset charset) {

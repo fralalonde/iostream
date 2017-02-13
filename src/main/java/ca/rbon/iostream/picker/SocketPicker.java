@@ -13,31 +13,42 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+/**
+ * <p>SocketPicker class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class SocketPicker extends BasePicker<Socket> implements InOutPick<Socket> {
     
     @NonNull
     final Socket socket;
         
+    /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
         return socket.getInputStream();
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Reader getReader(Chain chain) throws IOException {
         return null;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
         return socket.getOutputStream();
     }
     
+    /** {@inheritDoc} */
     @Override
     protected Writer getWriter(Chain chain) throws IOException {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Socket getResource() {
         return socket;

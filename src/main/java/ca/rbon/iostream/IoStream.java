@@ -7,11 +7,11 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.Socket;
 
-import ca.rbon.iostream.fluent.InOutPick;
+import ca.rbon.iostream.fluent.CharWriterPick;
 import ca.rbon.iostream.fluent.InOutCharPick;
+import ca.rbon.iostream.fluent.InOutPick;
 import ca.rbon.iostream.fluent.InPick;
 import ca.rbon.iostream.fluent.OutPick;
-import ca.rbon.iostream.fluent.CharWriterPick;
 import ca.rbon.iostream.picker.BytesPicker;
 import ca.rbon.iostream.picker.ConsolePicker;
 import ca.rbon.iostream.picker.FilePicker;
@@ -20,11 +20,17 @@ import ca.rbon.iostream.picker.PipeOutPicker;
 import ca.rbon.iostream.picker.SocketPicker;
 import ca.rbon.iostream.picker.StringPicker;
 
+/**
+ * <p>IoStream class.</p>
+ *
+ * @author fralalonde
+ * @version $Id: $Id
+ */
 public class IoStream {
     
     /**
      * Stream to or from a file.
-     * 
+     *
      * @param name Name of the file to use
      * @return An input or output picker
      */
@@ -34,7 +40,7 @@ public class IoStream {
     
     /**
      * Stream to or from a file.
-     * 
+     *
      * @param file File to use
      * @return An input or output picker
      */
@@ -44,7 +50,7 @@ public class IoStream {
     
     /**
      * Write to a file.
-     * 
+     *
      * @param name Name of file to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
@@ -55,7 +61,7 @@ public class IoStream {
     
     /**
      * Write to a file.
-     * 
+     *
      * @param file File to write to.
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
@@ -66,9 +72,9 @@ public class IoStream {
     
     /**
      * Write to a temporary file.
-     * 
+     *
      * @return An output picker
-     * @throws IOException If the file could not be created
+     * @throws java.io.IOException If the file could not be created
      */
     public static OutPick<File> tempFile() throws IOException {
         return file(File.createTempFile(IoStream.class.getSimpleName(), "tmp"));
@@ -76,7 +82,7 @@ public class IoStream {
     
     /**
      * Read from or append to an existing string.
-     * 
+     *
      * @param str The string to read or append to
      * @return An input or output char picker
      */
@@ -86,7 +92,7 @@ public class IoStream {
     
     /**
      * Append to a new string.
-     * 
+     *
      * @return An output char picker
      */
     public static CharWriterPick<String> string() {
@@ -95,7 +101,7 @@ public class IoStream {
     
     /**
      * Append to a new string.
-     * 
+     *
      * @param intialCapacity the initial size of the buffer
      * @return An output char picker
      */
@@ -105,7 +111,7 @@ public class IoStream {
     
     /**
      * Append to an existing string.
-     * 
+     *
      * @param str The string to append to
      * @param intialCapacity The initial size of the buffer
      * @return An output char picker
@@ -116,7 +122,7 @@ public class IoStream {
     
     /**
      * Write to a new byte array with default initial capacity.
-     * 
+     *
      * @return An output picker
      */
     public static OutPick<byte[]> bytes() {
@@ -125,7 +131,7 @@ public class IoStream {
     
     /**
      * Write to a new byte array with specified initial capacity.
-     * 
+     *
      * @param intialCapacity The initial capacity of the buffer
      * @return An output picker
      */
@@ -135,7 +141,7 @@ public class IoStream {
     
     /**
      * Read from an existing array or append to it.
-     * 
+     *
      * @param array The array to read from or append to
      * @return An input or output picker
      */
@@ -145,9 +151,10 @@ public class IoStream {
     
     /**
      * Append to an existing array with specfied additional capacity.
-     * 
+     *
      * @param array The array to read from or append to
      * @return An input or output picker
+     * @param additionalCapacity a int.
      */
     public static OutPick<byte[]> bytes(byte[] array, int additionalCapacity) {
         return new BytesPicker(array, additionalCapacity);
@@ -155,11 +162,11 @@ public class IoStream {
     
     /**
      * Read or write from a socket.
-     * 
+     *
      * @param host The host name to connect to
      * @param port The port to connect to
      * @return An input or output picker
-     * @throws IOException If the socket could not be opened
+     * @throws java.io.IOException If the socket could not be opened
      */
     public static InOutPick<Socket> socket(String host, int port) throws IOException {
         return socket(new Socket(host, port));
@@ -167,31 +174,58 @@ public class IoStream {
     
     /**
      * Read or write from a socket.
-     * 
+     *
      * @param socket The socket to use
      * @return An input or output picker
-     * @throws IOException If the socket could not be opened
+     * @throws java.io.IOException If the socket could not be opened
      */
     public static InOutPick<Socket> socket(Socket socket) throws IOException {
         return new SocketPicker(socket);
     }
     
+    /**
+     * <p>console.</p>
+     *
+     * @return a {@link ca.rbon.iostream.fluent.InOutPick} object.
+     */
     public static InOutPick<Console> console() {
         return new ConsolePicker();
     }
     
+    /**
+     * <p>pipeInput.</p>
+     *
+     * @return a {@link ca.rbon.iostream.fluent.InPick} object.
+     */
     public static InPick<PipedInputStream> pipeInput() {
         return new PipeInPicker(null);
     }
     
+    /**
+     * <p>pipeInput.</p>
+     *
+     * @param connect a {@link java.io.PipedOutputStream} object.
+     * @return a {@link ca.rbon.iostream.fluent.InPick} object.
+     */
     public static InPick<PipedInputStream> pipeInput(PipedOutputStream connect) {
         return new PipeInPicker(connect);
     }
     
+    /**
+     * <p>pipeOutput.</p>
+     *
+     * @return a {@link ca.rbon.iostream.fluent.OutPick} object.
+     */
     public static OutPick<PipedOutputStream> pipeOutput() {
         return new PipeOutPicker(null);
     }
     
+    /**
+     * <p>pipeOutput.</p>
+     *
+     * @param connect a {@link java.io.PipedInputStream} object.
+     * @return a {@link ca.rbon.iostream.fluent.OutPick} object.
+     */
     public static OutPick<PipedOutputStream> pipeOutput(PipedInputStream connect) {
         return new PipeOutPicker(connect);
     }
