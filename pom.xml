@@ -222,7 +222,7 @@
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
-                    <!-- <preparationGoals>generate-readme</preparationGoals> -->
+                    <preparationGoals>process-resources</preparationGoals>
                 </configuration>
             </plugin>
 

@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/fralalonde/iostream.svg?branch=master)](https://travis-ci.org/fralalonde/iostream)
 [![Code Coverage](https://img.shields.io/codecov/c/github/fralalonde/iostream/master.svg)](https://codecov.io/github/fralalonde/iostream?branch=master)
-[![Maven Central](https://img.shields.io/maven-central/0.6.2-SNAPSHOT/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
+[![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 Better ergonomics for Java IO streams building and disposal.
@@ -34,11 +34,11 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 <dependency>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.6.2-SNAPSHOT</version>
+    <version>0.6.3-SNAPSHOT</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.6.2-SNAPSHOT`.
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.6.3-SNAPSHOT`.
 
 This library requires Java 1.8 (and nothing but).
       
