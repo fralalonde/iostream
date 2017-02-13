@@ -32,13 +32,17 @@ public interface ByteWriterPick<T> extends CharWriterPick<T> {
     // PRINT
     
     PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException;
+
+    default PrintWriterOf<T> printWriter(String charsetName, int bufferSize) throws IOException {
+        return printWriter(Charset.forName(charsetName), bufferSize);
+    }
     
     default PrintWriterOf<T> printWriter(Charset charset) throws IOException {
         return printWriter(charset, Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     default PrintWriterOf<T> printWriter(String charsetName) throws IOException {
-        return printWriter(Charset.forName(charsetName), Buffering.DEFAULT_BUFFER_SIZE);
+        return printWriter(charsetName, Buffering.DEFAULT_BUFFER_SIZE);
     }
     
     // PRINT AUTOFLUSH

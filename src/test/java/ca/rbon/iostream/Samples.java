@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import ca.rbon.iostream.stream.DataOutputOf;
 import ca.rbon.iostream.stream.OutputStreamOf;
@@ -17,6 +18,13 @@ import ca.rbon.iostream.writer.PrintWriterOf;
 public class Samples {
     
     public void smallSample() throws IOException {
+        PrintWriterOf<File> writer = IoStream.file("myfile.txt").printWriter();
+        writer.write("hello");
+        writer.close();
+        File myfile = writer.getResource();        
+    }
+    
+    public void smallSample2() throws IOException {
         try (DataOutputOf<File> dataFile = IoStream.tempFile().dataOutputStream()) {
             dataFile.write(42);
             try (BufferedWriter bufFile = IoStream.file(dataFile.getResource()).bufferedWriter()) {

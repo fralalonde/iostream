@@ -196,19 +196,19 @@ public class IoStream {
         return new PipeOutPicker(connect);
     }
     
-    // static TargetFlow nil() {
+    // static InOutPick nil() {
     // return null;
     // }
     
-    // static TargetFlow random() {
+    // static InBytesPick random() {
     // return null;
     // }
     
-    // static OutStreamFilter stream(OutputStream os) {
+    // static OutPick stream(OutputStream os) {
     // return null;
     // }
     
-    // static InStreamFilter stream(InputStream is) {
+    // static InPick stream(InputStream is) {
     // return null;
     // }
     

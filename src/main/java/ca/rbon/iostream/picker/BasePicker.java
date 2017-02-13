@@ -37,88 +37,102 @@ public abstract class BasePicker<T> extends ClosingResource<T> {
     
     // SOURCE
     
-    private InputStream wrappedInputStream(Charset charset, int bufferSize) throws IOException {
+    private InputStream wrappedBufferedInput(Charset charset, int bufferSize) throws IOException {
         return Buffering.buffer(chainAdd(getInputStream()), bufferSize, this);
     }
     
-    private Reader wrappedReader(Charset charset, int bufferSize) throws IOException {
+    private Reader wrappedBufferedReader(Charset charset, int bufferSize) throws IOException {
+        Reader encoded = wrappedEncodedReader(charset);
+        return Buffering.buffer(encoded, bufferSize, this);
+    }
+    
+    private Reader wrappedEncodedReader(Charset charset) throws IOException {
         Reader natural = getReader(this);
         Reader encoded = natural != null
                 ? natural
                 : Encoding.streamReader(chainAdd(getInputStream()), charset);
         encoded = chainAdd(encoded);
-        return Buffering.buffer(encoded, bufferSize, this);
+        return encoded;
     }
     
     // SINK
     
-    private OutputStream wrappedOutputStream(Charset charset, int bufferSize) throws IOException {
+    private OutputStream wrappedBufferOut(Charset charset, int bufferSize) throws IOException {
         return Buffering.buffer(chainAdd(getOutputStream()), bufferSize, this);
     }
     
     private Writer wrappedWriter(Charset charset, int bufferSize) throws IOException {
+        Writer encoded = wrappedEncodedWriter(charset);
+        return Buffering.buffer(encoded, bufferSize, this);
+    }
+    
+    private Writer wrappedEncodedWriter(Charset charset) throws IOException {
         Writer natural = getWriter(this);
         Writer encoded = natural != null
                 ? natural
                 : Encoding.streamWriter(chainAdd(getOutputStream()), charset);
         encoded = chainAdd(encoded);
-        return Buffering.buffer(encoded, bufferSize, this);
+        return encoded;
     }
     
     // INPUT
     
     public ZipInputOf<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
-                ? new ZipInputOf<>(this, wrappedInputStream(null, bufferSize))
-                : new ZipInputOf<>(this, wrappedInputStream(null, bufferSize), charset);
+                ? new ZipInputOf<>(this, wrappedBufferedInput(null, bufferSize))
+                : new ZipInputOf<>(this, wrappedBufferedInput(null, bufferSize), charset);
     }
     
     public BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException {
-        return new BufferedInputOf<>(this, wrappedInputStream(null, bufferSize));
+        return bufferSize > Buffering.DEFAULT_BUFFER_SIZE
+                ? new BufferedInputOf<>(this, chainAdd(getInputStream()), bufferSize)
+                : new BufferedInputOf<>(this, chainAdd(getInputStream()));
     }
     
     public InputStreamOf<T> inputStream() throws IOException {
-        return new InputStreamOf<>(this, wrappedInputStream(null, Buffering.UNBUFFERED));
+        return new InputStreamOf<>(this, chainAdd(getInputStream()));
     }
     
     public DataInputOf<T> dataInputStream(int bufferSize) throws IOException {
-        return new DataInputOf<>(this, wrappedInputStream(null, bufferSize));
+        return new DataInputOf<>(this, wrappedBufferedInput(null, bufferSize));
     }
     
     public ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException {
-        return new ObjectInputOf<>(this, wrappedInputStream(null, bufferSize));
+        return new ObjectInputOf<>(this, wrappedBufferedInput(null, bufferSize));
     }
     
     public BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException {
-        return new BufferedReaderOf<>(this, wrappedReader(charset, bufferSize));
+        return new BufferedReaderOf<>(this, wrappedBufferedReader(charset, bufferSize));
     }
     
     public ReaderOf<T> reader(Charset charset) throws IOException {
-        return new ReaderOf<>(this, wrappedReader(charset, Buffering.UNBUFFERED));
+        return new ReaderOf<>(this, wrappedBufferedReader(charset, Buffering.UNBUFFERED));
     }
     
     // OUTPUT
     
     public ZipOutputOf<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
-                ? new ZipOutputOf<>(this, wrappedOutputStream(null, bufferSize))
-                : new ZipOutputOf<>(this, wrappedOutputStream(null, bufferSize), charset);
+                ? new ZipOutputOf<>(this, wrappedBufferOut(null, bufferSize))
+                : new ZipOutputOf<>(this, wrappedBufferOut(null, bufferSize), charset);
     }
     
     public BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException {
-        return new BufferedOutputOf<>(this, wrappedOutputStream(null, bufferSize));
+        return bufferSize > Buffering.DEFAULT_BUFFER_SIZE
+                ? new BufferedOutputOf<>(this, chainAdd(getOutputStream()), bufferSize)
+                : new BufferedOutputOf<>(this, chainAdd(getOutputStream()));        
     }
     
     public OutputStreamOf<T> outputStream() throws IOException {
-        return new OutputStreamOf<>(this, wrappedOutputStream(null, Buffering.UNBUFFERED));
+        return new OutputStreamOf<>(this, chainAdd(getOutputStream()));
     }
     
     public DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException {
-        return new DataOutputOf<>(this, wrappedOutputStream(null, bufferSize));
+        return new DataOutputOf<>(this, wrappedBufferOut(null, bufferSize));
     }
     
     public ObjectOutputOf<T> objectOutputStream(int bufferSize) throws IOException {
-        return new ObjectOutputOf<>(this, wrappedOutputStream(null, bufferSize));
+        return new ObjectOutputOf<>(this, wrappedBufferOut(null, bufferSize));
     }
     
     public PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException {

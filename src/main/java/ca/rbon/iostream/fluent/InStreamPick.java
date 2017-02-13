@@ -12,7 +12,7 @@ import ca.rbon.iostream.stream.ObjectInputOf;
 import ca.rbon.iostream.stream.ZipInputOf;
 
 public interface InStreamPick<T> {
-    
+        
     InputStreamOf<T> inputStream() throws IOException;
     
     BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException;
@@ -44,13 +44,13 @@ public interface InStreamPick<T> {
     }
     
     DataInputOf<T> dataInputStream(int bufferSize) throws IOException;
-
+    
     default DataInputOf<T> dataInputStream() throws IOException {
         return dataInputStream(Buffering.UNBUFFERED);
     }
     
     ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException;
-
+    
     default ObjectInputOf<T> objectInputStream() throws IOException {
         return objectInputStream(Buffering.UNBUFFERED);
     }

@@ -49,9 +49,16 @@ public class BytesPicker extends BasePicker<byte[]> implements InOutPick<byte[]>
     
     @Override
     protected ByteArrayOutputStream getOutputStream() throws IOException {
-        outStream = initialCapacity > DEFAULT_CAPACITY
-                ? new ByteArrayOutputStream(initialCapacity)
-                : new ByteArrayOutputStream();
+        if (bytes != null) {
+            outStream = initialCapacity > DEFAULT_CAPACITY
+                    ? new ByteArrayOutputStream(initialCapacity + bytes.length)
+                    : new ByteArrayOutputStream();
+            outStream.write(bytes, 0, bytes.length);
+        } else {
+            outStream = initialCapacity > DEFAULT_CAPACITY
+                    ? new ByteArrayOutputStream(initialCapacity)
+                    : new ByteArrayOutputStream();
+        }
         return outStream;
     }
     
