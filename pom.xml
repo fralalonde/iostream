@@ -209,7 +209,7 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-            </plugin>
+            </plugin>                        
 
             <!-- code coverage executed by travis after build and uploaded to codecov -->
             <plugin>
@@ -290,6 +290,7 @@
                         </executions>
                     </plugin>
 
+                    <!-- javadoc problems can fail a build, dont wait until release -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>

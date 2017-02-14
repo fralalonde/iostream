@@ -1,54 +1,43 @@
 package ca.rbon.iostream.resource;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.InputChannel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 /**
  * <p>PipeInPicker class.</p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public class PipeInResource extends BaseResource<PipedInputStream> implements InputChannel<PipedInputStream> {
+@RequiredArgsConstructor
+public class InputStreamResource extends BaseResource<InputStream> implements InputChannel<InputStream> {
     
     private static final String NO_OUTPUT = "%s does not provide output facilities.";
 
-    final PipedOutputStream output;
-    
-    PipedInputStream input;
+    @Getter
+    final InputStream inputStream;
     
     /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
-        throw new CodeFlowError(NO_OUTPUT, PipeInResource.class);
+        throw new CodeFlowError(NO_OUTPUT, InputStreamResource.class);
     }
     
     /** {@inheritDoc} */
     @Override
     protected Reader getReader(Chain chaout) throws IOException {
-        throw new CodeFlowError(NO_OUTPUT, PipeInResource.class);
+        throw new CodeFlowError(NO_OUTPUT, InputStreamResource.class);
     }
     
-    /** {@inheritDoc} */
-    @Override
-    protected PipedInputStream getInputStream() throws IOException {
-        if (input == null) {
-            input = output == null
-                    ? new PipedInputStream()
-                    : new PipedInputStream(output);
-        }
-        return input;
-    }
     
     /** {@inheritDoc} */
     @Override
@@ -58,8 +47,9 @@ public class PipeInResource extends BaseResource<PipedInputStream> implements In
 
     /** {@inheritDoc} */
     @Override
-    public PipedInputStream getResource() throws IOException {
+    public InputStream getResource() throws IOException {
         return getInputStream();
     }
+
     
 }

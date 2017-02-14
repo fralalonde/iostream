@@ -82,5 +82,5 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
     protected Writer getWriter(Chain chain) throws IOException {
         return null;
     }
-    
+
 }

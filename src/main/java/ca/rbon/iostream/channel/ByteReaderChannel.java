@@ -13,7 +13,7 @@ public interface ByteReaderChannel<T> extends CharReaderChannel<T> {
     // UNBUFFERED
     
     /**
-     * Build an unbuffered {@link Reader} using the specified {@link Charset}.
+     * Build an unbuffered reader using the specified charset.
      * 
      * @param charset The {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
@@ -22,7 +22,7 @@ public interface ByteReaderChannel<T> extends CharReaderChannel<T> {
     ReaderOf<T> reader(Charset charset) throws IOException;
     
     /**
-     * Build an unbuffered {@link Reader} using the specified {@link Charset} name.
+     * Build an unbuffered reader using the specified charset name.
      * 
      * @param charsetName The name of the {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
@@ -35,7 +35,7 @@ public interface ByteReaderChannel<T> extends CharReaderChannel<T> {
     // BUFFERED
     
     /**
-     * Build an buffered {@link Reader} using the specified {@link Charset} and the specified buffer size.
+     * Build a buffered reader using the specified charset and the specified buffer size.
      * 
      * @param charset The {@link Charset} to use
      * @param bufferSize The size of the buffer to use
@@ -45,7 +45,7 @@ public interface ByteReaderChannel<T> extends CharReaderChannel<T> {
     BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException;
     
     /**
-     * Build an buffered {@link Reader} using the specified {@link Charset} and the default buffer size.
+     * Build a buffered {@link Reader} using the specified charset and the default buffer size.
      * 
      * @param charset The {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 
@@ -56,7 +56,7 @@ public interface ByteReaderChannel<T> extends CharReaderChannel<T> {
     }
     
     /**
-     * Build an buffered {@link Reader} using the specified {@link Charset} name and the default buffer size.
+     * Build an buffered {@link Reader} using the specified charset name and the default buffer size.
      * 
      * @param charsetName The name of the {@link Charset} to use
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class 

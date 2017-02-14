@@ -15,6 +15,8 @@ import ca.rbon.iostream.proxy.BufferedReaderOf;
 import ca.rbon.iostream.proxy.BufferedWriterOf;
 import ca.rbon.iostream.proxy.DataInputOf;
 import ca.rbon.iostream.proxy.DataOutputOf;
+import ca.rbon.iostream.proxy.GZipInputOf;
+import ca.rbon.iostream.proxy.GZipOutputOf;
 import ca.rbon.iostream.proxy.InputStreamOf;
 import ca.rbon.iostream.proxy.ObjectInputOf;
 import ca.rbon.iostream.proxy.ObjectOutputOf;
@@ -366,5 +368,15 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
     public PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException {
         return printWriter(Encoding.DEFAULT_CHARSET, bufferSize, autoflush);
     }
+    
+    public GZipInputOf<T> gzipInputStream(int bufferSize) throws IOException {
+        return new GZipInputOf<>(this, chainAdd(getInputStream()));
+    }
+
+    public GZipOutputOf<T> gzipOutputStream(int bufferSize) throws IOException {
+        return new GZipOutputOf<>(this, chainAdd(getOutputStream()));
+    }
+    
+    
     
 }
