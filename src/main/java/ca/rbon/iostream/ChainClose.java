@@ -23,7 +23,7 @@ public class ChainClose implements Chain, Closeable {
     
     /** {@inheritDoc} */
     @Override
-    public <C extends Closeable> C chainAdd(C closeable) {
+    public <C extends Closeable> C addLink(C closeable) {
         links.add(closeable);
         return closeable;
     }

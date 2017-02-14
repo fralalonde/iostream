@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 import lombok.SneakyThrows;
 
 /**
@@ -17,15 +17,15 @@ import lombok.SneakyThrows;
  */
 public class PrintWriterOf<T> extends PrintWriter implements Resource<T> {
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for PrintWriterOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param w a {@link java.io.Writer} object.
      */
-    public PrintWriterOf(ClosingResource<T> cl, Writer w) {
+    public PrintWriterOf(BaseResource<T> cl, Writer w) {
         super(w);
         closer = cl;
     }
@@ -33,11 +33,11 @@ public class PrintWriterOf<T> extends PrintWriter implements Resource<T> {
     /**
      * <p>Constructor for PrintWriterOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param w a {@link java.io.Writer} object.
      * @param autoFlush a boolean.
      */
-    public PrintWriterOf(ClosingResource<T> cl, Writer w, boolean autoFlush) {
+    public PrintWriterOf(BaseResource<T> cl, Writer w, boolean autoFlush) {
         super(w, autoFlush);
         closer = cl;
     }

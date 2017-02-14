@@ -8,7 +8,8 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.ClosingResource;
+import ca.rbon.iostream.ChainClose;
+import ca.rbon.iostream.Resource;
 import ca.rbon.iostream.proxy.BufferedInputOf;
 import ca.rbon.iostream.proxy.BufferedOutputOf;
 import ca.rbon.iostream.proxy.BufferedReaderOf;
@@ -33,7 +34,7 @@ import ca.rbon.iostream.proxy.ZipOutputOf;
  * @author fralalonde
  * @version $Id: $Id
  */
-public abstract class BaseResource<T> extends ClosingResource<T> {
+public abstract class BaseResource<T> extends ChainClose implements Resource<T> {
     
     /**
      * <p>getReader.</p>
@@ -55,24 +56,26 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
     
     /**
      * <p>getOutputStream.</p>
+     * @param chain TODO
      *
      * @return a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract OutputStream getOutputStream() throws IOException;
+    protected abstract OutputStream getOutputStream(Chain chain) throws IOException;
     
     /**
      * <p>getInputStream.</p>
+     * @param chain TODO
      *
      * @return a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract InputStream getInputStream() throws IOException;
+    protected abstract InputStream getInputStream(Chain chain) throws IOException;
     
     // SOURCE
     
     private InputStream wrappedBufferedInput(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(chainAdd(getInputStream()), bufferSize, this);
+        return Buffering.buffer(getInputStream(this), bufferSize, this);
     }
     
     private Reader wrappedBufferedReader(Charset charset, int bufferSize) throws IOException {
@@ -84,15 +87,15 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
         Reader natural = getReader(this);
         Reader encoded = natural != null
                 ? natural
-                : Encoding.streamReader(chainAdd(getInputStream()), charset);
-        encoded = chainAdd(encoded);
+                : Encoding.streamReader(getInputStream(this), charset);
+        encoded = addLink(encoded);
         return encoded;
     }
     
     // SINK
     
     private OutputStream wrappedBufferOut(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(chainAdd(getOutputStream()), bufferSize, this);
+        return Buffering.buffer(getOutputStream(this), bufferSize, this);
     }
     
     private Writer wrappedWriter(Charset charset, int bufferSize) throws IOException {
@@ -104,8 +107,8 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
         Writer natural = getWriter(this);
         Writer encoded = natural != null
                 ? natural
-                : Encoding.streamWriter(chainAdd(getOutputStream()), charset);
-        encoded = chainAdd(encoded);
+                : Encoding.streamWriter(getOutputStream(this), charset);
+        encoded = addLink(encoded);
         return encoded;
     }
     
@@ -134,8 +137,8 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
      */
     public BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException {
         return bufferSize > Buffering.DEFAULT_BUFFER_SIZE
-                ? new BufferedInputOf<>(this, chainAdd(getInputStream()), bufferSize)
-                : new BufferedInputOf<>(this, chainAdd(getInputStream()));
+                ? new BufferedInputOf<>(this, getInputStream(this), bufferSize)
+                : new BufferedInputOf<>(this, getInputStream(this));
     }
     
     /**
@@ -145,7 +148,7 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
      * @throws java.io.IOException if any.
      */
     public InputStreamOf<T> inputStream() throws IOException {
-        return new InputStreamOf<>(this, chainAdd(getInputStream()));
+        return new InputStreamOf<>(this, getInputStream(this));
     }
     
     /**
@@ -218,8 +221,8 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
      */
     public BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException {
         return bufferSize > Buffering.DEFAULT_BUFFER_SIZE
-                ? new BufferedOutputOf<>(this, chainAdd(getOutputStream()), bufferSize)
-                : new BufferedOutputOf<>(this, chainAdd(getOutputStream()));        
+                ? new BufferedOutputOf<>(this, getOutputStream(this), bufferSize)
+                : new BufferedOutputOf<>(this, getOutputStream(this));        
     }
     
     /**
@@ -229,7 +232,7 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
      * @throws java.io.IOException if any.
      */
     public OutputStreamOf<T> outputStream() throws IOException {
-        return new OutputStreamOf<>(this, chainAdd(getOutputStream()));
+        return new OutputStreamOf<>(this, getOutputStream(this));
     }
     
     /**
@@ -370,11 +373,11 @@ public abstract class BaseResource<T> extends ClosingResource<T> {
     }
     
     public GZipInputOf<T> gzipInputStream(int bufferSize) throws IOException {
-        return new GZipInputOf<>(this, chainAdd(getInputStream()));
+        return new GZipInputOf<>(this, getInputStream(this));
     }
 
     public GZipOutputOf<T> gzipOutputStream(int bufferSize) throws IOException {
-        return new GZipOutputOf<>(this, chainAdd(getOutputStream()));
+        return new GZipOutputOf<>(this, getOutputStream(this));
     }
     
     

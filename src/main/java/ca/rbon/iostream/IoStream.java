@@ -292,7 +292,7 @@ public class IoStream {
      * Wrap an existing output stream.
      * </p>
      * <p>
-     * The existing stream will <i>not</i> be closed by this wrapper.
+     * The existing stream <i>will</i> be closed by this wrapper.
      * </p>
      *
      * @param output a {@link java.io.OutputStream} object.
@@ -307,7 +307,7 @@ public class IoStream {
      * Wrap an existing input stream.
      * </p>
      * <p>
-     * The existing stream will <i>not</i> be closed by this wrapper.
+     * The existing stream <i>will</i> be closed by this wrapper.
      * </p>
      *
      * @param input a {@link java.io.InputStream} object.

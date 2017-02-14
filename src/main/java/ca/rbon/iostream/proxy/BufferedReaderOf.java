@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>BufferedReaderOf class.</p>
@@ -15,16 +15,16 @@ import ca.rbon.iostream.Resource;
  */
 public class BufferedReaderOf<T> extends BufferedReader implements Resource<T> {
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for BufferedReaderOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param r a {@link java.io.Reader} object.
      * @throws java.io.IOException if any.
      */
-    public BufferedReaderOf(ClosingResource<T> cl, Reader r) throws IOException {
+    public BufferedReaderOf(BaseResource<T> cl, Reader r) throws IOException {
         super(r);        
         closer = cl;
     }

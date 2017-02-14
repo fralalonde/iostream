@@ -30,8 +30,8 @@ public class FileResource extends BaseResource<File> implements InOutChannel<Fil
     
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
-        return new FileInputStream(file);
+    protected InputStream getInputStream(Chain chain) throws IOException {
+        return chain.addLink(new FileInputStream(file));
     }
     
     /** {@inheritDoc} */
@@ -42,8 +42,8 @@ public class FileResource extends BaseResource<File> implements InOutChannel<Fil
     
     /** {@inheritDoc} */
     @Override
-    protected OutputStream getOutputStream() throws IOException {
-        return new FileOutputStream(file, append);
+    protected OutputStream getOutputStream(Chain chain) throws IOException {
+        return chain.addLink(new FileOutputStream(file, append));
     }
     
     /** {@inheritDoc} */

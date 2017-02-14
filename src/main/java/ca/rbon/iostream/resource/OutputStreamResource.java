@@ -1,5 +1,6 @@
 package ca.rbon.iostream.resource;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,7 +10,6 @@ import java.io.Writer;
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.OutputChannel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -23,12 +23,11 @@ public class OutputStreamResource extends BaseResource<OutputStream> implements 
     
     private static final String NO_INPUT = "%s does not provide input facilities.";
     
-    @Getter
     final OutputStream outputStream;
     
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
+    protected InputStream getInputStream(Chain chain) throws IOException {
         throw new CodeFlowError(NO_INPUT, OutputStreamResource.class);
     }
     
@@ -47,7 +46,18 @@ public class OutputStreamResource extends BaseResource<OutputStream> implements 
     /** {@inheritDoc} */
     @Override
     public OutputStream getResource() throws IOException {
-        return getOutputStream();
+        return getOutputStream(null);
+    }
+
+    @Override
+    public <T extends Closeable> T addLink(T closeable) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected OutputStream getOutputStream(Chain chain) throws IOException {
+        return outputStream;
     }
     
 }

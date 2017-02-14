@@ -3,8 +3,8 @@ package ca.rbon.iostream.proxy;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>OutputStreamOf class.</p>
@@ -16,16 +16,16 @@ public class OutputStreamOf<T> extends OutputStream implements Resource<T> {
     
     final OutputStream delegate;
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for OutputStreamOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param os a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    public OutputStreamOf(ClosingResource<T> cl, OutputStream os) throws IOException {
+    public OutputStreamOf(BaseResource<T> cl, OutputStream os) throws IOException {
         delegate = os;
         closer = cl;
     }

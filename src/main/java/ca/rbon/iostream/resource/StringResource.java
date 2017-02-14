@@ -49,7 +49,7 @@ public class StringResource extends BaseResource<String> implements InOutCharCha
     
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
+    protected InputStream getInputStream(Chain chain) throws IOException {
         throw new CodeFlowError(STREAM_NOT_SUPPORTED);
     }
     
@@ -59,12 +59,12 @@ public class StringResource extends BaseResource<String> implements InOutCharCha
         if (str == null) {
             throw new CodeFlowError(NO_STRING_SET);
         }
-        return chain.chainAdd(new StringReader(str));
+        return chain.addLink(new StringReader(str));
     }
     
     /** {@inheritDoc} */
     @Override
-    protected OutputStream getOutputStream() throws IOException {
+    protected OutputStream getOutputStream(Chain chain) throws IOException {
         throw new CodeFlowError(STREAM_NOT_SUPPORTED);
     }
     
@@ -82,7 +82,7 @@ public class StringResource extends BaseResource<String> implements InOutCharCha
                     ? new StringWriter(capacity)
                     : new StringWriter();
         }
-        return chain.chainAdd(writer);
+        return chain.addLink(writer);
     }
     
 }
