@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.zip.ZipInputStream;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>ZipInputOf class.</p>
@@ -16,15 +16,15 @@ import ca.rbon.iostream.Resource;
  */
 public class ZipInputOf<T> extends ZipInputStream implements Resource<T> {
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for ZipInputOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param is a {@link java.io.InputStream} object.
      */
-    public ZipInputOf(ClosingResource<T> cl, InputStream is) {
+    public ZipInputOf(BaseResource<T> cl, InputStream is) {
         super(is);
         closer = cl;
     }
@@ -32,11 +32,11 @@ public class ZipInputOf<T> extends ZipInputStream implements Resource<T> {
     /**
      * <p>Constructor for ZipInputOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param is a {@link java.io.InputStream} object.
      * @param cs a {@link java.nio.charset.Charset} object.
      */
-    public ZipInputOf(ClosingResource<T> cl, InputStream is, Charset cs) {
+    public ZipInputOf(BaseResource<T> cl, InputStream is, Charset cs) {
         super(is, cs);
         closer = cl;
     }

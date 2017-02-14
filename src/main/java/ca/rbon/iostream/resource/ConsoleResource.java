@@ -32,7 +32,7 @@ public class ConsoleResource extends BaseResource<Console> implements InOutChann
     
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
+    protected InputStream getInputStream(Chain chain) throws IOException {
         return System.in;
     }
     
@@ -44,7 +44,7 @@ public class ConsoleResource extends BaseResource<Console> implements InOutChann
     
     /** {@inheritDoc} */
     @Override
-    protected OutputStream getOutputStream() throws IOException {
+    protected OutputStream getOutputStream(Chain chain) throws IOException {
         return System.err;
     }
     

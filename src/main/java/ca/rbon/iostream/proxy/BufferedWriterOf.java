@@ -4,8 +4,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>BufferedWriterOf class.</p>
@@ -15,16 +15,16 @@ import ca.rbon.iostream.Resource;
  */
 public class BufferedWriterOf<T> extends BufferedWriter implements Resource<T> {
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for BufferedWriterOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param wr a {@link java.io.Writer} object.
      * @throws java.io.IOException if any.
      */
-    public BufferedWriterOf(ClosingResource<T> cl, Writer wr) throws IOException {
+    public BufferedWriterOf(BaseResource<T> cl, Writer wr) throws IOException {
         super(wr);        
         closer = cl;
     }

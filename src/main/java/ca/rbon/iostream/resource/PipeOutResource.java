@@ -29,7 +29,7 @@ public class PipeOutResource extends BaseResource<PipedOutputStream> implements 
     
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
+    protected InputStream getInputStream(Chain chain) throws IOException {
         throw new CodeFlowError(NO_INPUT, PipeOutResource.class);
     }
     
@@ -41,13 +41,13 @@ public class PipeOutResource extends BaseResource<PipedOutputStream> implements 
     
     /** {@inheritDoc} */
     @Override
-    protected PipedOutputStream getOutputStream() throws IOException {
+    protected PipedOutputStream getOutputStream(Chain chain) throws IOException {
         if (output == null) {
             output = input == null
                     ? new PipedOutputStream()
                     : new PipedOutputStream(input);
         }
-        return output;
+        return chain.addLink(output);
     }
     
     /** {@inheritDoc} */
@@ -59,7 +59,7 @@ public class PipeOutResource extends BaseResource<PipedOutputStream> implements 
     /** {@inheritDoc} */
     @Override
     public PipedOutputStream getResource() throws IOException {
-        return getOutputStream();
+        return getOutputStream(null);
     }
     
 }

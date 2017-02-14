@@ -3,8 +3,8 @@ package ca.rbon.iostream.proxy;
 import java.io.IOException;
 import java.io.Reader;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>ReaderOf class.</p>
@@ -16,16 +16,16 @@ public class ReaderOf<T> extends Reader implements Resource<T> {
     
     final Reader delegate;
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for ReaderOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param os a {@link java.io.Reader} object.
      * @throws java.io.IOException if any.
      */
-    public ReaderOf(ClosingResource<T> cl, Reader os) throws IOException {
+    public ReaderOf(BaseResource<T> cl, Reader os) throws IOException {
         delegate = os;        
         closer = cl;
     }

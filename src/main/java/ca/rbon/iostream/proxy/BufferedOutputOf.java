@@ -4,8 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>BufferedOutputOf class.</p>
@@ -15,16 +15,16 @@ import ca.rbon.iostream.Resource;
  */
 public class BufferedOutputOf<T> extends BufferedOutputStream implements Resource<T> {
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for BufferedOutputOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param os a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    public BufferedOutputOf(ClosingResource<T> cl, OutputStream os) throws IOException {
+    public BufferedOutputOf(BaseResource<T> cl, OutputStream os) throws IOException {
         super(os);
         closer = cl;
     }
@@ -32,12 +32,12 @@ public class BufferedOutputOf<T> extends BufferedOutputStream implements Resourc
     /**
      * <p>Constructor for BufferedOutputOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param os a {@link java.io.OutputStream} object.
      * @param bufferSize a int.
      * @throws java.io.IOException if any.
      */
-    public BufferedOutputOf(ClosingResource<T> cl, OutputStream os, int bufferSize) throws IOException {
+    public BufferedOutputOf(BaseResource<T> cl, OutputStream os, int bufferSize) throws IOException {
         super(os, bufferSize);
         closer = cl;
     }

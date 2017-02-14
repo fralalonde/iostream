@@ -26,8 +26,8 @@ public class SocketResource extends BaseResource<Socket> implements InOutChannel
         
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
-        return socket.getInputStream();
+    protected InputStream getInputStream(Chain chain) throws IOException {
+        return chain.addLink(socket.getInputStream());
     }
     
     /** {@inheritDoc} */
@@ -38,8 +38,8 @@ public class SocketResource extends BaseResource<Socket> implements InOutChannel
     
     /** {@inheritDoc} */
     @Override
-    protected OutputStream getOutputStream() throws IOException {
-        return socket.getOutputStream();
+    protected OutputStream getOutputStream(Chain chain) throws IOException {
+        return chain.addLink(socket.getOutputStream());
     }
     
     /** {@inheritDoc} */

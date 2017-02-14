@@ -37,9 +37,9 @@ public class Buffering {
             case UNBUFFERED:
                 return is;
             case DEFAULT_BUFFER_SIZE:
-                return chain.chainAdd(new BufferedInputStream(is));
+                return chain.addLink(new BufferedInputStream(is));
             default:
-                return chain.chainAdd(new BufferedInputStream(is, size));
+                return chain.addLink(new BufferedInputStream(is, size));
         }
     }
 
@@ -48,9 +48,9 @@ public class Buffering {
             case UNBUFFERED:
                 return is;
             case DEFAULT_BUFFER_SIZE:
-                return chain.chainAdd(new BufferedOutputStream(is));
+                return chain.addLink(new BufferedOutputStream(is));
             default:
-                return chain.chainAdd(new BufferedOutputStream(is, size));
+                return chain.addLink(new BufferedOutputStream(is, size));
         }
     }
     
@@ -59,9 +59,9 @@ public class Buffering {
             case UNBUFFERED:                
                 return is;
             case DEFAULT_BUFFER_SIZE:
-                return chain.chainAdd(new BufferedReader(is));
+                return chain.addLink(new BufferedReader(is));
             default:
-                return chain.chainAdd(new BufferedReader(is, size));
+                return chain.addLink(new BufferedReader(is, size));
         }
     }
 
@@ -71,9 +71,9 @@ public class Buffering {
             case UNBUFFERED:
                 return is;
             case DEFAULT_BUFFER_SIZE:
-                return chain.chainAdd(new BufferedWriter(is));
+                return chain.addLink(new BufferedWriter(is));
             default:
-                return chain.chainAdd(new BufferedWriter(is, size));
+                return chain.addLink(new BufferedWriter(is, size));
         }
     }      
     

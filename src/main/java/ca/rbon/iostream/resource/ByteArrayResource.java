@@ -48,11 +48,11 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
     
     /** {@inheritDoc} */
     @Override
-    protected ByteArrayInputStream getInputStream() throws IOException {
+    protected ByteArrayInputStream getInputStream(Chain chain) throws IOException {
         if (bytes == null) {
             throw new CodeFlowError(NO_BYTE_ARRAY_SET);
         }
-        return new ByteArrayInputStream(bytes);
+        return chain.addLink(new ByteArrayInputStream(bytes));
     }
     
     /** {@inheritDoc} */
@@ -63,7 +63,7 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
     
     /** {@inheritDoc} */
     @Override
-    protected ByteArrayOutputStream getOutputStream() throws IOException {
+    protected ByteArrayOutputStream getOutputStream(Chain chain) throws IOException {
         if (bytes != null) {
             outStream = initialCapacity > DEFAULT_CAPACITY
                     ? new ByteArrayOutputStream(initialCapacity + bytes.length)
@@ -74,7 +74,7 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
                     ? new ByteArrayOutputStream(initialCapacity)
                     : new ByteArrayOutputStream();
         }
-        return outStream;
+        return chain.addLink(outStream);
     }
     
     /** {@inheritDoc} */

@@ -18,6 +18,6 @@ public interface Chain {
      * @param <T> a T object.
      * @return a T object.
      */
-    <T extends Closeable> T chainAdd(T closeable);
+    <T extends Closeable> T addLink(T closeable);
     
 }

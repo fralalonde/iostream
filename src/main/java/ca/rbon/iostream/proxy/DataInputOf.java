@@ -4,8 +4,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ca.rbon.iostream.ClosingResource;
 import ca.rbon.iostream.Resource;
+import ca.rbon.iostream.resource.BaseResource;
 
 /**
  * <p>DataInputOf class.</p>
@@ -15,16 +15,16 @@ import ca.rbon.iostream.Resource;
  */
 public class DataInputOf<T> extends DataInputStream implements Resource<T> {
     
-    final ClosingResource<T> closer;
+    final BaseResource<T> closer;
     
     /**
      * <p>Constructor for DataInputOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.ClosingResource} object.
+     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
      * @param is a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    public DataInputOf(ClosingResource<T> cl, InputStream is) throws IOException {
+    public DataInputOf(BaseResource<T> cl, InputStream is) throws IOException {
         super(is);
         closer = cl;
     }

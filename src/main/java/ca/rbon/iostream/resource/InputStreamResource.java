@@ -9,11 +9,12 @@ import java.io.Writer;
 import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.InputChannel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * <p>PipeInPicker class.</p>
+ * <p>
+ * InputStreamResource wraps an existing InputStream to be used as input to a built IoStream chain.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
@@ -22,34 +23,37 @@ import lombok.RequiredArgsConstructor;
 public class InputStreamResource extends BaseResource<InputStream> implements InputChannel<InputStream> {
     
     private static final String NO_OUTPUT = "%s does not provide output facilities.";
-
-    @Getter
+    
     final InputStream inputStream;
     
     /** {@inheritDoc} */
     @Override
-    protected OutputStream getOutputStream() throws IOException {
+    protected InputStream getInputStream(Chain chain) throws IOException {
+        return inputStream;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    protected OutputStream getOutputStream(Chain chain) throws IOException {
         throw new CodeFlowError(NO_OUTPUT, InputStreamResource.class);
     }
     
     /** {@inheritDoc} */
     @Override
-    protected Reader getReader(Chain chaout) throws IOException {
-        throw new CodeFlowError(NO_OUTPUT, InputStreamResource.class);
-    }
-    
-    
-    /** {@inheritDoc} */
-    @Override
-    protected Writer getWriter(Chain chaout) throws IOException {
+    protected Reader getReader(Chain chain) throws IOException {
         return null;
     }
-
+    
+    /** {@inheritDoc} */
+    @Override
+    protected Writer getWriter(Chain chain) throws IOException {
+        throw new CodeFlowError(NO_OUTPUT, InputStreamResource.class);
+    }
+    
     /** {@inheritDoc} */
     @Override
     public InputStream getResource() throws IOException {
-        return getInputStream();
+        return getInputStream(null);
     }
-
     
 }
