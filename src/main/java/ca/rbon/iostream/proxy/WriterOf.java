@@ -3,29 +3,32 @@ package ca.rbon.iostream.proxy;
 import java.io.IOException;
 import java.io.Writer;
 
-import ca.rbon.iostream.Resource;
-import ca.rbon.iostream.resource.BaseResource;
+import ca.rbon.iostream.resource.Resource;
 
 /**
- * <p>WriterOf class.</p>
+ * <p>
+ * WriterOf class.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public class WriterOf<T> extends Writer implements Resource<T> {
+public class WriterOf<T> extends Writer  {
     
     final Writer delegate;
     
-    final BaseResource<T> closer;
+    final Resource<T> closer;
     
     /**
-     * <p>Constructor for WriterOf.</p>
+     * <p>
+     * Constructor for WriterOf.
+     * </p>
      *
-     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
+     * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.Writer} object.
      * @throws java.io.IOException if any.
      */
-    public WriterOf(BaseResource<T> cl, Writer os) throws IOException {
+    public WriterOf(Resource<T> cl, Writer os) throws IOException {
         delegate = os;
         closer = cl;
     }
@@ -33,11 +36,10 @@ public class WriterOf<T> extends Writer implements Resource<T> {
     /** {@inheritDoc} */
     @Override
     public void close() throws IOException {
-        closer.close();
+        delegate.close();
     }
     
     /** {@inheritDoc} */
-    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

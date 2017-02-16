@@ -6,8 +6,7 @@ import java.nio.charset.Charset;
 import ca.rbon.iostream.proxy.BufferedWriterOf;
 import ca.rbon.iostream.proxy.PrintWriterOf;
 import ca.rbon.iostream.proxy.WriterOf;
-import ca.rbon.iostream.resource.Buffering;
-import ca.rbon.iostream.resource.Encoding;
+import ca.rbon.iostream.resource.Resource;
 
 public interface ByteWriterChannel<T> extends CharWriterChannel<T> {
     
@@ -22,11 +21,11 @@ public interface ByteWriterChannel<T> extends CharWriterChannel<T> {
     BufferedWriterOf<T> bufferedWriter(Charset charset, int bufferSize) throws IOException;
     
     default BufferedWriterOf<T> bufferedWriter(Charset charset) throws IOException {
-        return bufferedWriter(Encoding.DEFAULT_CHARSET, Buffering.DEFAULT_BUFFER_SIZE);
+        return bufferedWriter(Resource.DEFAULT_CHARSET, Resource.DEFAULT_BUFFER_SIZE);
     }
     
     default BufferedWriterOf<T> bufferedWriter(String charsetName) throws IOException {
-        return bufferedWriter(Charset.forName(charsetName), Buffering.DEFAULT_BUFFER_SIZE);
+        return bufferedWriter(Charset.forName(charsetName), Resource.DEFAULT_BUFFER_SIZE);
     }
     
     // PRINT
@@ -38,11 +37,11 @@ public interface ByteWriterChannel<T> extends CharWriterChannel<T> {
     }
     
     default PrintWriterOf<T> printWriter(Charset charset) throws IOException {
-        return printWriter(charset, Buffering.DEFAULT_BUFFER_SIZE);
+        return printWriter(charset, Resource.DEFAULT_BUFFER_SIZE);
     }
     
     default PrintWriterOf<T> printWriter(String charsetName) throws IOException {
-        return printWriter(charsetName, Buffering.DEFAULT_BUFFER_SIZE);
+        return printWriter(charsetName, Resource.DEFAULT_BUFFER_SIZE);
     }
     
     // PRINT AUTOFLUSH
@@ -54,11 +53,11 @@ public interface ByteWriterChannel<T> extends CharWriterChannel<T> {
     }
     
     default PrintWriterOf<T> printWriter(Charset charset, boolean autoflush) throws IOException {
-        return printWriter(charset, Buffering.DEFAULT_BUFFER_SIZE, autoflush);
+        return printWriter(charset, Resource.DEFAULT_BUFFER_SIZE, autoflush);
     }
     
     default PrintWriterOf<T> printWriter(String charsetName, boolean autoflush) throws IOException {
-        return printWriter(charsetName, Buffering.DEFAULT_BUFFER_SIZE, autoflush);
+        return printWriter(charsetName, Resource.DEFAULT_BUFFER_SIZE, autoflush);
     }
     
 }

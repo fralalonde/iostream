@@ -2,8 +2,6 @@ package ca.rbon.iostream.proxy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -22,8 +20,6 @@ public class ZipStreamTest {
         try {
             zos.putNextEntry(new ZipEntry("a"));
             zos.write("aaaaaaa".getBytes());
-            assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
-            assertThat(zos.closer.getLinks().size()).isEqualTo(1);
         } finally {
             zos.close();
         }
@@ -48,9 +44,6 @@ public class ZipStreamTest {
             zos.putNextEntry(ze);
             zos.write("aaaaaaa".getBytes());
             zos.finish();
-            assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
-            assertThat(zos.closer.getLinks().get(1)).isInstanceOf(BufferedOutputStream.class);
-            assertThat(zos.closer.getLinks().size()).isEqualTo(2);
         } finally {
             zos.close();
         }
@@ -71,8 +64,6 @@ public class ZipStreamTest {
         try {
             zos.putNextEntry(new ZipEntry("ééé"));
             zos.write("aaaaaaa".getBytes());
-            assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
-            assertThat(zos.closer.getLinks().size()).isEqualTo(1);
         } finally {
             zos.close();
         }
@@ -95,8 +86,6 @@ public class ZipStreamTest {
         try {
             zos.putNextEntry(new ZipEntry("ééé"));
             zos.write("aaaaaaa".getBytes());
-            assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
-            assertThat(zos.closer.getLinks().size()).isEqualTo(1);
         } finally {
             zos.close();
         }

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import ca.rbon.iostream.proxy.BufferedReaderOf;
 import ca.rbon.iostream.proxy.ReaderOf;
-import ca.rbon.iostream.resource.Buffering;
+import ca.rbon.iostream.resource.Resource;
 
 public interface CharReaderChannel<T> {
     
@@ -13,7 +13,7 @@ public interface CharReaderChannel<T> {
     BufferedReaderOf<T> bufferedReader(int bufferSize) throws IOException;
     
     default BufferedReaderOf<T> bufferedReader() throws IOException {
-        return bufferedReader(Buffering.DEFAULT_BUFFER_SIZE);
-    }    
+        return bufferedReader(Resource.DEFAULT_BUFFER_SIZE);
+    }
     
 }

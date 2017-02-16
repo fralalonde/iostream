@@ -1,15 +1,18 @@
 package ca.rbon.iostream.resource;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
-import ca.rbon.iostream.Chain;
-import ca.rbon.iostream.ChainClose;
-import ca.rbon.iostream.Resource;
 import ca.rbon.iostream.proxy.BufferedInputOf;
 import ca.rbon.iostream.proxy.BufferedOutputOf;
 import ca.rbon.iostream.proxy.BufferedReaderOf;
@@ -29,93 +32,183 @@ import ca.rbon.iostream.proxy.ZipInputOf;
 import ca.rbon.iostream.proxy.ZipOutputOf;
 
 /**
- * <p>Abstract BasePicker class.</p>
+ * <p>
+ * Abstract BasePicker class.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public abstract class BaseResource<T> extends ChainClose implements Resource<T> {
+public abstract class Resource<T> {
     
     /**
-     * <p>getReader.</p>
+     * No charset specified, use system default
+     */
+    public static final Charset DEFAULT_CHARSET = null;
+    
+    /**
+     * No buffersize specified, use default
+     */
+    public static final int DEFAULT_BUFFER_SIZE = -1;
+    
+    /**
+     * Do not buffer the stream
+     */
+    public static final int UNBUFFERED = -2;
+    
+    static InputStreamReader streamReader(InputStream stream, Charset charset) {
+        return charset == DEFAULT_CHARSET
+                ? new InputStreamReader(stream)
+                : new InputStreamReader(stream, charset);
+    }
+    
+    static OutputStreamWriter streamWriter(OutputStream stream, Charset charset) {
+        return charset == DEFAULT_CHARSET
+                ? new OutputStreamWriter(stream)
+                : new OutputStreamWriter(stream, charset);
+    }
+    
+    private static int validBufferSize(int size) {
+        if (size < UNBUFFERED) {
+            throw new IllegalArgumentException("BufferSize '" + size + "' is invalid.");
+        }
+        return size;
+    }
+    
+    static InputStream buffer(InputStream is, int size) {
+        switch (validBufferSize(size)) {
+            case UNBUFFERED:
+                return is;
+            case DEFAULT_BUFFER_SIZE:
+                return new BufferedInputStream(is);
+            default:
+                return new BufferedInputStream(is, size);
+        }
+    }
+    
+    static OutputStream buffer(OutputStream is, int size) {
+        switch (validBufferSize(size)) {
+            case UNBUFFERED:
+                return is;
+            case DEFAULT_BUFFER_SIZE:
+                return new BufferedOutputStream(is);
+            default:
+                return new BufferedOutputStream(is, size);
+        }
+    }
+    
+    static Reader buffer(Reader is, int size) {
+        switch (validBufferSize(size)) {
+            case UNBUFFERED:
+                return is;
+            case DEFAULT_BUFFER_SIZE:
+                return new BufferedReader(is);
+            default:
+                return new BufferedReader(is, size);
+        }
+    }
+    
+    static Writer buffer(Writer is, int size) {
+        switch (validBufferSize(size)) {
+            case UNBUFFERED:
+                return is;
+            case DEFAULT_BUFFER_SIZE:
+                return new BufferedWriter(is);
+            default:
+                return new BufferedWriter(is, size);
+        }
+    }
+    
+    public abstract T getResource() throws IOException;
+    
+    /**
+     * <p>
+     * getReader.
+     * </p>
      *
-     * @param ch a {@link ca.rbon.iostream.Chain} object.
      * @return a {@link java.io.Reader} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract Reader getReader(Chain ch) throws IOException;
+    protected Reader getReader() throws IOException {
+        return null;
+    }
     
     /**
-     * <p>getWriter.</p>
+     * <p>
+     * getWriter.
+     * </p>
      *
-     * @param ch a {@link ca.rbon.iostream.Chain} object.
      * @return a {@link java.io.Writer} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract Writer getWriter(Chain ch) throws IOException;
+    protected Writer getWriter() throws IOException {
+        return null;
+    }
     
     /**
-     * <p>getOutputStream.</p>
-     * @param chain TODO
-     *
+     * <p>
+     * getOutputStream.
+     * </p>
+     * 
      * @return a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract OutputStream getOutputStream(Chain chain) throws IOException;
+    protected abstract OutputStream getOutputStream() throws IOException;
     
     /**
-     * <p>getInputStream.</p>
-     * @param chain TODO
-     *
+     * <p>
+     * getInputStream.
+     * </p>
+     * 
      * @return a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract InputStream getInputStream(Chain chain) throws IOException;
+    protected abstract InputStream getInputStream() throws IOException;
     
     // SOURCE
     
     private InputStream wrappedBufferedInput(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(getInputStream(this), bufferSize, this);
+        return buffer(getInputStream(), bufferSize);
     }
     
     private Reader wrappedBufferedReader(Charset charset, int bufferSize) throws IOException {
         Reader encoded = wrappedEncodedReader(charset);
-        return Buffering.buffer(encoded, bufferSize, this);
+        return buffer(encoded, bufferSize);
     }
     
     private Reader wrappedEncodedReader(Charset charset) throws IOException {
-        Reader natural = getReader(this);
+        Reader natural = getReader();
         Reader encoded = natural != null
                 ? natural
-                : Encoding.streamReader(getInputStream(this), charset);
-        encoded = addLink(encoded);
+                : streamReader(getInputStream(), charset);
         return encoded;
     }
     
     // SINK
     
     private OutputStream wrappedBufferOut(Charset charset, int bufferSize) throws IOException {
-        return Buffering.buffer(getOutputStream(this), bufferSize, this);
+        return buffer(getOutputStream(), bufferSize);
     }
     
     private Writer wrappedWriter(Charset charset, int bufferSize) throws IOException {
         Writer encoded = wrappedEncodedWriter(charset);
-        return Buffering.buffer(encoded, bufferSize, this);
+        return buffer(encoded, bufferSize);
     }
     
     private Writer wrappedEncodedWriter(Charset charset) throws IOException {
-        Writer natural = getWriter(this);
+        Writer natural = getWriter();
         Writer encoded = natural != null
                 ? natural
-                : Encoding.streamWriter(getOutputStream(this), charset);
-        encoded = addLink(encoded);
+                : streamWriter(getOutputStream(), charset);
         return encoded;
     }
     
     // INPUT
     
     /**
-     * <p>zipInputStream.</p>
+     * <p>
+     * zipInputStream.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
@@ -129,30 +222,36 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>bufferedInputStream.</p>
+     * <p>
+     * bufferedInputStream.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.BufferedInputOf} object.
      * @throws java.io.IOException if any.
      */
     public BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException {
-        return bufferSize > Buffering.DEFAULT_BUFFER_SIZE
-                ? new BufferedInputOf<>(this, getInputStream(this), bufferSize)
-                : new BufferedInputOf<>(this, getInputStream(this));
+        return bufferSize > DEFAULT_BUFFER_SIZE
+                ? new BufferedInputOf<>(this, getInputStream(), bufferSize)
+                : new BufferedInputOf<>(this, getInputStream());
     }
     
     /**
-     * <p>inputStream.</p>
+     * <p>
+     * inputStream.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.proxy.InputStreamOf} object.
      * @throws java.io.IOException if any.
      */
     public InputStreamOf<T> inputStream() throws IOException {
-        return new InputStreamOf<>(this, getInputStream(this));
+        return new InputStreamOf<>(this, getInputStream());
     }
     
     /**
-     * <p>dataInputStream.</p>
+     * <p>
+     * dataInputStream.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.DataInputOf} object.
@@ -163,7 +262,9 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>objectInputStream.</p>
+     * <p>
+     * objectInputStream.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.ObjectInputOf} object.
@@ -174,7 +275,9 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>bufferedReader.</p>
+     * <p>
+     * bufferedReader.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
@@ -186,20 +289,24 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>reader.</p>
+     * <p>
+     * reader.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @return a {@link ca.rbon.iostream.proxy.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
     public ReaderOf<T> reader(Charset charset) throws IOException {
-        return new ReaderOf<>(this, wrappedBufferedReader(charset, Buffering.UNBUFFERED));
+        return new ReaderOf<>(this, wrappedBufferedReader(charset, UNBUFFERED));
     }
     
     // OUTPUT
     
     /**
-     * <p>zipOutputStream.</p>
+     * <p>
+     * zipOutputStream.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
@@ -213,30 +320,36 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>bufferedOutputStream.</p>
+     * <p>
+     * bufferedOutputStream.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.BufferedOutputOf} object.
      * @throws java.io.IOException if any.
      */
     public BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException {
-        return bufferSize > Buffering.DEFAULT_BUFFER_SIZE
-                ? new BufferedOutputOf<>(this, getOutputStream(this), bufferSize)
-                : new BufferedOutputOf<>(this, getOutputStream(this));        
+        return bufferSize > DEFAULT_BUFFER_SIZE
+                ? new BufferedOutputOf<>(this, getOutputStream(), bufferSize)
+                : new BufferedOutputOf<>(this, getOutputStream());
     }
     
     /**
-     * <p>outputStream.</p>
+     * <p>
+     * outputStream.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.proxy.OutputStreamOf} object.
      * @throws java.io.IOException if any.
      */
     public OutputStreamOf<T> outputStream() throws IOException {
-        return new OutputStreamOf<>(this, getOutputStream(this));
+        return new OutputStreamOf<>(this, getOutputStream());
     }
     
     /**
-     * <p>dataOutputStream.</p>
+     * <p>
+     * dataOutputStream.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.DataOutputOf} object.
@@ -247,7 +360,9 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>objectOutputStream.</p>
+     * <p>
+     * objectOutputStream.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.ObjectOutputOf} object.
@@ -258,7 +373,9 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>printWriter.</p>
+     * <p>
+     * printWriter.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
@@ -270,7 +387,9 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>printWriter.</p>
+     * <p>
+     * printWriter.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
@@ -283,7 +402,9 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>bufferedWriter.</p>
+     * <p>
+     * bufferedWriter.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
@@ -295,73 +416,87 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
     }
     
     /**
-     * <p>writer.</p>
+     * <p>
+     * writer.
+     * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @return a {@link ca.rbon.iostream.proxy.WriterOf} object.
      * @throws java.io.IOException if any.
      */
     public WriterOf<T> writer(Charset charset) throws IOException {
-        return new WriterOf<>(this, wrappedWriter(charset, Buffering.UNBUFFERED));
+        return new WriterOf<>(this, wrappedWriter(charset, UNBUFFERED));
     }
     
     // STRAIGHT
     
     /**
-     * <p>reader.</p>
+     * <p>
+     * reader.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.proxy.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
     public ReaderOf<T> reader() throws IOException {
-        return reader(Encoding.DEFAULT_CHARSET);
+        return reader(DEFAULT_CHARSET);
     }
     
     /**
-     * <p>bufferedReader.</p>
+     * <p>
+     * bufferedReader.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
     public BufferedReaderOf<T> bufferedReader(int bufferSize) throws IOException {
-        return bufferedReader(Encoding.DEFAULT_CHARSET, bufferSize);
+        return bufferedReader(DEFAULT_CHARSET, bufferSize);
     }
     
     /**
-     * <p>writer.</p>
+     * <p>
+     * writer.
+     * </p>
      *
      * @return a {@link ca.rbon.iostream.proxy.WriterOf} object.
      * @throws java.io.IOException if any.
      */
     public WriterOf<T> writer() throws IOException {
-        return writer(Encoding.DEFAULT_CHARSET);
+        return writer(DEFAULT_CHARSET);
     }
     
     /**
-     * <p>bufferedWriter.</p>
+     * <p>
+     * bufferedWriter.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
     public BufferedWriterOf<T> bufferedWriter(int bufferSize) throws IOException {
-        return bufferedWriter(Encoding.DEFAULT_CHARSET, bufferSize);
+        return bufferedWriter(DEFAULT_CHARSET, bufferSize);
     }
     
     /**
-     * <p>printWriter.</p>
+     * <p>
+     * printWriter.
+     * </p>
      *
      * @param bufferSize a int.
      * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     public PrintWriterOf<T> printWriter(int bufferSize) throws IOException {
-        return printWriter(Encoding.DEFAULT_CHARSET, bufferSize);
+        return printWriter(DEFAULT_CHARSET, bufferSize);
     }
     
     /**
-     * <p>printWriter.</p>
+     * <p>
+     * printWriter.
+     * </p>
      *
      * @param bufferSize a int.
      * @param autoflush a boolean.
@@ -369,17 +504,15 @@ public abstract class BaseResource<T> extends ChainClose implements Resource<T> 
      * @throws java.io.IOException if any.
      */
     public PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException {
-        return printWriter(Encoding.DEFAULT_CHARSET, bufferSize, autoflush);
+        return printWriter(DEFAULT_CHARSET, bufferSize, autoflush);
     }
     
     public GZipInputOf<T> gzipInputStream(int bufferSize) throws IOException {
-        return new GZipInputOf<>(this, getInputStream(this));
+        return new GZipInputOf<>(this, getInputStream());
     }
-
+    
     public GZipOutputOf<T> gzipOutputStream(int bufferSize) throws IOException {
-        return new GZipOutputOf<>(this, getOutputStream(this));
+        return new GZipOutputOf<>(this, getOutputStream());
     }
-    
-    
     
 }

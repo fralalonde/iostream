@@ -9,8 +9,7 @@ import ca.rbon.iostream.proxy.GZipInputOf;
 import ca.rbon.iostream.proxy.InputStreamOf;
 import ca.rbon.iostream.proxy.ObjectInputOf;
 import ca.rbon.iostream.proxy.ZipInputOf;
-import ca.rbon.iostream.resource.Buffering;
-import ca.rbon.iostream.resource.Encoding;
+import ca.rbon.iostream.resource.Resource;
 
 public interface InputStreamChannel<T> {
     
@@ -19,7 +18,7 @@ public interface InputStreamChannel<T> {
     BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException;
     
     default BufferedInputOf<T> bufferedInputStream() throws IOException {
-        return bufferedInputStream(Buffering.DEFAULT_BUFFER_SIZE);
+        return bufferedInputStream(Resource.DEFAULT_BUFFER_SIZE);
     }
     
     ZipInputOf<T> zipInputStream(Charset charset, int bufferSize) throws IOException;
@@ -29,37 +28,52 @@ public interface InputStreamChannel<T> {
     }
     
     default ZipInputOf<T> zipInputStream(Charset charset) throws IOException {
-        return zipInputStream(charset, Buffering.UNBUFFERED);
+        return zipInputStream(charset, Resource.UNBUFFERED);
     }
     
     default ZipInputOf<T> zipInputStream(String charsetName) throws IOException {
-        return zipInputStream(charsetName, Buffering.UNBUFFERED);
+        return zipInputStream(charsetName, Resource.UNBUFFERED);
     }
     
     default ZipInputOf<T> zipInputStream(int bufferSize) throws IOException {
-        return zipInputStream(Encoding.DEFAULT_CHARSET, bufferSize);
+        return zipInputStream(Resource.DEFAULT_CHARSET, bufferSize);
     }
     
     default ZipInputOf<T> zipInputStream() throws IOException {
-        return zipInputStream(Encoding.DEFAULT_CHARSET, Buffering.UNBUFFERED);
+        return zipInputStream(Resource.DEFAULT_CHARSET, Resource.UNBUFFERED);
     }
     
     GZipInputOf<T> gzipInputStream(int bufferSize) throws IOException;
     
     default GZipInputOf<T> gzipInputStream() throws IOException {
-        return gzipInputStream(Buffering.DEFAULT_BUFFER_SIZE);
+        return gzipInputStream(Resource.DEFAULT_BUFFER_SIZE);
     }
     
     DataInputOf<T> dataInputStream(int bufferSize) throws IOException;
     
     default DataInputOf<T> dataInputStream() throws IOException {
-        return dataInputStream(Buffering.UNBUFFERED);
+        return dataInputStream(Resource.UNBUFFERED);
     }
     
+    /**
+     * Build a buffered object input stream.
+     * NOTE: Unlike other input streams, closing an ObjectInputStream does NOT close the underlying stream.
+     * 
+     * @param bufferSize the size of the read buffer
+     * @return an ObjectInputOf
+     * @throws IOException if something bad happens
+     */
     ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException;
     
+    /**
+     * Build a unbuffered object input stream.
+     * NOTE: Unlike other input streams, closing an ObjectInputStream does NOT close the underlying stream.
+     * 
+     * @return an ObjectInputOf
+     * @throws IOException if something bad happens
+     */
     default ObjectInputOf<T> objectInputStream() throws IOException {
-        return objectInputStream(Buffering.UNBUFFERED);
+        return objectInputStream(Resource.UNBUFFERED);
     }
     
 }

@@ -9,7 +9,7 @@ Better ergonomics for Java IO streams building and disposal.
 * Compact, fluent, safe builder for JDK InputStream, OutputStream, Reader and Writer classes
 * Builds File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console resources and filters.
 * Retains default Java behavior and parameters  
-* Composed objects are closed as one element
+* Composed objects are unambiguously closed as one
 * Composed objects expose underlying resource for retrieval of results / follow up operations
 
 ```java
@@ -60,23 +60,6 @@ If a resource only implements streams (like `socket()`), and you require `Writer
 BufferedWriter writer = IoStream.socket("spamaway.net", 25).bufferedWriter();
 ``` 
 
-### Closing
-Next, when you're done reading or writing, you need to `close()` streams and readers and writers that were created. This is where `IoStream` shines compared to good ol'Java. Closing the single construct that was returned by IoStream will close all objects that were created in one swoop, from the outmost object down to the inner resource. 
-```java
-Writer writer = IoStream.file("a.txt").printWriter();
-// ... 
-writer.close();
-``` 
-Compare this to the old way, where you have to track and dispose of any intermediate object created, an then close them _in the correct order_.
-```java
-Writer writer1 = new FileWriter("a.txt");
-Writer writer2 = new BufferedWriter(writer1);
-// ... 
-writer2.close();
-writer1.close();
-```
-Not only is the `IoStream` code prettier, it's also safer.   
-
 ### try-with syntax
 Obviously, `IoStream` goes hand in hand with the try-with syntax introduced in JDK 7.
 ```java
@@ -93,7 +76,7 @@ PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
 writer.close();
 byte[] myPrecious = writer.getResource();
 ```
-As with `close()`, in this case, the classic JDK code forces you to juggle with the inner and outer streams. 
+The classic JDK code forces you to juggle with the inner and outer streams. 
 ```java
 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 Writer writer = new PrintWriter(byteArrayOutputStream);

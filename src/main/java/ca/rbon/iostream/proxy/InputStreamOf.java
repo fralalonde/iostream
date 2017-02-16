@@ -3,42 +3,37 @@ package ca.rbon.iostream.proxy;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ca.rbon.iostream.Resource;
-import ca.rbon.iostream.resource.BaseResource;
+import ca.rbon.iostream.resource.Resource;
 
 /**
- * <p>InputStreamOf class.</p>
+ * <p>
+ * InputStreamOf class.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public class InputStreamOf<T> extends InputStream implements Resource<T> {
+public class InputStreamOf<T> extends InputStream  {
     
     final InputStream delegate;
     
-    final BaseResource<T> closer;
+    final Resource<T> closer;
     
     /**
-     * <p>Constructor for InputStreamOf.</p>
+     * <p>
+     * Constructor for InputStreamOf.
+     * </p>
      *
-     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
+     * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    public InputStreamOf(BaseResource<T> cl, InputStream os) throws IOException {
-        delegate = os;        
+    public InputStreamOf(Resource<T> cl, InputStream os) throws IOException {
+        delegate = os;
         closer = cl;
     }
     
     /** {@inheritDoc} */
-    @Override
-    public void close() throws IOException {
-        super.close();
-        closer.close();
-    }
-    
-    /** {@inheritDoc} */
-    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

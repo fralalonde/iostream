@@ -2,8 +2,6 @@ package ca.rbon.iostream.proxy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -20,8 +18,6 @@ public class DataStreamTest {
         DataOutputOf<byte[]> zos = IoStream.bytes().dataOutputStream();
         try {
             zos.writeBytes("AA");
-            assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
-            assertThat(zos.closer.getLinks().size()).isEqualTo(1);
         } finally {
             zos.close();
         }
@@ -38,9 +34,6 @@ public class DataStreamTest {
         DataOutputOf<byte[]> zos = IoStream.bytes().dataOutputStream(3);
         try {
             zos.writeBytes("AA");
-            assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
-            assertThat(zos.closer.getLinks().get(1)).isInstanceOf(BufferedOutputStream.class);
-            assertThat(zos.closer.getLinks().size()).isEqualTo(2);
         } finally {
             zos.close();
         }
@@ -50,6 +43,5 @@ public class DataStreamTest {
             assertThat(new String(bytes)).isEqualTo("AA");
         }
     }
-    
     
 }

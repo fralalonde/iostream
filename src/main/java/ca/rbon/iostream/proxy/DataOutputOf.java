@@ -4,8 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import ca.rbon.iostream.Resource;
-import ca.rbon.iostream.resource.BaseResource;
+import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>DataOutputOf class.</p>
@@ -13,31 +12,23 @@ import ca.rbon.iostream.resource.BaseResource;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class DataOutputOf<T> extends DataOutputStream implements Resource<T> {
+public class DataOutputOf<T> extends DataOutputStream  {
     
-    final BaseResource<T> closer;
+    final Resource<T> closer;
     
     /**
      * <p>Constructor for DataOutputOf.</p>
      *
-     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
+     * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    public DataOutputOf(BaseResource<T> cl, OutputStream os) throws IOException {
+    public DataOutputOf(Resource<T> cl, OutputStream os) throws IOException {
         super(os);
         closer = cl;
     }
     
     /** {@inheritDoc} */
-    @Override
-    public void close() throws IOException {
-        super.close();
-        closer.close();
-    }
-    
-    /** {@inheritDoc} */
-    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

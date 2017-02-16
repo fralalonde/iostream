@@ -3,22 +3,21 @@ package ca.rbon.iostream.resource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 
-import ca.rbon.iostream.Chain;
 import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.InOutChannel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 /**
- * <p>BytesPicker class.</p>
+ * <p>
+ * BytesPicker class.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public class ByteArrayResource extends BaseResource<byte[]> implements InOutChannel<byte[]> {
+public class ByteArrayResource extends Resource<byte[]> implements InOutChannel<byte[]> {
     
     /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
@@ -32,7 +31,9 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
     ByteArrayOutputStream outStream;
     
     /**
-     * <p>getResource.</p>
+     * <p>
+     * getResource.
+     * </p>
      *
      * @return an array of byte.
      */
@@ -48,22 +49,16 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
     
     /** {@inheritDoc} */
     @Override
-    protected ByteArrayInputStream getInputStream(Chain chain) throws IOException {
+    protected ByteArrayInputStream getInputStream() throws IOException {
         if (bytes == null) {
             throw new CodeFlowError(NO_BYTE_ARRAY_SET);
         }
-        return chain.addLink(new ByteArrayInputStream(bytes));
+        return new ByteArrayInputStream(bytes);
     }
     
     /** {@inheritDoc} */
     @Override
-    protected Reader getReader(Chain chain) throws IOException {
-        return null;
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected ByteArrayOutputStream getOutputStream(Chain chain) throws IOException {
+    protected ByteArrayOutputStream getOutputStream() throws IOException {
         if (bytes != null) {
             outStream = initialCapacity > DEFAULT_CAPACITY
                     ? new ByteArrayOutputStream(initialCapacity + bytes.length)
@@ -74,13 +69,7 @@ public class ByteArrayResource extends BaseResource<byte[]> implements InOutChan
                     ? new ByteArrayOutputStream(initialCapacity)
                     : new ByteArrayOutputStream();
         }
-        return chain.addLink(outStream);
+        return outStream;
     }
     
-    /** {@inheritDoc} */
-    @Override
-    protected Writer getWriter(Chain chain) throws IOException {
-        return null;
-    }
-
 }

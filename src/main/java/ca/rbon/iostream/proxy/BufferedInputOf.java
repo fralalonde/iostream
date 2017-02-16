@@ -4,56 +4,50 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ca.rbon.iostream.Resource;
-import ca.rbon.iostream.resource.BaseResource;
+import ca.rbon.iostream.resource.Resource;
 
 /**
- * <p>BufferedInputOf class.</p>
+ * <p>
+ * BufferedInputOf class.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public class BufferedInputOf<T> extends BufferedInputStream implements Resource<T> {
+public class BufferedInputOf<T> extends BufferedInputStream {
     
-    final BaseResource<T> closer;
+    final Resource<T> closer;
     
     /**
-     * <p>Constructor for BufferedInputOf.</p>
+     * <p>
+     * Constructor for BufferedInputOf.
+     * </p>
      *
-     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
+     * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param is a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    public BufferedInputOf(BaseResource<T> cl, InputStream is) throws IOException {
-        super(is);        
+    public BufferedInputOf(Resource<T> cl, InputStream is) throws IOException {
+        super(is);
         closer = cl;
     }
     
     /**
-     * <p>Constructor for BufferedInputOf.</p>
+     * <p>
+     * Constructor for BufferedInputOf.
+     * </p>
      *
-     * @param cl a {@link ca.rbon.iostream.BaseResource} object.
+     * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param is a {@link java.io.InputStream} object.
      * @param bufferSize a int.
      * @throws java.io.IOException if any.
      */
-    public BufferedInputOf(BaseResource<T> cl, InputStream is, int bufferSize) throws IOException {
-        super(is, bufferSize);        
+    public BufferedInputOf(Resource<T> cl, InputStream is, int bufferSize) throws IOException {
+        super(is, bufferSize);
         closer = cl;
     }
     
-    /**
-     * <p>close.</p>
-     *
-     * @throws java.io.IOException if any.
-     */
-    public void close() throws IOException {
-        super.close();
-        closer.close();
-    }
-    
     /** {@inheritDoc} */
-    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }
