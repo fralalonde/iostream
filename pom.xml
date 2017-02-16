@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.7.1-SNAPSHOT</version>
+    <version>0.7.1</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Better ergonomics for Java IO stream handling</description>
@@ -29,7 +29,7 @@
         <connection>scm:git:git@github.com:fralalonde/iostream.git</connection>
         <developerConnection>scm:git:git@github.com:fralalonde/iostream.git</developerConnection>
         <url>http://github.com/fralalonde/iostream/tree/master</url>
-        <tag>iostream-0.6.4-SNAPSHOT</tag>
+        <tag>iostream-0.7.1-SNAPSHOT</tag>
     </scm>
 
     <organization>
@@ -194,7 +194,7 @@
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                     <!-- explicitly update the README.md with new release version -->
-                    <preparationGoals>resources:copy-resources</preparationGoals>
+                    <!-- <preparationGoals>resources:copy-resources</preparationGoals> -->
                 </configuration>
             </plugin>
 
@@ -234,10 +234,10 @@
         </plugins>
 
         <!-- configure explicitly called plugins (not attached to regular lifecycle) -->
-        <pluginManagement>
+        <!-- <pluginManagement>
             <plugins>
                 <plugin>
-                    <!-- update the README.md -->
+                    update the README.md
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
@@ -266,7 +266,7 @@
                     </executions>
                 </plugin>
             </plugins>
-        </pluginManagement>
+        </pluginManagement> -->
 
     </build>
 
