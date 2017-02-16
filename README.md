@@ -9,7 +9,7 @@ Better ergonomics for Java IO streams building and disposal.
 * Compact, fluent, safe builder for JDK InputStream, OutputStream, Reader and Writer classes
 * Builds File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console resources and filters.
 * Retains default Java behavior and parameters  
-* Composed objects are closed as one element
+* Composed objects are unambiguously closed as one
 * Composed objects expose underlying resource for retrieval of results / follow up operations
 
 ```java
@@ -33,11 +33,11 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 <dependency>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.7.0`.
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.7.1`.
 
 This library requires Java 1.8 (and nothing but).
       
@@ -60,23 +60,6 @@ If a resource only implements streams (like `socket()`), and you require `Writer
 BufferedWriter writer = IoStream.socket("spamaway.net", 25).bufferedWriter();
 ``` 
 
-### Closing
-Next, when you're done reading or writing, you need to `close()` streams and readers and writers that were created. This is where `IoStream` shines compared to good ol'Java. Closing the single construct that was returned by IoStream will close all objects that were created in one swoop, from the outmost object down to the inner resource. 
-```java
-Writer writer = IoStream.file("a.txt").printWriter();
-// ... 
-writer.close();
-``` 
-Compare this to the old way, where you have to track and dispose of any intermediate object created, an then close them _in the correct order_.
-```java
-Writer writer1 = new FileWriter("a.txt");
-Writer writer2 = new BufferedWriter(writer1);
-// ... 
-writer2.close();
-writer1.close();
-```
-Not only is the `IoStream` code prettier, it's also safer.   
-
 ### try-with syntax
 Obviously, `IoStream` goes hand in hand with the try-with syntax introduced in JDK 7.
 ```java
@@ -93,7 +76,7 @@ PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
 writer.close();
 byte[] myPrecious = writer.getResource();
 ```
-As with `close()`, in this case, the classic JDK code forces you to juggle with the inner and outer streams. 
+The classic JDK code forces you to juggle with the inner and outer streams. 
 ```java
 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 Writer writer = new PrintWriter(byteArrayOutputStream);
@@ -105,12 +88,10 @@ byte[] myPrecious = byteArrayOutputStream.toByteArray();
 
 ## Companion libraries
 
-`IoStream` is an excellent companion to [Apache Commons IO](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) class. There is little overlap between the libraries. `IoStream` helps to build the streams while `org.apache.commons.io.IOUtils` takes care of the operations, such as `copy()`. 
+`IoStream` is an excellent companion to [Apache Commons IO's](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) `IOUtils` class. There is little overlap between the libraries. `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()`.
 
 
 ## Things you can do with it
-
-Byte arrays, Files and Strings and Sockets are currently implemented. Non-deprecated Java classes semantics are preserved. Future version should add `Random` and `Streams` resources, the last one being for decorating streams provided by other libraries. 
 
 ### Files
 ```java
@@ -148,6 +129,15 @@ IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```java
 IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
 InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream(); 
+```
+
+### Existing input and output streams integration
+```java
+InputStream providedInput = new ByteArrayInputStream(new byte[7]);
+IoStream.stream(providedInput).gzipInputStream();
+
+OutputStream providedOutput = new ByteArrayOutputStream();
+IoStream.stream(providedOutput).printWriter(256);
 ```
 
 ## FAQ

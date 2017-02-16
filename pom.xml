@@ -194,6 +194,7 @@
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                     <!-- explicitly update the README.md with new release version -->
+                    <!-- does not work properly, find something else -->
                     <!-- <preparationGoals>resources:copy-resources</preparationGoals> -->
                 </configuration>
             </plugin>
@@ -232,41 +233,6 @@
                 </executions>
             </plugin>
         </plugins>
-
-        <!-- configure explicitly called plugins (not attached to regular lifecycle) -->
-        <!-- <pluginManagement>
-            <plugins>
-                <plugin>
-                    update the README.md
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.2</version>
-                    <executions>
-                        <execution>
-                            <id>update-README</id>
-                            <phase>deploy</phase>
-                            <goals>
-                                <goal>copy-resource</goal>
-                            </goals>
-                            <configuration>
-                                <overwrite>true</overwrite>
-                                <outputDirectory>${project.basedir}</outputDirectory>
-                                <resources>
-                                    <resource>
-                                        <directory>${project.basedir}/src</directory>
-                                        <includes>
-                                            <include>README.md</include>
-                                        </includes>
-                                        <filtering>true</filtering>
-                                    </resource>
-                                </resources>
-                                <encoding>UTF-8</encoding>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement> -->
 
     </build>
 

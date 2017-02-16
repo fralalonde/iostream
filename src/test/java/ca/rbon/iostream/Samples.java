@@ -1,11 +1,13 @@
 package ca.rbon.iostream;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -20,7 +22,7 @@ public class Samples {
         try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter("UTF-16")) {
             File myFileTxt = pw.getResource();
             pw.write("Hello from file " + myFileTxt.getName());
-        }        
+        }
     }
     
     public void smallSample2() throws IOException {
@@ -28,7 +30,7 @@ public class Samples {
             dataFile.write(42);
             try (BufferedWriter bufFile = IoStream.file(dataFile.getResource()).bufferedWriter()) {
                 bufFile.append("is the answer");
-            } 
+            }
         }
     }
     
@@ -82,21 +84,26 @@ public class Samples {
     public void strings() throws IOException {
         IoStream.string("agaga gogo").bufferedReader();
         IoStream.string("agaga gogo").reader();
-        
         String str = IoStream.string().bufferedWriter().getResource();
     }
     
     public void byteArrays() throws IOException {
-        
         IoStream.bytes().outputStream();
         byte[] bytes = IoStream.bytes().dataOutputStream().getResource();
-        
         IoStream.bytes(new byte[]{0, 1, 2}).objectInputStream();
     }
     
     public void sockets() throws IOException {
         IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
         InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream();
+    }
+    
+    public void streams() throws IOException {
+        InputStream providedInput = new ByteArrayInputStream(new byte[7]);
+        IoStream.stream(providedInput).gzipInputStream();
+        
+        OutputStream providedOutput = new ByteArrayOutputStream();
+        IoStream.stream(providedOutput).printWriter(256);
     }
     
     public byte[] fluent() throws IOException {
