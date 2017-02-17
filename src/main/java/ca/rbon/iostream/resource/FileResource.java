@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ca.rbon.iostream.channel.InOutChannel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class FileResource extends Resource<File> implements InOutChannel<File> {
+public class FileResource extends Resource<File> {
     
     @NonNull
     final File file;

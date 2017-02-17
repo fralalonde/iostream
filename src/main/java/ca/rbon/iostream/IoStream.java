@@ -7,14 +7,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.net.Socket;
 
-import ca.rbon.iostream.channel.CharWriterChannel;
-import ca.rbon.iostream.channel.InOutChannel;
-import ca.rbon.iostream.channel.InOutCharChannel;
-import ca.rbon.iostream.channel.InputChannel;
-import ca.rbon.iostream.channel.OutputChannel;
-import ca.rbon.iostream.channel.OutputStreamChannel;
+import ca.rbon.iostream.channel.BytesBiChannel;
+import ca.rbon.iostream.channel.BytesInChannel;
+import ca.rbon.iostream.channel.BytesOutChannel;
+import ca.rbon.iostream.channel.CharBiChannel;
+import ca.rbon.iostream.channel.CharOutChannel;
+import ca.rbon.iostream.channel.part.ByteOut;
 import ca.rbon.iostream.resource.ByteArrayResource;
 import ca.rbon.iostream.resource.ConsoleResource;
 import ca.rbon.iostream.resource.FileResource;
@@ -22,13 +24,14 @@ import ca.rbon.iostream.resource.InputStreamResource;
 import ca.rbon.iostream.resource.OutputStreamResource;
 import ca.rbon.iostream.resource.PipeInResource;
 import ca.rbon.iostream.resource.PipeOutResource;
+import ca.rbon.iostream.resource.Resource;
 import ca.rbon.iostream.resource.SocketResource;
 import ca.rbon.iostream.resource.StringResource;
 
 /**
  * <p>
  * IoStream is the root object for IO streams builder methods.
- * Creating an IO stream involves selecting a resource such as {@link #file(String)} and a channel such as {@link OutputStreamChannel#dataOutputStream()}.
+ * Creating an IO stream involves selecting a resource such as {@link #file(String)} and a channel such as {@link ByteOut#dataOutputStream()}.
  * </p>
  *
  * @author fralalonde
@@ -44,7 +47,7 @@ public class IoStream {
      * @param name Name of the file to use
      * @return An input or output picker
      */
-    public static InOutChannel<File> file(String name) {
+    public static BytesBiChannel<File> file(String name) {
         return file(new File(name));
     }
     
@@ -56,8 +59,9 @@ public class IoStream {
      * @param file File to use
      * @return An input or output picker
      */
-    public static InOutChannel<File> file(File file) {
-        return new FileResource(file, false);
+    @SuppressWarnings("unchecked")
+    public static BytesBiChannel<File> file(File file) {
+        return proxy(new FileResource(file, false), BytesBiChannel.class);
     }
     
     /**
@@ -69,7 +73,7 @@ public class IoStream {
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
-    public static OutputChannel<File> file(String name, boolean append) {
+    public static BytesOutChannel<File> file(String name, boolean append) {
         return file(new File(name), append);
     }
     
@@ -82,8 +86,9 @@ public class IoStream {
      * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
-    public static OutputChannel<File> file(File file, boolean append) {
-        return new FileResource(file, append);
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<File> file(File file, boolean append) {
+        return proxy(new FileResource(file, append), BytesOutChannel.class);
     }
     
     /**
@@ -94,8 +99,9 @@ public class IoStream {
      * @return An output picker
      * @throws java.io.IOException If the file could not be created
      */
-    public static OutputChannel<File> tempFile() throws IOException {
-        return file(File.createTempFile(IoStream.class.getSimpleName(), "tmp"));
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<File> tempFile() throws IOException {
+        return proxy(new FileResource(File.createTempFile(IoStream.class.getSimpleName(), "tmp"), false), BytesOutChannel.class);
     }
     
     /**
@@ -106,8 +112,9 @@ public class IoStream {
      * @param str The string to read or append to
      * @return An input or output char picker
      */
-    public static InOutCharChannel<String> string(String str) {
-        return new StringResource(str, StringResource.DEFAULT_CAPACITY);
+    @SuppressWarnings("unchecked")
+    public static CharBiChannel<String> string(String str) {
+        return proxy(new StringResource(str, StringResource.DEFAULT_CAPACITY), CharBiChannel.class);
     }
     
     /**
@@ -117,7 +124,7 @@ public class IoStream {
      *
      * @return An output char picker
      */
-    public static CharWriterChannel<String> string() {
+    public static CharOutChannel<String> string() {
         return string(null, StringResource.DEFAULT_CAPACITY);
     }
     
@@ -129,7 +136,7 @@ public class IoStream {
      * @param intialCapacity the initial size of the buffer
      * @return An output char picker
      */
-    public static CharWriterChannel<String> string(int intialCapacity) {
+    public static CharOutChannel<String> string(int intialCapacity) {
         return string(null, intialCapacity);
     }
     
@@ -142,8 +149,9 @@ public class IoStream {
      * @param intialCapacity The initial size of the buffer
      * @return An output char picker
      */
-    public static CharWriterChannel<String> string(String str, int intialCapacity) {
-        return new StringResource(str, intialCapacity);
+    @SuppressWarnings("unchecked")
+    public static CharOutChannel<String> string(String str, int intialCapacity) {
+        return proxy(new StringResource(str, intialCapacity), CharOutChannel.class);
     }
     
     /**
@@ -153,7 +161,7 @@ public class IoStream {
      *
      * @return An output picker
      */
-    public static OutputChannel<byte[]> bytes() {
+    public static BytesOutChannel<byte[]> bytes() {
         return bytes(ByteArrayResource.DEFAULT_CAPACITY);
     }
     
@@ -165,8 +173,9 @@ public class IoStream {
      * @param intialCapacity The initial capacity of the buffer
      * @return An output picker
      */
-    public static OutputChannel<byte[]> bytes(int intialCapacity) {
-        return new ByteArrayResource(null, intialCapacity);
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<byte[]> bytes(int intialCapacity) {
+        return proxy(new ByteArrayResource(null, intialCapacity), BytesOutChannel.class);
     }
     
     /**
@@ -177,8 +186,9 @@ public class IoStream {
      * @param array The array to read from or append to
      * @return An input or output picker
      */
-    public static InOutChannel<byte[]> bytes(byte[] array) {
-        return new ByteArrayResource(array, ByteArrayResource.DEFAULT_CAPACITY);
+    @SuppressWarnings("unchecked")
+    public static BytesBiChannel<byte[]> bytes(byte[] array) {
+        return proxy(new ByteArrayResource(array, ByteArrayResource.DEFAULT_CAPACITY), BytesBiChannel.class);
     }
     
     /**
@@ -191,8 +201,9 @@ public class IoStream {
      * @return An input or output picker
      * @param additionalCapacity a int.
      */
-    public static OutputChannel<byte[]> bytes(byte[] array, int additionalCapacity) {
-        return new ByteArrayResource(array, additionalCapacity);
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<byte[]> bytes(byte[] array, int additionalCapacity) {
+        return proxy(new ByteArrayResource(array, additionalCapacity), BytesOutChannel.class);
     }
     
     /**
@@ -205,7 +216,7 @@ public class IoStream {
      * @return An input or output picker
      * @throws java.io.IOException If the socket could not be opened
      */
-    public static InOutChannel<Socket> socket(String host, int port) throws IOException {
+    public static BytesBiChannel<Socket> socket(String host, int port) throws IOException {
         return socket(new Socket(host, port));
     }
     
@@ -218,8 +229,9 @@ public class IoStream {
      * @return An input or output picker
      * @throws java.io.IOException If the socket could not be opened
      */
-    public static InOutChannel<Socket> socket(Socket socket) throws IOException {
-        return new SocketResource(socket);
+    @SuppressWarnings("unchecked")
+    public static BytesBiChannel<Socket> socket(Socket socket) throws IOException {
+        return proxy(new SocketResource(socket), BytesBiChannel.class);
     }
     
     /**
@@ -227,10 +239,11 @@ public class IoStream {
      * Read or write from the console.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.channel.InOutChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object.
      */
-    public static InOutChannel<Console> console() {
-        return new ConsoleResource();
+    @SuppressWarnings("unchecked")
+    public static BytesBiChannel<Console> console() {
+        return proxy(new ConsoleResource(), BytesBiChannel.class);
     }
     
     /**
@@ -238,10 +251,11 @@ public class IoStream {
      * Read from a PipeOutputStream to be built.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
-    public static InputChannel<PipedInputStream> pipeInput() {
-        return new PipeInResource(null);
+    @SuppressWarnings("unchecked")
+    public static BytesInChannel<PipedInputStream> pipeInput() {
+        return proxy(new PipeInResource(null), BytesInChannel.class);
     }
     
     /**
@@ -250,10 +264,11 @@ public class IoStream {
      * </p>
      *
      * @param connect a {@link java.io.PipedOutputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
-    public static InputChannel<PipedInputStream> pipeInput(PipedOutputStream connect) {
-        return new PipeInResource(connect);
+    @SuppressWarnings("unchecked")
+    public static BytesInChannel<PipedInputStream> pipeInput(PipedOutputStream connect) {
+        return proxy(new PipeInResource(connect), BytesInChannel.class);
     }
     
     /**
@@ -261,10 +276,11 @@ public class IoStream {
      * Write to a PipeInputStream to be built.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
      */
-    public static OutputChannel<PipedOutputStream> pipeOutput() {
-        return new PipeOutResource(null);
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<PipedOutputStream> pipeOutput() {
+        return proxy(new PipeOutResource(null), BytesOutChannel.class);
     }
     
     /**
@@ -273,10 +289,11 @@ public class IoStream {
      * </p>
      *
      * @param connect a {@link java.io.PipedInputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
      */
-    public static OutputChannel<PipedOutputStream> pipeOutput(PipedInputStream connect) {
-        return new PipeOutResource(connect);
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<PipedOutputStream> pipeOutput(PipedInputStream connect) {
+        return proxy(new PipeOutResource(connect), BytesOutChannel.class);
     }
     
     // static InOutPick nil() {
@@ -296,10 +313,11 @@ public class IoStream {
      * </p>
      *
      * @param output a {@link java.io.OutputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.OutputChannel} object.
-     */    
-    public static OutputChannel<OutputStream> stream(OutputStream output) {
-        return new OutputStreamResource(output);
+     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<OutputStream> stream(OutputStream output) {
+        return proxy(new OutputStreamResource(output), BytesOutChannel.class);
     }
     
     /**
@@ -311,10 +329,17 @@ public class IoStream {
      * </p>
      *
      * @param input a {@link java.io.InputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.InputChannel} object.
-     */   
-    public static InputChannel<InputStream> stream(InputStream input) {
-        return new InputStreamResource(input);
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesInChannel<InputStream> stream(InputStream input) {
+        return proxy(new InputStreamResource(input), BytesInChannel.class);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static <T> T proxy(Resource<?> rez, Class<T> iface) {
+        InvocationHandler h = new Handler(rez);
+        return (T) Proxy.newProxyInstance(IoStream.class.getClassLoader(), new Class<?>[]{iface}, h);
     }
     
 }

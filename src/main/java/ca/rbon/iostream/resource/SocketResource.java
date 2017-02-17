@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import ca.rbon.iostream.channel.InOutChannel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class SocketResource extends Resource<Socket> implements InOutChannel<Socket> {
+public class SocketResource extends Resource<Socket> {
     
     @NonNull
     final Socket socket;

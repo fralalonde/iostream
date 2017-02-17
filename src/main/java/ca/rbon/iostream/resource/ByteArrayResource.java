@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.channel.InOutChannel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class ByteArrayResource extends Resource<byte[]> implements InOutChannel<byte[]> {
+public class ByteArrayResource extends Resource<byte[]> {
     
     /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
@@ -37,6 +36,7 @@ public class ByteArrayResource extends Resource<byte[]> implements InOutChannel<
      *
      * @return an array of byte.
      */
+    @Override
     public byte[] getResource() {
         if (outStream != null) {
             return outStream.toByteArray();

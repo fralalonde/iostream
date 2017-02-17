@@ -12,15 +12,16 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
+import ca.rbon.iostream.channel.BytesBiChannel;
 import ca.rbon.iostream.proxy.BufferedInputOf;
 import ca.rbon.iostream.proxy.BufferedOutputOf;
 import ca.rbon.iostream.proxy.BufferedReaderOf;
 import ca.rbon.iostream.proxy.BufferedWriterOf;
 import ca.rbon.iostream.proxy.DataInputOf;
 import ca.rbon.iostream.proxy.DataOutputOf;
-import ca.rbon.iostream.proxy.GZipInputOf;
-import ca.rbon.iostream.proxy.GZipOutputOf;
 import ca.rbon.iostream.proxy.InputStreamOf;
 import ca.rbon.iostream.proxy.ObjectInputOf;
 import ca.rbon.iostream.proxy.ObjectOutputOf;
@@ -39,7 +40,7 @@ import ca.rbon.iostream.proxy.ZipOutputOf;
  * @author fralalonde
  * @version $Id: $Id
  */
-public abstract class Resource<T> {
+public abstract class Resource<T> implements BytesBiChannel<T> {
     
     /**
      * No charset specified, use system default
@@ -55,6 +56,11 @@ public abstract class Resource<T> {
      * Do not buffer the stream
      */
     public static final int UNBUFFERED = -2;
+    
+    /**
+     * Not buffersize specified, use default
+     */
+    public static final int NOT_GZIPPED = -2;
     
     static InputStreamReader streamReader(InputStream stream, Charset charset) {
         return charset == DEFAULT_CHARSET
@@ -119,6 +125,8 @@ public abstract class Resource<T> {
         }
     }
     
+    private int gzipBufferSize = NOT_GZIPPED;
+    
     public abstract T getResource() throws IOException;
     
     /**
@@ -165,10 +173,48 @@ public abstract class Resource<T> {
      */
     protected abstract InputStream getInputStream() throws IOException;
     
+    /**
+     * <p>
+     * filteredOut.
+     * </p>
+     * 
+     * @return a {@link java.io.OutputStream} object.
+     * @throws java.io.IOException if any.
+     */
+    private OutputStream filteredOut() throws IOException {
+        switch (gzipBufferSize) {
+            case NOT_GZIPPED:
+                return getOutputStream();
+            case DEFAULT_BUFFER_SIZE:
+                return new GZIPOutputStream(getOutputStream());
+            default:
+                return new GZIPOutputStream(getOutputStream(), gzipBufferSize);
+        }
+    }
+    
+    /**
+     * <p>
+     * filteredIn.
+     * </p>
+     * 
+     * @return a {@link java.io.InputStream} object.
+     * @throws java.io.IOException if any.
+     */
+    private InputStream filteredIn() throws IOException {
+        switch (gzipBufferSize) {
+            case NOT_GZIPPED:
+                return getInputStream();
+            case DEFAULT_BUFFER_SIZE:
+                return new GZIPInputStream(getInputStream());
+            default:
+                return new GZIPInputStream(getInputStream(), gzipBufferSize);
+        }
+    }
+    
     // SOURCE
     
     private InputStream wrappedBufferedInput(Charset charset, int bufferSize) throws IOException {
-        return buffer(getInputStream(), bufferSize);
+        return buffer(filteredIn(), bufferSize);
     }
     
     private Reader wrappedBufferedReader(Charset charset, int bufferSize) throws IOException {
@@ -180,14 +226,14 @@ public abstract class Resource<T> {
         Reader natural = getReader();
         Reader encoded = natural != null
                 ? natural
-                : streamReader(getInputStream(), charset);
+                : streamReader(filteredIn(), charset);
         return encoded;
     }
     
     // SINK
     
     private OutputStream wrappedBufferOut(Charset charset, int bufferSize) throws IOException {
-        return buffer(getOutputStream(), bufferSize);
+        return buffer(filteredOut(), bufferSize);
     }
     
     private Writer wrappedWriter(Charset charset, int bufferSize) throws IOException {
@@ -199,7 +245,7 @@ public abstract class Resource<T> {
         Writer natural = getWriter();
         Writer encoded = natural != null
                 ? natural
-                : streamWriter(getOutputStream(), charset);
+                : streamWriter(filteredOut(), charset);
         return encoded;
     }
     
@@ -215,6 +261,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.ZipInputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public ZipInputOf<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
                 ? new ZipInputOf<>(this, wrappedBufferedInput(null, bufferSize))
@@ -230,10 +277,11 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.BufferedInputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException {
         return bufferSize > DEFAULT_BUFFER_SIZE
-                ? new BufferedInputOf<>(this, getInputStream(), bufferSize)
-                : new BufferedInputOf<>(this, getInputStream());
+                ? new BufferedInputOf<>(this, filteredIn(), bufferSize)
+                : new BufferedInputOf<>(this, filteredIn());
     }
     
     /**
@@ -244,8 +292,9 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.InputStreamOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public InputStreamOf<T> inputStream() throws IOException {
-        return new InputStreamOf<>(this, getInputStream());
+        return new InputStreamOf<>(this, filteredIn());
     }
     
     /**
@@ -257,6 +306,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.DataInputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public DataInputOf<T> dataInputStream(int bufferSize) throws IOException {
         return new DataInputOf<>(this, wrappedBufferedInput(null, bufferSize));
     }
@@ -270,6 +320,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.ObjectInputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException {
         return new ObjectInputOf<>(this, wrappedBufferedInput(null, bufferSize));
     }
@@ -284,6 +335,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException {
         return new BufferedReaderOf<>(this, wrappedBufferedReader(charset, bufferSize));
     }
@@ -297,6 +349,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public ReaderOf<T> reader(Charset charset) throws IOException {
         return new ReaderOf<>(this, wrappedBufferedReader(charset, UNBUFFERED));
     }
@@ -313,6 +366,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.ZipOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public ZipOutputOf<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
                 ? new ZipOutputOf<>(this, wrappedBufferOut(null, bufferSize))
@@ -328,10 +382,11 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.BufferedOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException {
         return bufferSize > DEFAULT_BUFFER_SIZE
-                ? new BufferedOutputOf<>(this, getOutputStream(), bufferSize)
-                : new BufferedOutputOf<>(this, getOutputStream());
+                ? new BufferedOutputOf<>(this, filteredOut(), bufferSize)
+                : new BufferedOutputOf<>(this, filteredOut());
     }
     
     /**
@@ -342,8 +397,9 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.OutputStreamOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public OutputStreamOf<T> outputStream() throws IOException {
-        return new OutputStreamOf<>(this, getOutputStream());
+        return new OutputStreamOf<>(this, filteredOut());
     }
     
     /**
@@ -355,6 +411,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.DataOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException {
         return new DataOutputOf<>(this, wrappedBufferOut(null, bufferSize));
     }
@@ -368,6 +425,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.ObjectOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public ObjectOutputOf<T> objectOutputStream(int bufferSize) throws IOException {
         return new ObjectOutputOf<>(this, wrappedBufferOut(null, bufferSize));
     }
@@ -382,6 +440,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException {
         return new PrintWriterOf<>(this, wrappedWriter(charset, bufferSize));
     }
@@ -397,6 +456,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public PrintWriterOf<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException {
         return new PrintWriterOf<>(this, wrappedWriter(charset, bufferSize), autoflush);
     }
@@ -411,6 +471,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public BufferedWriterOf<T> bufferedWriter(Charset charset, int bufferSize) throws IOException {
         return new BufferedWriterOf<>(this, wrappedWriter(charset, bufferSize));
     }
@@ -424,6 +485,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.WriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public WriterOf<T> writer(Charset charset) throws IOException {
         return new WriterOf<>(this, wrappedWriter(charset, UNBUFFERED));
     }
@@ -438,6 +500,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public ReaderOf<T> reader() throws IOException {
         return reader(DEFAULT_CHARSET);
     }
@@ -451,6 +514,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public BufferedReaderOf<T> bufferedReader(int bufferSize) throws IOException {
         return bufferedReader(DEFAULT_CHARSET, bufferSize);
     }
@@ -463,6 +527,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.WriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public WriterOf<T> writer() throws IOException {
         return writer(DEFAULT_CHARSET);
     }
@@ -476,6 +541,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public BufferedWriterOf<T> bufferedWriter(int bufferSize) throws IOException {
         return bufferedWriter(DEFAULT_CHARSET, bufferSize);
     }
@@ -489,6 +555,7 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public PrintWriterOf<T> printWriter(int bufferSize) throws IOException {
         return printWriter(DEFAULT_CHARSET, bufferSize);
     }
@@ -503,16 +570,15 @@ public abstract class Resource<T> {
      * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    @Override
     public PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException {
         return printWriter(DEFAULT_CHARSET, bufferSize, autoflush);
     }
     
-    public GZipInputOf<T> gzipInputStream(int bufferSize) throws IOException {
-        return new GZipInputOf<>(this, getInputStream());
-    }
-    
-    public GZipOutputOf<T> gzipOutputStream(int bufferSize) throws IOException {
-        return new GZipOutputOf<>(this, getOutputStream());
+    @Override
+    public BytesBiChannel<T> gzip(int bufferSize) {
+        gzipBufferSize = bufferSize;
+        return this;
     }
     
 }

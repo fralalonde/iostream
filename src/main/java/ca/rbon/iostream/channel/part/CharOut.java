@@ -1,4 +1,4 @@
-package ca.rbon.iostream.channel;
+package ca.rbon.iostream.channel.part;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import ca.rbon.iostream.proxy.PrintWriterOf;
 import ca.rbon.iostream.proxy.WriterOf;
 import ca.rbon.iostream.resource.Resource;
 
-public interface CharWriterChannel<T> {
+public interface CharOut<T> {
     
     WriterOf<T> writer() throws IOException;
     

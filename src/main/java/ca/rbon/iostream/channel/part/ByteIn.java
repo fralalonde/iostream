@@ -1,17 +1,19 @@
-package ca.rbon.iostream.channel;
+package ca.rbon.iostream.channel.part;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.proxy.BufferedInputOf;
+import ca.rbon.iostream.proxy.BufferedReaderOf;
 import ca.rbon.iostream.proxy.DataInputOf;
-import ca.rbon.iostream.proxy.GZipInputOf;
 import ca.rbon.iostream.proxy.InputStreamOf;
 import ca.rbon.iostream.proxy.ObjectInputOf;
+import ca.rbon.iostream.proxy.ReaderOf;
 import ca.rbon.iostream.proxy.ZipInputOf;
 import ca.rbon.iostream.resource.Resource;
 
-public interface InputStreamChannel<T> {
+public interface ByteIn<T> {
     
     InputStreamOf<T> inputStream() throws IOException;
     
@@ -43,12 +45,6 @@ public interface InputStreamChannel<T> {
         return zipInputStream(Resource.DEFAULT_CHARSET, Resource.UNBUFFERED);
     }
     
-    GZipInputOf<T> gzipInputStream(int bufferSize) throws IOException;
-    
-    default GZipInputOf<T> gzipInputStream() throws IOException {
-        return gzipInputStream(Resource.DEFAULT_BUFFER_SIZE);
-    }
-    
     DataInputOf<T> dataInputStream(int bufferSize) throws IOException;
     
     default DataInputOf<T> dataInputStream() throws IOException {
@@ -74,6 +70,62 @@ public interface InputStreamChannel<T> {
      */
     default ObjectInputOf<T> objectInputStream() throws IOException {
         return objectInputStream(Resource.UNBUFFERED);
+    }
+    
+    // UNBUFFERED
+    
+    /**
+     * Build an unbuffered reader using the specified charset.
+     * 
+     * @param charset The {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    ReaderOf<T> reader(Charset charset) throws IOException;
+    
+    /**
+     * Build an unbuffered reader using the specified charset name.
+     * 
+     * @param charsetName The name of the {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    default ReaderOf<T> reader(String charsetName) throws IOException {
+        return reader(Charset.forName(charsetName));
+    }
+    
+    // BUFFERED
+    
+    /**
+     * Build a buffered reader using the specified charset and the specified buffer size.
+     * 
+     * @param charset The {@link Charset} to use
+     * @param bufferSize The size of the buffer to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException;
+    
+    /**
+     * Build a buffered {@link Reader} using the specified charset and the default buffer size.
+     * 
+     * @param charset The {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    default BufferedReaderOf<T> bufferedReader(Charset charset) throws IOException {
+        return bufferedReader(charset, Resource.DEFAULT_BUFFER_SIZE);
+    }
+    
+    /**
+     * Build an buffered {@link Reader} using the specified charset name and the default buffer size.
+     * 
+     * @param charsetName The name of the {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    default BufferedReaderOf<T> bufferedReader(String charsetName) throws IOException {
+        return bufferedReader(Charset.forName(charsetName), Resource.DEFAULT_BUFFER_SIZE);
     }
     
 }

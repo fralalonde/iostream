@@ -25,6 +25,13 @@ public class Samples {
         }
     }
     
+    public void gzipSample() throws IOException {
+        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").gzip(55).printWriter("UTF-16")) {
+            File myFileTxt = pw.getResource();
+            pw.write("Hello from file " + myFileTxt.getName());
+        }
+    }
+    
     public void smallSample2() throws IOException {
         try (DataOutputOf<File> dataFile = IoStream.tempFile().dataOutputStream()) {
             dataFile.write(42);
@@ -100,7 +107,7 @@ public class Samples {
     
     public void streams() throws IOException {
         InputStream providedInput = new ByteArrayInputStream(new byte[7]);
-        IoStream.stream(providedInput).gzipInputStream();
+        IoStream.stream(providedInput).gzip().inputStream();
         
         OutputStream providedOutput = new ByteArrayOutputStream();
         IoStream.stream(providedOutput).printWriter(256);

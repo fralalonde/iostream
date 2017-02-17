@@ -9,21 +9,22 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.channel.InOutCharChannel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 /**
- * <p>StringPicker class.</p>
+ * <p>
+ * StringPicker class.
+ * </p>
  *
  * @author fralalonde
  * @version $Id: $Id
  */
-public class StringResource extends Resource<String> implements InOutCharChannel<String> {
+public class StringResource extends Resource<String> {
     
     /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
-        
+    
     private static final String STREAM_NOT_SUPPORTED = "Byte-oriented stream operations not supported by String resources.";
     
     private static final String NO_STRING_SET = "No string was provided for this operation.";

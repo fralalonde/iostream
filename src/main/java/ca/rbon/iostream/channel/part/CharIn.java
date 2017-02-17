@@ -1,4 +1,4 @@
-package ca.rbon.iostream.channel;
+package ca.rbon.iostream.channel.part;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import ca.rbon.iostream.proxy.BufferedReaderOf;
 import ca.rbon.iostream.proxy.ReaderOf;
 import ca.rbon.iostream.resource.Resource;
 
-public interface CharReaderChannel<T> {
+public interface CharIn<T> {
     
     ReaderOf<T> reader() throws IOException;
     

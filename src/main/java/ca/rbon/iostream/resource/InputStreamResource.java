@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.channel.InputChannel;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * @version $Id: $Id
  */
 @RequiredArgsConstructor
-public class InputStreamResource extends Resource<InputStream> implements InputChannel<InputStream> {
+public class InputStreamResource extends Resource<InputStream> {
     
     private static final String NO_OUTPUT = "%s does not provide output facilities.";
     

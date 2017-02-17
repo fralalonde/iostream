@@ -3,7 +3,7 @@ package ca.rbon.iostream.proxy;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.util.zip.GZIPInputStream;
+import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -13,33 +13,32 @@ import ca.rbon.iostream.IoStream;
 public class GZipStreamTest {
     
     @Test
-    public void gzipAndUngzipBytes() throws IOException {
+    public void gzipAndUnzipBytes() throws IOException {
         
-        GZipOutputOf<byte[]> zos = IoStream.bytes().gzipOutputStream();
+        OutputStreamOf<byte[]> zos = IoStream.bytes().gzip().outputStream();
         try {
             zos.write("aaaaaaa".getBytes());
         } finally {
             zos.close();
         }
         
-        try (GZIPInputStream zis = IoStream.bytes(zos.getResource()).gzipInputStream()) {
+        try (InputStreamOf<byte[]> zis = IoStream.bytes(zos.getResource()).gzip().inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }
     }
     
     @Test
-    public void gzipAndUngzipBufferedBytes() throws IOException {
+    public void gzipAndUnzipBufferedBytes() throws IOException {
         
-        GZipOutputOf<byte[]> zos = IoStream.bytes().gzipOutputStream(3);
+        OutputStreamOf<byte[]> zos = IoStream.bytes().gzip(3).outputStream();
         try {
             zos.write("aaaaaaa".getBytes());
-            zos.finish();
         } finally {
             zos.close();
         }
         
-        try (GZIPInputStream zis = IoStream.bytes(zos.getResource()).gzipInputStream()) {
+        try (InputStream zis = IoStream.bytes(zos.getResource()).gzip().inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }

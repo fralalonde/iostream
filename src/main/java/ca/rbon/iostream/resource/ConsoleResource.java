@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
-import ca.rbon.iostream.channel.InOutChannel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class ConsoleResource extends Resource<Console> implements InOutChannel<Console> {
+public class ConsoleResource extends Resource<Console> {
     
     /**
      * <p>

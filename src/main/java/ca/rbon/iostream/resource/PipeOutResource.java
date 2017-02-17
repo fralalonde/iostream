@@ -7,7 +7,6 @@ import java.io.PipedOutputStream;
 import java.io.Reader;
 
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.channel.OutputChannel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class PipeOutResource extends Resource<PipedOutputStream> implements OutputChannel<PipedOutputStream> {
+public class PipeOutResource extends Resource<PipedOutputStream> {
     
     private static final String NO_INPUT = "%s does not provide input facilities.";
     
