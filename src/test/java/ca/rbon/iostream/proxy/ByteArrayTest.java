@@ -9,6 +9,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
+import wrap.BufferedInputOf;
+import wrap.BufferedOutputOf;
+import wrap.BufferedWriterOf;
+import wrap.InputStreamOf;
+import wrap.OutputStreamOf;
 
 public class ByteArrayTest {
     

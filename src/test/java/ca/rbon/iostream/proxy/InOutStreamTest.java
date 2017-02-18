@@ -11,6 +11,14 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ca.rbon.iostream.IoStream;
+import wrap.BufferedInputOf;
+import wrap.BufferedOutputOf;
+import wrap.BufferedReaderOf;
+import wrap.DataInputOf;
+import wrap.DataOutputOf;
+import wrap.ObjectInputOf;
+import wrap.ObjectOutputOf;
+import wrap.PrintWriterOf;
 
 public class InOutStreamTest {
     

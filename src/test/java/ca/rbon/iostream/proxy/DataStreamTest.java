@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
+import wrap.DataOutputOf;
 
 public class DataStreamTest {
     

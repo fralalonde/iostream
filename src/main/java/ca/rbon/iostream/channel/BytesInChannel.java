@@ -1,16 +1,15 @@
 package ca.rbon.iostream.channel;
 
-import ca.rbon.iostream.channel.part.GZip;
-import ca.rbon.iostream.channel.part.CharIn;
 import ca.rbon.iostream.channel.part.ByteIn;
+import ca.rbon.iostream.channel.part.CharIn;
+import ca.rbon.iostream.channel.part.Filter;
 
 /**
  * <p>
- * InPick interface.
+ * BytesInChannel interface.
  * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> The resource type
  */
-public interface BytesInChannel<T> extends GZip<BytesInChannel<T>>, CharIn<T>, ByteIn<T> {
+public interface BytesInChannel<T> extends Filter<BytesInChannel<T>>, CharIn<T>, ByteIn<T> {
 }

@@ -199,7 +199,6 @@ public class IoStream {
      * @param array The array to read from or append to
      * @param additionalCapacity The appending buffer capacity after the first bytes have been added
      * @return An input or output picker
-     * @param additionalCapacity a int.
      */
     @SuppressWarnings("unchecked")
     public static BytesOutChannel<byte[]> bytes(byte[] array, int additionalCapacity) {
@@ -337,7 +336,7 @@ public class IoStream {
     }
     
     @SuppressWarnings("unchecked")
-    private static <T> T proxy(Resource<?> rez, Class<T> iface) {
+    static <T> T proxy(Resource<?> rez, Class<T> iface) {
         InvocationHandler h = new Handler(rez);
         return (T) Proxy.newProxyInstance(IoStream.class.getClassLoader(), new Class<?>[]{iface}, h);
     }

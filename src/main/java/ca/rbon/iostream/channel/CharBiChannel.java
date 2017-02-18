@@ -10,6 +10,7 @@ import ca.rbon.iostream.channel.part.CharOut;
  *
  * @author fralalonde
  * @version $Id: $Id
+ * @param <T> The resource type
  */
 public interface CharBiChannel<T> extends CharIn<T>, CharOut<T> {
     

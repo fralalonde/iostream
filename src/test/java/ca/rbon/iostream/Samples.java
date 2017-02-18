@@ -11,9 +11,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.proxy.DataOutputOf;
-import ca.rbon.iostream.proxy.OutputStreamOf;
-import ca.rbon.iostream.proxy.PrintWriterOf;
+import wrap.DataOutputOf;
+import wrap.OutputStreamOf;
+import wrap.PrintWriterOf;
 
 @SuppressWarnings("unused")
 public class Samples {

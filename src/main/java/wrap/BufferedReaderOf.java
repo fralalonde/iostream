@@ -1,38 +1,38 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.Reader;
 
 import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>
- * ObjectOutputOf class.
+ * BufferedReaderOf class.
  * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> The resource type
  */
-public class ObjectOutputOf<T> extends ObjectOutputStream  {
+public class BufferedReaderOf<T> extends BufferedReader implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
      * <p>
-     * Constructor for ObjectOutputOf.
+     * Constructor for BufferedReaderOf.
      * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
-     * @param os a {@link java.io.OutputStream} object.
+     * @param r a {@link java.io.Reader} object.
      * @throws java.io.IOException if any.
      */
-    public ObjectOutputOf(Resource<T> cl, OutputStream os) throws IOException {
-        super(os);
+    public BufferedReaderOf(Resource<T> cl, Reader r) throws IOException {
+        super(r);
         closer = cl;
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

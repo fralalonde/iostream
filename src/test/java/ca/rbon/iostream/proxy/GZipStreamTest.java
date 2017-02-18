@@ -9,6 +9,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
+import wrap.InputStreamOf;
+import wrap.OutputStreamOf;
 
 public class GZipStreamTest {
     
@@ -30,7 +32,6 @@ public class GZipStreamTest {
     
     @Test
     public void gzipAndUnzipBufferedBytes() throws IOException {
-        
         OutputStreamOf<byte[]> zos = IoStream.bytes().gzip(3).outputStream();
         try {
             zos.write("aaaaaaa".getBytes());
@@ -38,7 +39,7 @@ public class GZipStreamTest {
             zos.close();
         }
         
-        try (InputStream zis = IoStream.bytes(zos.getResource()).gzip().inputStream()) {
+        try (InputStream zis = IoStream.bytes(zos.getResource()).gzip(3).inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }

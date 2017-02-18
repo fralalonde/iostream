@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,28 +7,32 @@ import java.io.Writer;
 import ca.rbon.iostream.resource.Resource;
 
 /**
- * <p>BufferedWriterOf class.</p>
+ * <p>
+ * BufferedWriterOf class.
+ * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> The resource type
  */
-public class BufferedWriterOf<T> extends BufferedWriter  {
+public class BufferedWriterOf<T> extends BufferedWriter implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
-     * <p>Constructor for BufferedWriterOf.</p>
+     * <p>
+     * Constructor for BufferedWriterOf.
+     * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param wr a {@link java.io.Writer} object.
      * @throws java.io.IOException if any.
      */
     public BufferedWriterOf(Resource<T> cl, Writer wr) throws IOException {
-        super(wr);        
+        super(wr);
         closer = cl;
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

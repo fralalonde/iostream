@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -10,10 +10,9 @@ import ca.rbon.iostream.resource.Resource;
  * ReaderOf class.
  * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> Resource type
  */
-public class ReaderOf<T> extends Reader  {
+public class ReaderOf<T> extends Reader implements WrapperOf<T> {
     
     final Reader delegate;
     
@@ -40,6 +39,7 @@ public class ReaderOf<T> extends Reader  {
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,17 +7,20 @@ import java.io.OutputStream;
 import ca.rbon.iostream.resource.Resource;
 
 /**
- * <p>DataOutputOf class.</p>
+ * <p>
+ * DataOutputOf class.
+ * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> The resource type
  */
-public class DataOutputOf<T> extends DataOutputStream  {
+public class DataOutputOf<T> extends DataOutputStream implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
-     * <p>Constructor for DataOutputOf.</p>
+     * <p>
+     * Constructor for DataOutputOf.
+     * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
@@ -29,6 +32,7 @@ public class DataOutputOf<T> extends DataOutputStream  {
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

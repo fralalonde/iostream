@@ -9,6 +9,9 @@ import java.nio.CharBuffer;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
+import wrap.PrintWriterOf;
+import wrap.ReaderOf;
+import wrap.WriterOf;
 
 public class FileTest {
     

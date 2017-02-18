@@ -3,15 +3,14 @@ package ca.rbon.iostream.channel.part;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import ca.rbon.iostream.proxy.BufferedOutputOf;
-import ca.rbon.iostream.proxy.BufferedWriterOf;
-import ca.rbon.iostream.proxy.DataOutputOf;
-import ca.rbon.iostream.proxy.ObjectOutputOf;
-import ca.rbon.iostream.proxy.OutputStreamOf;
-import ca.rbon.iostream.proxy.PrintWriterOf;
-import ca.rbon.iostream.proxy.WriterOf;
-import ca.rbon.iostream.proxy.ZipOutputOf;
-import ca.rbon.iostream.resource.Resource;
+import wrap.BufferedOutputOf;
+import wrap.BufferedWriterOf;
+import wrap.DataOutputOf;
+import wrap.ObjectOutputOf;
+import wrap.OutputStreamOf;
+import wrap.PrintWriterOf;
+import wrap.WriterOf;
+import wrap.ZipOutputOf;
 
 public interface ByteOut<T> {
     
@@ -19,93 +18,58 @@ public interface ByteOut<T> {
     
     BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException;
     
-    default BufferedOutputOf<T> bufferedOutputStream() throws IOException {
-        return bufferedOutputStream(Resource.DEFAULT_BUFFER_SIZE);
-    }
+    BufferedOutputOf<T> bufferedOutputStream() throws IOException;
     
     ZipOutputOf<T> zipOutputStream(Charset charset, int bufferSize) throws IOException;
     
-    default ZipOutputOf<T> zipOutputStream(String charsetName, int bufferSize) throws IOException {
-        return zipOutputStream(Charset.forName(charsetName), bufferSize);
-    }
+    ZipOutputOf<T> zipOutputStream(String charsetName, int bufferSize) throws IOException;
     
-    default ZipOutputOf<T> zipOutputStream(Charset charset) throws IOException {
-        return zipOutputStream(charset, Resource.UNBUFFERED);
-    }
+    ZipOutputOf<T> zipOutputStream(Charset charset) throws IOException;
     
-    default ZipOutputOf<T> zipOutputStream(String charsetName) throws IOException {
-        return zipOutputStream(charsetName, Resource.UNBUFFERED);
-    }
+    ZipOutputOf<T> zipOutputStream(String charsetName) throws IOException;
     
-    default ZipOutputOf<T> zipOutputStream(int bufferSize) throws IOException {
-        return zipOutputStream(Resource.DEFAULT_CHARSET, bufferSize);
-    }
+    ZipOutputOf<T> zipOutputStream(int bufferSize) throws IOException;
     
-    default ZipOutputOf<T> zipOutputStream() throws IOException {
-        return zipOutputStream(Resource.DEFAULT_CHARSET, Resource.UNBUFFERED);
-    }
+    ZipOutputOf<T> zipOutputStream() throws IOException;
     
     DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException;
     
-    default DataOutputOf<T> dataOutputStream() throws IOException {
-        return dataOutputStream(Resource.UNBUFFERED);
-    }
+    DataOutputOf<T> dataOutputStream() throws IOException;
     
     ObjectOutputOf<T> objectOutputStream(int bufferSize) throws IOException;
     
-    default ObjectOutputOf<T> objectOutputStream() throws IOException {
-        return objectOutputStream(Resource.UNBUFFERED);
-        
-    }
+    ObjectOutputOf<T> objectOutputStream() throws IOException;
     
     WriterOf<T> writer(Charset charset) throws IOException;
     
-    default WriterOf<T> writer(String charsetName) throws IOException {
-        return writer(Charset.forName(charsetName));
-    }
+    WriterOf<T> writer(String charsetName) throws IOException;
     
     // BUFFERED
     
     BufferedWriterOf<T> bufferedWriter(Charset charset, int bufferSize) throws IOException;
     
-    default BufferedWriterOf<T> bufferedWriter(Charset charset) throws IOException {
-        return bufferedWriter(Resource.DEFAULT_CHARSET, Resource.DEFAULT_BUFFER_SIZE);
-    }
+    BufferedWriterOf<T> bufferedWriter(Charset charset) throws IOException;
     
-    default BufferedWriterOf<T> bufferedWriter(String charsetName) throws IOException {
-        return bufferedWriter(Charset.forName(charsetName), Resource.DEFAULT_BUFFER_SIZE);
-    }
+    BufferedWriterOf<T> bufferedWriter(String charsetName) throws IOException;
     
     // PRINT
     
     PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException;
     
-    default PrintWriterOf<T> printWriter(String charsetName, int bufferSize) throws IOException {
-        return printWriter(Charset.forName(charsetName), bufferSize);
-    }
+    PrintWriterOf<T> printWriter(String charsetName, int bufferSize) throws IOException;
     
-    default PrintWriterOf<T> printWriter(Charset charset) throws IOException {
-        return printWriter(charset, Resource.DEFAULT_BUFFER_SIZE);
-    }
+    PrintWriterOf<T> printWriter(Charset charset) throws IOException;
     
-    default PrintWriterOf<T> printWriter(String charsetName) throws IOException {
-        return printWriter(charsetName, Resource.DEFAULT_BUFFER_SIZE);
-    }
+    PrintWriterOf<T> printWriter(String charsetName) throws IOException;
     
     // PRINT AUTOFLUSH
     
     PrintWriterOf<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException;
     
-    default PrintWriterOf<T> printWriter(String charsetName, int bufferSize, boolean autoflush) throws IOException {
-        return printWriter(Charset.forName(charsetName), bufferSize, autoflush);
-    }
+    PrintWriterOf<T> printWriter(String charsetName, int bufferSize, boolean autoflush) throws IOException;
     
-    default PrintWriterOf<T> printWriter(Charset charset, boolean autoflush) throws IOException {
-        return printWriter(charset, Resource.DEFAULT_BUFFER_SIZE, autoflush);
-    }
+    PrintWriterOf<T> printWriter(Charset charset, boolean autoflush) throws IOException;
     
-    default PrintWriterOf<T> printWriter(String charsetName, boolean autoflush) throws IOException {
-        return printWriter(charsetName, Resource.DEFAULT_BUFFER_SIZE, autoflush);
-    }
+    PrintWriterOf<T> printWriter(String charsetName, boolean autoflush) throws IOException;
     
 }

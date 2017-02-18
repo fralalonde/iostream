@@ -16,21 +16,21 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import ca.rbon.iostream.channel.BytesBiChannel;
-import ca.rbon.iostream.proxy.BufferedInputOf;
-import ca.rbon.iostream.proxy.BufferedOutputOf;
-import ca.rbon.iostream.proxy.BufferedReaderOf;
-import ca.rbon.iostream.proxy.BufferedWriterOf;
-import ca.rbon.iostream.proxy.DataInputOf;
-import ca.rbon.iostream.proxy.DataOutputOf;
-import ca.rbon.iostream.proxy.InputStreamOf;
-import ca.rbon.iostream.proxy.ObjectInputOf;
-import ca.rbon.iostream.proxy.ObjectOutputOf;
-import ca.rbon.iostream.proxy.OutputStreamOf;
-import ca.rbon.iostream.proxy.PrintWriterOf;
-import ca.rbon.iostream.proxy.ReaderOf;
-import ca.rbon.iostream.proxy.WriterOf;
-import ca.rbon.iostream.proxy.ZipInputOf;
-import ca.rbon.iostream.proxy.ZipOutputOf;
+import wrap.BufferedInputOf;
+import wrap.BufferedOutputOf;
+import wrap.BufferedReaderOf;
+import wrap.BufferedWriterOf;
+import wrap.DataInputOf;
+import wrap.DataOutputOf;
+import wrap.InputStreamOf;
+import wrap.ObjectInputOf;
+import wrap.ObjectOutputOf;
+import wrap.OutputStreamOf;
+import wrap.PrintWriterOf;
+import wrap.ReaderOf;
+import wrap.WriterOf;
+import wrap.ZipInputOf;
+import wrap.ZipOutputOf;
 
 /**
  * <p>
@@ -39,28 +39,31 @@ import ca.rbon.iostream.proxy.ZipOutputOf;
  *
  * @author fralalonde
  * @version $Id: $Id
+ * @param <T> The resource type
  */
 public abstract class Resource<T> implements BytesBiChannel<T> {
     
     /**
-     * No charset specified, use system default
+     * No charset specified, use system public
      */
-    public static final Charset DEFAULT_CHARSET = null;
+    static final Charset DEFAULT_CHARSET = null;
     
     /**
-     * No buffersize specified, use default
+     * No buffersize specified, use public
      */
-    public static final int DEFAULT_BUFFER_SIZE = -1;
+    static final int DEFAULT_BUFFER_SIZE = -1;
     
     /**
      * Do not buffer the stream
      */
-    public static final int UNBUFFERED = -2;
+    static final int UNBUFFERED = -2;
     
     /**
-     * Not buffersize specified, use default
+     * Not buffersize specified, use public
      */
-    public static final int NOT_GZIPPED = -2;
+    static final int NOT_GZIPPED = -2;
+    
+    private int gzipBufferSize = NOT_GZIPPED;
     
     static InputStreamReader streamReader(InputStream stream, Charset charset) {
         return charset == DEFAULT_CHARSET
@@ -124,8 +127,6 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
                 return new BufferedWriter(is, size);
         }
     }
-    
-    private int gzipBufferSize = NOT_GZIPPED;
     
     public abstract T getResource() throws IOException;
     
@@ -258,7 +259,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.ZipInputOf} object.
+     * @return a {@link wrap.ZipInputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -274,7 +275,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.BufferedInputOf} object.
+     * @return a {@link wrap.BufferedInputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -289,7 +290,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * inputStream.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.proxy.InputStreamOf} object.
+     * @return a {@link wrap.InputStreamOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -303,7 +304,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.DataInputOf} object.
+     * @return a {@link wrap.DataInputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -317,7 +318,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.ObjectInputOf} object.
+     * @return a {@link wrap.ObjectInputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -332,7 +333,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.BufferedReaderOf} object.
+     * @return a {@link wrap.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -346,7 +347,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
-     * @return a {@link ca.rbon.iostream.proxy.ReaderOf} object.
+     * @return a {@link wrap.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -363,7 +364,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.ZipOutputOf} object.
+     * @return a {@link wrap.ZipOutputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -379,7 +380,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.BufferedOutputOf} object.
+     * @return a {@link wrap.BufferedOutputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -394,7 +395,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * outputStream.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.proxy.OutputStreamOf} object.
+     * @return a {@link wrap.OutputStreamOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -408,7 +409,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.DataOutputOf} object.
+     * @return a {@link wrap.DataOutputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -422,7 +423,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.ObjectOutputOf} object.
+     * @return a {@link wrap.ObjectOutputOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -437,7 +438,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
+     * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -453,7 +454,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
      * @param autoflush a boolean.
-     * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
+     * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -468,7 +469,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.BufferedWriterOf} object.
+     * @return a {@link wrap.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -482,7 +483,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
-     * @return a {@link ca.rbon.iostream.proxy.WriterOf} object.
+     * @return a {@link wrap.WriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -497,7 +498,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * reader.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.proxy.ReaderOf} object.
+     * @return a {@link wrap.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -511,7 +512,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.BufferedReaderOf} object.
+     * @return a {@link wrap.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -524,7 +525,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * writer.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.proxy.WriterOf} object.
+     * @return a {@link wrap.WriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -538,7 +539,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.BufferedWriterOf} object.
+     * @return a {@link wrap.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -552,7 +553,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
+     * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -567,7 +568,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      *
      * @param bufferSize a int.
      * @param autoflush a boolean.
-     * @return a {@link ca.rbon.iostream.proxy.PrintWriterOf} object.
+     * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     @Override
@@ -576,9 +577,220 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
     }
     
     @Override
-    public BytesBiChannel<T> gzip(int bufferSize) {
+    public Resource<T> gzip(int bufferSize) {
         gzipBufferSize = bufferSize;
         return this;
+    }
+    
+    // DEFAULT IN
+    
+    @Override
+    public BufferedInputOf<T> bufferedInputStream() throws IOException {
+        return bufferedInputStream(DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public ZipInputOf<T> zipInputStream(String charsetName, int bufferSize) throws IOException {
+        return zipInputStream(Charset.forName(charsetName), bufferSize);
+    }
+    
+    @Override
+    public ZipInputOf<T> zipInputStream(Charset charset) throws IOException {
+        return zipInputStream(charset, UNBUFFERED);
+    }
+    
+    @Override
+    public ZipInputOf<T> zipInputStream(String charsetName) throws IOException {
+        return zipInputStream(charsetName, UNBUFFERED);
+    }
+    
+    @Override
+    public ZipInputOf<T> zipInputStream(int bufferSize) throws IOException {
+        return zipInputStream(DEFAULT_CHARSET, bufferSize);
+    }
+    
+    @Override
+    public ZipInputOf<T> zipInputStream() throws IOException {
+        return zipInputStream(DEFAULT_CHARSET, UNBUFFERED);
+    }
+    
+    @Override
+    public DataInputOf<T> dataInputStream() throws IOException {
+        return dataInputStream(UNBUFFERED);
+    }
+    
+    /**
+     * Build a unbuffered object input stream.
+     * NOTE: Unlike other input streams, closing an ObjectInputStream does NOT close the underlying stream.
+     * 
+     * @return an ObjectInputOf
+     * @throws IOException if something bad happens
+     */
+    @Override
+    public ObjectInputOf<T> objectInputStream() throws IOException {
+        return objectInputStream(UNBUFFERED);
+    }
+    
+    // UNBUFFERED
+    
+    /**
+     * Build an unbuffered reader using the specified charset name.
+     * 
+     * @param charsetName The name of the {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    @Override
+    public ReaderOf<T> reader(String charsetName) throws IOException {
+        return reader(Charset.forName(charsetName));
+    }
+    
+    // BUFFERED
+    
+    /**
+     * Build a buffered {@link Reader} using the specified charset and the public buffer size.
+     * 
+     * @param charset The {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    @Override
+    public BufferedReaderOf<T> bufferedReader(Charset charset) throws IOException {
+        return bufferedReader(charset, DEFAULT_BUFFER_SIZE);
+    }
+    
+    /**
+     * Build an buffered {@link Reader} using the specified charset name and the public buffer size.
+     * 
+     * @param charsetName The name of the {@link Charset} to use
+     * @return A {@link ReaderOf} proxy extending the {@link Reader} class
+     * @throws IOException If the reader can not be built
+     */
+    @Override
+    public BufferedReaderOf<T> bufferedReader(String charsetName) throws IOException {
+        return bufferedReader(Charset.forName(charsetName), DEFAULT_BUFFER_SIZE);
+    }
+    
+    // DEFAULT OUT
+    
+    @Override
+    public BufferedOutputOf<T> bufferedOutputStream() throws IOException {
+        return bufferedOutputStream(DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public ZipOutputOf<T> zipOutputStream(String charsetName, int bufferSize) throws IOException {
+        return zipOutputStream(Charset.forName(charsetName), bufferSize);
+    }
+    
+    @Override
+    public ZipOutputOf<T> zipOutputStream(Charset charset) throws IOException {
+        return zipOutputStream(charset, UNBUFFERED);
+    }
+    
+    @Override
+    public ZipOutputOf<T> zipOutputStream(String charsetName) throws IOException {
+        return zipOutputStream(charsetName, UNBUFFERED);
+    }
+    
+    @Override
+    public ZipOutputOf<T> zipOutputStream(int bufferSize) throws IOException {
+        return zipOutputStream(DEFAULT_CHARSET, bufferSize);
+    }
+    
+    @Override
+    public ZipOutputOf<T> zipOutputStream() throws IOException {
+        return zipOutputStream(DEFAULT_CHARSET, UNBUFFERED);
+    }
+    
+    @Override
+    public DataOutputOf<T> dataOutputStream() throws IOException {
+        return dataOutputStream(UNBUFFERED);
+    }
+    
+    @Override
+    public ObjectOutputOf<T> objectOutputStream() throws IOException {
+        return objectOutputStream(UNBUFFERED);
+        
+    }
+    
+    @Override
+    public WriterOf<T> writer(String charsetName) throws IOException {
+        return writer(Charset.forName(charsetName));
+    }
+    
+    // BUFFERED
+    
+    @Override
+    public BufferedWriterOf<T> bufferedWriter(Charset charset) throws IOException {
+        return bufferedWriter(DEFAULT_CHARSET, DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public BufferedWriterOf<T> bufferedWriter(String charsetName) throws IOException {
+        return bufferedWriter(Charset.forName(charsetName), DEFAULT_BUFFER_SIZE);
+    }
+    
+    // PRINT
+    
+    @Override
+    public PrintWriterOf<T> printWriter(String charsetName, int bufferSize) throws IOException {
+        return printWriter(Charset.forName(charsetName), bufferSize);
+    }
+    
+    @Override
+    public PrintWriterOf<T> printWriter(Charset charset) throws IOException {
+        return printWriter(charset, DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public PrintWriterOf<T> printWriter(String charsetName) throws IOException {
+        return printWriter(charsetName, DEFAULT_BUFFER_SIZE);
+    }
+    
+    // PRINT AUTOFLUSH
+    
+    @Override
+    public PrintWriterOf<T> printWriter(String charsetName, int bufferSize, boolean autoflush) throws IOException {
+        return printWriter(Charset.forName(charsetName), bufferSize, autoflush);
+    }
+    
+    @Override
+    public PrintWriterOf<T> printWriter(Charset charset, boolean autoflush) throws IOException {
+        return printWriter(charset, DEFAULT_BUFFER_SIZE, autoflush);
+    }
+    
+    @Override
+    public PrintWriterOf<T> printWriter(String charsetName, boolean autoflush) throws IOException {
+        return printWriter(charsetName, DEFAULT_BUFFER_SIZE, autoflush);
+    }
+    
+    // DEF CHAR IN
+    
+    @Override
+    public BufferedReaderOf<T> bufferedReader() throws IOException {
+        return bufferedReader(DEFAULT_BUFFER_SIZE);
+    }
+    
+    // DEF CHAR OUT
+    @Override
+    public BufferedWriterOf<T> bufferedWriter() throws IOException {
+        return bufferedWriter(DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public PrintWriterOf<T> printWriter() throws IOException {
+        return printWriter(DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public PrintWriterOf<T> printWriter(boolean autoflush) throws IOException {
+        return printWriter(DEFAULT_BUFFER_SIZE, autoflush);
+    }
+    
+    @Override
+    public Resource<T> gzip() {
+        return gzip(DEFAULT_BUFFER_SIZE);
     }
     
 }

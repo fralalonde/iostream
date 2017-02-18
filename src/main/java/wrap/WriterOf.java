@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -10,10 +10,9 @@ import ca.rbon.iostream.resource.Resource;
  * WriterOf class.
  * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> The underlying resource type
  */
-public class WriterOf<T> extends Writer  {
+public class WriterOf<T> extends Writer implements WrapperOf<T> {
     
     final Writer delegate;
     
@@ -40,6 +39,7 @@ public class WriterOf<T> extends Writer  {
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

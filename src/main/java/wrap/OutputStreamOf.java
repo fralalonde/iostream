@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,10 +10,9 @@ import ca.rbon.iostream.resource.Resource;
  * OutputStreamOf class.
  * </p>
  *
- * @author fralalonde
- * @version $Id: $Id
+ * @param <T> The resource type
  */
-public class OutputStreamOf<T> extends OutputStream  {
+public class OutputStreamOf<T> extends OutputStream implements WrapperOf<T> {
     
     final OutputStream delegate;
     
@@ -34,6 +33,7 @@ public class OutputStreamOf<T> extends OutputStream  {
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }
@@ -42,5 +42,10 @@ public class OutputStreamOf<T> extends OutputStream  {
     @Override
     public void write(int b) throws IOException {
         delegate.write(b);
+    }
+    
+    @Override
+    public void close() throws IOException {
+        delegate.close();
     }
 }

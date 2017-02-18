@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package wrap;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,13 +7,12 @@ import java.io.Writer;
 import ca.rbon.iostream.resource.Resource;
 
 /**
- * DO NOT USE PrintWriter OutputStream-wrapping constructor, since they create their own BufferingOutputStream, which would resultin double-Resource.
+ * DO NOT USE PrintWriter OutputStream-wrapping constructor: they create
+ * their own BufferingOutputStream, which would result in double-buffered Resource.
  *
- * @author fralalonde
  * @param <T> Resource type
- * @version $Id: $Id
  */
-public class PrintWriterOf<T> extends PrintWriter  {
+public class PrintWriterOf<T> extends PrintWriter implements WrapperOf<T> {
     
     final Resource<T> closer;
     
@@ -45,6 +44,7 @@ public class PrintWriterOf<T> extends PrintWriter  {
     }
     
     /** {@inheritDoc} */
+    @Override
     public T getResource() throws IOException {
         return closer.getResource();
     }

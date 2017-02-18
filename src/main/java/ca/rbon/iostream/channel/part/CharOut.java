@@ -2,10 +2,9 @@ package ca.rbon.iostream.channel.part;
 
 import java.io.IOException;
 
-import ca.rbon.iostream.proxy.BufferedWriterOf;
-import ca.rbon.iostream.proxy.PrintWriterOf;
-import ca.rbon.iostream.proxy.WriterOf;
-import ca.rbon.iostream.resource.Resource;
+import wrap.BufferedWriterOf;
+import wrap.PrintWriterOf;
+import wrap.WriterOf;
 
 public interface CharOut<T> {
     
@@ -13,20 +12,14 @@ public interface CharOut<T> {
     
     BufferedWriterOf<T> bufferedWriter(int bufferSize) throws IOException;
     
-    default BufferedWriterOf<T> bufferedWriter() throws IOException {
-        return bufferedWriter(Resource.DEFAULT_BUFFER_SIZE);
-    }
+    BufferedWriterOf<T> bufferedWriter() throws IOException;
     
     PrintWriterOf<T> printWriter(int bufferSize) throws IOException;
     
-    default PrintWriterOf<T> printWriter() throws IOException {
-        return printWriter(Resource.DEFAULT_BUFFER_SIZE);
-    }
+    PrintWriterOf<T> printWriter() throws IOException;
     
     PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException;
     
-    default PrintWriterOf<T> printWriter(boolean autoflush) throws IOException {
-        return printWriter(Resource.DEFAULT_BUFFER_SIZE, autoflush);
-    }
+    PrintWriterOf<T> printWriter(boolean autoflush) throws IOException;
     
 }
