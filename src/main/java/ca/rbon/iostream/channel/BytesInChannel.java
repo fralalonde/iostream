@@ -11,5 +11,5 @@ import ca.rbon.iostream.channel.part.Filter;
  *
  * @param <T> The resource type
  */
-public interface BytesInChannel<T> extends Filter<BytesInChannel<T>>, CharIn<T>, ByteIn<T> {
+public interface BytesInChannel<T> extends Filter<BytesInChannel<T>>, /* FilterIn<BytesInChannel<T>>, */CharIn<T>, ByteIn<T> {
 }

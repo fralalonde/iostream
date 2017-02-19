@@ -3,6 +3,7 @@ package wrap;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.IntStream;
 
 import ca.rbon.iostream.resource.Resource;
 
@@ -50,6 +51,17 @@ public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf
     @Override
     public T getResource() throws IOException {
         return closer.getResource();
+    }
+    
+    /**
+     * Create an IntStream from this InputStream's bytes.
+     * An IOException may be thrown while processing the IntStream.
+     * Consuming the IntStream entirely does not close this InputStream.
+     * 
+     * @return an IntStream
+     */
+    public IntStream intStream() {
+        return StreamInputAdapter.toIntStream(this);
     }
     
 }

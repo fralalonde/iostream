@@ -13,6 +13,6 @@ import ca.rbon.iostream.channel.part.Filter;
  * @version $Id: $Id
  * @param <T> The resource type
  */
-public interface BytesOutChannel<T> extends Filter<BytesOutChannel<T>>, CharOut<T>, ByteOut<T> {
+public interface BytesOutChannel<T> extends Filter<BytesOutChannel<T>>, /* FilterOut<BytesInChannel<T>>, */ CharOut<T>, ByteOut<T> {
     
 }

@@ -12,10 +12,16 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import ca.rbon.iostream.channel.BytesBiChannel;
+import ca.rbon.iostream.channel.filter.FilterFactory;
+import ca.rbon.iostream.channel.filter.GzipFilter;
+import ca.rbon.iostream.channel.part.ByteIn;
+import ca.rbon.iostream.channel.part.ByteOut;
+import ca.rbon.iostream.channel.part.CharIn;
+import ca.rbon.iostream.channel.part.CharOut;
+import ca.rbon.iostream.channel.part.Filter;
 import wrap.BufferedInputOf;
 import wrap.BufferedOutputOf;
 import wrap.BufferedReaderOf;
@@ -41,7 +47,7 @@ import wrap.ZipOutputOf;
  * @version $Id: $Id
  * @param <T> The resource type
  */
-public abstract class Resource<T> implements BytesBiChannel<T> {
+public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, CharOut<T>, Filter<Resource<T>> {
     
     /**
      * No charset specified, use system public
@@ -51,7 +57,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
     /**
      * No buffersize specified, use public
      */
-    static final int DEFAULT_BUFFER_SIZE = -1;
+    public static final int DEFAULT_BUFFER_SIZE = -1;
     
     /**
      * Do not buffer the stream
@@ -63,7 +69,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      */
     static final int NOT_GZIPPED = -2;
     
-    private int gzipBufferSize = NOT_GZIPPED;
+    List<FilterFactory> filters = new ArrayList<>();
     
     static InputStreamReader streamReader(InputStream stream, Charset charset) {
         return charset == DEFAULT_CHARSET
@@ -183,14 +189,11 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @throws java.io.IOException if any.
      */
     private OutputStream filteredOut() throws IOException {
-        switch (gzipBufferSize) {
-            case NOT_GZIPPED:
-                return getOutputStream();
-            case DEFAULT_BUFFER_SIZE:
-                return new GZIPOutputStream(getOutputStream());
-            default:
-                return new GZIPOutputStream(getOutputStream(), gzipBufferSize);
+        OutputStream output = getOutputStream();
+        for (FilterFactory f : filters) {
+            output = f.filterOutput(output);
         }
+        return output;
     }
     
     /**
@@ -202,14 +205,11 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @throws java.io.IOException if any.
      */
     private InputStream filteredIn() throws IOException {
-        switch (gzipBufferSize) {
-            case NOT_GZIPPED:
-                return getInputStream();
-            case DEFAULT_BUFFER_SIZE:
-                return new GZIPInputStream(getInputStream());
-            default:
-                return new GZIPInputStream(getInputStream(), gzipBufferSize);
+        InputStream input = getInputStream();
+        for (FilterFactory f : filters) {
+            input = f.filterInput(input);
         }
+        return input;
     }
     
     // SOURCE
@@ -262,6 +262,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.ZipInputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public ZipInputOf<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
@@ -278,6 +279,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.BufferedInputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public BufferedInputOf<T> bufferedInputStream(int bufferSize) throws IOException {
         return bufferSize > DEFAULT_BUFFER_SIZE
@@ -293,6 +295,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.InputStreamOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public InputStreamOf<T> inputStream() throws IOException {
         return new InputStreamOf<>(this, filteredIn());
@@ -307,6 +310,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.DataInputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public DataInputOf<T> dataInputStream(int bufferSize) throws IOException {
         return new DataInputOf<>(this, wrappedBufferedInput(null, bufferSize));
@@ -321,6 +325,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.ObjectInputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException {
         return new ObjectInputOf<>(this, wrappedBufferedInput(null, bufferSize));
@@ -336,6 +341,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public BufferedReaderOf<T> bufferedReader(Charset charset, int bufferSize) throws IOException {
         return new BufferedReaderOf<>(this, wrappedBufferedReader(charset, bufferSize));
@@ -350,6 +356,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public ReaderOf<T> reader(Charset charset) throws IOException {
         return new ReaderOf<>(this, wrappedBufferedReader(charset, UNBUFFERED));
@@ -367,6 +374,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.ZipOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public ZipOutputOf<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
@@ -383,6 +391,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.BufferedOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public BufferedOutputOf<T> bufferedOutputStream(int bufferSize) throws IOException {
         return bufferSize > DEFAULT_BUFFER_SIZE
@@ -398,6 +407,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.OutputStreamOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public OutputStreamOf<T> outputStream() throws IOException {
         return new OutputStreamOf<>(this, filteredOut());
@@ -412,6 +422,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.DataOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException {
         return new DataOutputOf<>(this, wrappedBufferOut(null, bufferSize));
@@ -426,6 +437,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.ObjectOutputOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public ObjectOutputOf<T> objectOutputStream(int bufferSize) throws IOException {
         return new ObjectOutputOf<>(this, wrappedBufferOut(null, bufferSize));
@@ -441,6 +453,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public PrintWriterOf<T> printWriter(Charset charset, int bufferSize) throws IOException {
         return new PrintWriterOf<>(this, wrappedWriter(charset, bufferSize));
@@ -457,6 +470,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public PrintWriterOf<T> printWriter(Charset charset, int bufferSize, boolean autoflush) throws IOException {
         return new PrintWriterOf<>(this, wrappedWriter(charset, bufferSize), autoflush);
@@ -472,6 +486,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public BufferedWriterOf<T> bufferedWriter(Charset charset, int bufferSize) throws IOException {
         return new BufferedWriterOf<>(this, wrappedWriter(charset, bufferSize));
@@ -486,6 +501,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.WriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public WriterOf<T> writer(Charset charset) throws IOException {
         return new WriterOf<>(this, wrappedWriter(charset, UNBUFFERED));
@@ -501,6 +517,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public ReaderOf<T> reader() throws IOException {
         return reader(DEFAULT_CHARSET);
@@ -515,6 +532,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public BufferedReaderOf<T> bufferedReader(int bufferSize) throws IOException {
         return bufferedReader(DEFAULT_CHARSET, bufferSize);
@@ -528,6 +546,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.WriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public WriterOf<T> writer() throws IOException {
         return writer(DEFAULT_CHARSET);
@@ -542,6 +561,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public BufferedWriterOf<T> bufferedWriter(int bufferSize) throws IOException {
         return bufferedWriter(DEFAULT_CHARSET, bufferSize);
@@ -556,6 +576,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public PrintWriterOf<T> printWriter(int bufferSize) throws IOException {
         return printWriter(DEFAULT_CHARSET, bufferSize);
@@ -571,15 +592,10 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return a {@link wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
+    
     @Override
     public PrintWriterOf<T> printWriter(int bufferSize, boolean autoflush) throws IOException {
         return printWriter(DEFAULT_CHARSET, bufferSize, autoflush);
-    }
-    
-    @Override
-    public Resource<T> gzip(int bufferSize) {
-        gzipBufferSize = bufferSize;
-        return this;
     }
     
     // DEFAULT IN
@@ -626,6 +642,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return an ObjectInputOf
      * @throws IOException if something bad happens
      */
+    
     @Override
     public ObjectInputOf<T> objectInputStream() throws IOException {
         return objectInputStream(UNBUFFERED);
@@ -640,6 +657,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class
      * @throws IOException If the reader can not be built
      */
+    
     @Override
     public ReaderOf<T> reader(String charsetName) throws IOException {
         return reader(Charset.forName(charsetName));
@@ -654,6 +672,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class
      * @throws IOException If the reader can not be built
      */
+    
     @Override
     public BufferedReaderOf<T> bufferedReader(Charset charset) throws IOException {
         return bufferedReader(charset, DEFAULT_BUFFER_SIZE);
@@ -666,6 +685,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
      * @return A {@link ReaderOf} proxy extending the {@link Reader} class
      * @throws IOException If the reader can not be built
      */
+    
     @Override
     public BufferedReaderOf<T> bufferedReader(String charsetName) throws IOException {
         return bufferedReader(Charset.forName(charsetName), DEFAULT_BUFFER_SIZE);
@@ -773,6 +793,7 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
     }
     
     // DEF CHAR OUT
+    
     @Override
     public BufferedWriterOf<T> bufferedWriter() throws IOException {
         return bufferedWriter(DEFAULT_BUFFER_SIZE);
@@ -791,6 +812,18 @@ public abstract class Resource<T> implements BytesBiChannel<T> {
     @Override
     public Resource<T> gzip() {
         return gzip(DEFAULT_BUFFER_SIZE);
+    }
+    
+    @Override
+    public Resource<T> gzip(int bufferSize) {
+        filter(new GzipFilter(bufferSize));
+        return this;
+    }
+    
+    @Override
+    public Resource<T> filter(FilterFactory filter) {
+        filters.add(filter);
+        return this;
     }
     
 }
