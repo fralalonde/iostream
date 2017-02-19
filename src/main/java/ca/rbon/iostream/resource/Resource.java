@@ -50,14 +50,14 @@ import wrap.ZipOutputOf;
 public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, CharOut<T>, Filter<Resource<T>> {
     
     /**
-     * No charset specified, use system public
-     */
-    static final Charset DEFAULT_CHARSET = null;
-    
-    /**
      * No buffersize specified, use public
      */
     public static final int DEFAULT_BUFFER_SIZE = -1;
+    
+    /**
+     * No charset specified, use system public
+     */
+    static final Charset DEFAULT_CHARSET = null;
     
     /**
      * Do not buffer the stream

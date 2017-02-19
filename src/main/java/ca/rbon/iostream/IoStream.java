@@ -297,17 +297,17 @@ public class IoStream {
         return proxy(new PipeOutResource(connect), BytesOutChannel.class);
     }
     
-    public static BytesOutChannel<Random> random() {
+    public static BytesInChannel<Random> random() {
         return random(new Random());
     }
     
-    public static BytesOutChannel<Random> random(long seed) {
+    public static BytesInChannel<Random> random(long seed) {
         return random(new Random(seed));
     }
     
     @SuppressWarnings("unchecked")
-    public static BytesOutChannel<Random> random(Random random) {
-        return proxy(new InputStreamResource(new RandomInputStream(random)), BytesOutChannel.class);
+    public static BytesInChannel<Random> random(Random random) {
+        return proxy(new InputStreamResource(new RandomInputStream(random)), BytesInChannel.class);
     }
     
     /**

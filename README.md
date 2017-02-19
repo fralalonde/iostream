@@ -33,11 +33,11 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 <dependency>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.7.1</version>
+    <version>0.7.3</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.7.1`.
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.7.3`.
 
 This library requires Java 1.8 (and nothing but).
       
@@ -93,6 +93,15 @@ byte[] myPrecious = byteArrayOutputStream.toByteArray();
 
 ## Things you can do with it
 
+### Convert to IntStream
+
+```java
+try (InputStreamOf<File> pw = IoStream.file("numbers.bin").inputStream()) {
+    pw.intStream().sum();
+}
+```
+
+
 ### Files
 ```java
 FileOutputStream out = IoStream.file("noooes.txt").outputStream();
@@ -129,6 +138,14 @@ IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```java
 IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
 InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream(); 
+```
+
+### Random and IntStream
+```java
+try (InputStreamOf<Random> pw = IoStream.random().inputStream()) {
+	// add 5 random numbers
+    pw.intStream().limit(5).sum();
+}
 ```
 
 ### Existing input and output streams integration

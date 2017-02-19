@@ -13,6 +13,15 @@ import lombok.SneakyThrows;
 
 public class StreamInputAdapter {
     
+    static final IntPredicate END_OF_STREAM = x -> x == -1;
+    
+    /**
+     * Adapted from StackOverflow, lost reference, apologies.
+     * 
+     * @param splitr the original Spliterator
+     * @param predicate the predicate
+     * @return a Spliterator.OfInt
+     */
     public static Spliterator.OfInt takeIntWhile(Spliterator.OfInt splitr, IntPredicate predicate) {
         return new Spliterators.AbstractIntSpliterator(splitr.estimateSize(), 0) {
             boolean stillGoing = true;
@@ -34,19 +43,17 @@ public class StreamInputAdapter {
         };
     }
     
-    static final IntPredicate END_OF_STREAM = x -> x == -1;
-    
     public static IntStream takeIntWhile(IntStream stream, IntPredicate predicate) {
         return StreamSupport.intStream(takeIntWhile(stream.spliterator(), predicate), false);
+    }
+    
+    public static IntStream toIntStream(InputStream input) {
+        return takeIntWhile(IntStream.generate(() -> apparentlySafeRead(input)), END_OF_STREAM);
     }
     
     @SneakyThrows(IOException.class)
     private static int apparentlySafeRead(InputStream input) {
         return input.read();
-    }
-    
-    public static IntStream toIntStream(InputStream input) {
-        return takeIntWhile(IntStream.generate(() -> apparentlySafeRead(input)), END_OF_STREAM);
     }
     
 }

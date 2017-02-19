@@ -10,8 +10,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Random;
 
 import wrap.DataOutputOf;
+import wrap.InputStreamOf;
 import wrap.OutputStreamOf;
 import wrap.PrintWriterOf;
 
@@ -29,6 +31,19 @@ public class Samples {
         try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").gzip(55).printWriter("UTF-16")) {
             File myFileTxt = pw.getResource();
             pw.write("Hello from file " + myFileTxt.getName());
+        }
+    }
+    
+    public void intStreamSum() throws IOException {
+        try (InputStreamOf<File> pw = IoStream.file("number.bin").inputStream()) {
+            pw.intStream().sum();
+        }
+    }
+    
+    public void randomIntStreamSum() throws IOException {
+        try (InputStreamOf<Random> pw = IoStream.random().inputStream()) {
+            // add 5 random numbers
+            pw.intStream().limit(5).sum();
         }
     }
     
