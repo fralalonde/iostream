@@ -10,6 +10,7 @@ import java.io.PipedOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.Socket;
+import java.util.Random;
 
 import ca.rbon.iostream.channel.BytesBiChannel;
 import ca.rbon.iostream.channel.BytesInChannel;
@@ -24,6 +25,7 @@ import ca.rbon.iostream.resource.InputStreamResource;
 import ca.rbon.iostream.resource.OutputStreamResource;
 import ca.rbon.iostream.resource.PipeInResource;
 import ca.rbon.iostream.resource.PipeOutResource;
+import ca.rbon.iostream.resource.RandomInputStream;
 import ca.rbon.iostream.resource.Resource;
 import ca.rbon.iostream.resource.SocketResource;
 import ca.rbon.iostream.resource.StringResource;
@@ -295,13 +297,18 @@ public class IoStream {
         return proxy(new PipeOutResource(connect), BytesOutChannel.class);
     }
     
-    // static InOutPick nil() {
-    // return null;
-    // }
+    public static BytesOutChannel<Random> random() {
+        return random(new Random());
+    }
     
-    // static InBytesPick random() {
-    // return null;
-    // }
+    public static BytesOutChannel<Random> random(long seed) {
+        return random(new Random(seed));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<Random> random(Random random) {
+        return proxy(new InputStreamResource(new RandomInputStream(random)), BytesOutChannel.class);
+    }
     
     /**
      * <p>

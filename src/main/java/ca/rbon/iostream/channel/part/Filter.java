@@ -1,9 +1,9 @@
 package ca.rbon.iostream.channel.part;
 
-public interface Filter<GZIPPED> {
+public interface Filter<SAME> {
     
-    GZIPPED gzip(int bufferSize);
+    SAME gzip(int bufferSize);
     
-    GZIPPED gzip();
+    SAME gzip();
     
 }
