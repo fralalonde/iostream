@@ -33,12 +33,23 @@ public class StringTest {
             w.close();
         }
     }
-
+    
+    @Test
+    public void appendCapacity() throws IOException {
+        WriterOf<String> w = IoStream.string("AA", 3).writer();
+        try {
+            w.append("eee");
+            Assertions.assertThat(w.getResource()).isEqualTo("AAeee");
+        } finally {
+            w.close();
+        }
+    }
+    
     @Test
     public void read() throws IOException {
         ReaderOf<String> r = IoStream.string("AA").reader();
         try {
-            CharBuffer cb =  CharBuffer.allocate(4);
+            CharBuffer cb = CharBuffer.allocate(4);
             Assertions.assertThat(r.read(cb)).isEqualTo(2);
             cb.flip();
             Assertions.assertThat(cb.toString()).isEqualTo("AA");
@@ -46,6 +57,5 @@ public class StringTest {
             r.close();
         }
     }
-    
     
 }

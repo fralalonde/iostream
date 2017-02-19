@@ -13,7 +13,7 @@ public class RandomInputStream extends InputStream {
     
     @Override
     public int read() throws IOException {
-        return random.nextInt();
+        return random.nextInt(256);
     }
     
 }
