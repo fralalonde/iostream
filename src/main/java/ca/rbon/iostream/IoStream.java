@@ -9,6 +9,8 @@ import java.io.PipedInputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import ca.rbon.iostream.channel.BytesBiChannel;
@@ -237,7 +239,7 @@ public class IoStream {
      *
      * @param host The host name to connect to
      * @param port The port to connect to
-     * @return An input or output picker
+     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object
      * @throws java.io.IOException If the socket could not be opened
      */
     public static BytesBiChannel<Socket> socket(String host, int port) throws IOException {
@@ -250,11 +252,10 @@ public class IoStream {
      * </p>
      *
      * @param socket The socket to use
-     * @return An input or output picker
-     * @throws java.io.IOException If the socket could not be opened
+     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object
      */
     @SuppressWarnings("unchecked")
-    public static BytesBiChannel<Socket> socket(Socket socket) throws IOException {
+    public static BytesBiChannel<Socket> socket(Socket socket) {
         return proxy(new SocketResource(socket), BytesBiChannel.class);
     }
     
@@ -263,7 +264,7 @@ public class IoStream {
      * Read or write characters from the system console, if it exists.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object
      * @throws IOException if the {@link Console} cannot be opened
      */
     @SuppressWarnings("unchecked")
@@ -273,10 +274,10 @@ public class IoStream {
     
     /**
      * <p>
-     * Read from a PipeOutputStream to be built.
+     * Create a new Pipe of default size.
      * </p>
      *
-     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object
      */
     @SuppressWarnings("unchecked")
     public static BytesBiChannel<Pipe> pipe() {
@@ -285,11 +286,11 @@ public class IoStream {
     
     /**
      * <p>
-     * Read from an existing PipeOutputStream.
+     * Create a new Pipe of specified size.
      * </p>
      * 
      * @param pipeSize size of the pipe
-     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object
      */
     @SuppressWarnings("unchecked")
     public static BytesBiChannel<Pipe> pipe(int pipeSize) {
@@ -298,11 +299,11 @@ public class IoStream {
     
     /**
      * <p>
-     * Write to an existing PipeInputStream to be built.
+     * Write to an existing PipeInputStream.
      * </p>
      *
      * @param connect a {@link java.io.PipedInputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object
      */
     @SuppressWarnings("unchecked")
     public static BytesOutChannel<Pipe> pipe(PipedInputStream connect) {
@@ -311,11 +312,11 @@ public class IoStream {
     
     /**
      * <p>
-     * Write to an existing PipeInputStream to be built.
+     * Write to an existing Pipe.
      * </p>
      *
      * @param connect a {@link java.io.PipedInputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object
      * @throws IOException if the {@link Pipe} cannot be created
      */
     @SuppressWarnings("unchecked")
@@ -323,17 +324,55 @@ public class IoStream {
         return proxy(new Pipe(connect.getResource().getInputStream()), BytesOutChannel.class);
     }
     
+    /**
+     * Build a random byte input streamwith default seed.
+     * 
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
+     */
     public static BytesInChannel<Random> random() {
         return random(new Random());
     }
     
+    /**
+     * Build a random byte input stream with specified seed.
+     * 
+     * @param seed the seed
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
+     */
     public static BytesInChannel<Random> random(long seed) {
         return random(new Random(seed));
     }
     
+    /**
+     * Build a random byte input stream with specified random.
+     * 
+     * @param random the random
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
+     */
     @SuppressWarnings("unchecked")
     public static BytesInChannel<Random> random(Random random) {
         return proxy(new InputStreamResource(new RandomInputStream(random)), BytesInChannel.class);
+    }
+    
+    /**
+     * Build a secure random byte input stream.
+     * 
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
+     * @throws NoSuchAlgorithmException
+     */
+    public static BytesInChannel<Random> secureRandom() throws NoSuchAlgorithmException {
+        return random(SecureRandom.getInstanceStrong());
+    }
+    
+    /**
+     * Build a secure random byte input stream with specified algorithm.
+     * 
+     * @param algorithm the secure random algorithm
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
+     * @throws NoSuchAlgorithmException
+     */
+    public static BytesInChannel<Random> secureRandom(String algorithm) throws NoSuchAlgorithmException {
+        return random(SecureRandom.getInstance(algorithm));
     }
     
     /**
