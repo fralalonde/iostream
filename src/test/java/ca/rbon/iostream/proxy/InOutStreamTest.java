@@ -10,7 +10,10 @@ import java.io.OutputStream;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.IoStream;
+import ca.rbon.iostream.resource.InputStreamResource;
+import ca.rbon.iostream.resource.OutputStreamResource;
 import ca.rbon.iostream.wrap.BufferedInputOf;
 import ca.rbon.iostream.wrap.BufferedOutputOf;
 import ca.rbon.iostream.wrap.BufferedReaderOf;
@@ -35,6 +38,16 @@ public class InOutStreamTest {
         Mockito.verify(input).close();
     }
     
+    @Test(expected = CodeFlowError.class)
+    public void badInputStream() throws IOException {
+        new InputStreamResource(Mockito.mock(InputStream.class)).writer();
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void nullInputStream() throws IOException {
+        new InputStreamResource(null).writer();
+    }
+    
     @Test
     public void outputStream() throws IOException {
         try (BufferedOutputOf<OutputStream> pis = IoStream.stream(output).bufferedOutputStream()) {
@@ -44,6 +57,16 @@ public class InOutStreamTest {
             Mockito.verify(output).write(Mockito.any(byte[].class), Mockito.eq(0), Mockito.eq(1));
         }
         Mockito.verify(output).close();
+    }
+    
+    @Test(expected = CodeFlowError.class)
+    public void badOutputStream() throws IOException {
+        new OutputStreamResource(Mockito.mock(OutputStream.class)).reader();
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void nullOutputStream() throws IOException {
+        new OutputStreamResource(null).writer();
     }
     
     @Test

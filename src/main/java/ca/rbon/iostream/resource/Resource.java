@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.filter.FilterFactory;
 import ca.rbon.iostream.channel.filter.GzipFilter;
 import ca.rbon.iostream.channel.part.ByteIn;
@@ -53,6 +54,8 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * No buffersize specified, use public
      */
     public static final int DEFAULT_BUFFER_SIZE = -1;
+    
+    static final String STREAM_NOT_SUPPORTED = "Byte-oriented stream operations not supported by this type of resource.";
     
     /**
      * No charset specified, use system public
@@ -162,23 +165,27 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
     
     /**
      * <p>
-     * getOutputStream.
-     * </p>
-     * 
-     * @return a {@link java.io.OutputStream} object.
-     * @throws java.io.IOException if any.
-     */
-    protected abstract OutputStream getOutputStream() throws IOException;
-    
-    /**
-     * <p>
      * getInputStream.
      * </p>
      * 
      * @return a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    protected abstract InputStream getInputStream() throws IOException;
+    protected InputStream getInputStream() throws IOException {
+        throw new CodeFlowError(STREAM_NOT_SUPPORTED);
+    }
+    
+    /**
+     * <p>
+     * getOutputStream.
+     * </p>
+     * 
+     * @return a {@link java.io.OutputStream} object.
+     * @throws java.io.IOException if any.
+     */
+    protected OutputStream getOutputStream() throws IOException {
+        throw new CodeFlowError(STREAM_NOT_SUPPORTED);
+    }
     
     /**
      * <p>
@@ -189,11 +196,11 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * @throws java.io.IOException if any.
      */
     private OutputStream filteredOut() throws IOException {
-        OutputStream output = getOutputStream();
+        OutputStream filteredOutput = getOutputStream();
         for (FilterFactory f : filters) {
-            output = f.filterOutput(output);
+            filteredOutput = f.filterOutput(filteredOutput);
         }
-        return output;
+        return filteredOutput;
     }
     
     /**
@@ -205,11 +212,11 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * @throws java.io.IOException if any.
      */
     private InputStream filteredIn() throws IOException {
-        InputStream input = getInputStream();
+        InputStream filteredInput = getInputStream();
         for (FilterFactory f : filters) {
-            input = f.filterInput(input);
+            filteredInput = f.filterInput(filteredInput);
         }
-        return input;
+        return filteredInput;
     }
     
     // SOURCE

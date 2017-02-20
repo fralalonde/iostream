@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.Socket;
@@ -23,11 +22,12 @@ import ca.rbon.iostream.resource.ConsoleResource;
 import ca.rbon.iostream.resource.FileResource;
 import ca.rbon.iostream.resource.InputStreamResource;
 import ca.rbon.iostream.resource.OutputStreamResource;
-import ca.rbon.iostream.resource.PipeResource;
+import ca.rbon.iostream.resource.Pipe;
 import ca.rbon.iostream.resource.RandomInputStream;
 import ca.rbon.iostream.resource.Resource;
 import ca.rbon.iostream.resource.SocketResource;
 import ca.rbon.iostream.resource.StringResource;
+import ca.rbon.iostream.wrap.InputStreamOf;
 
 /**
  * <p>
@@ -264,7 +264,7 @@ public class IoStream {
      * </p>
      *
      * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object.
-     * @throws IOException
+     * @throws IOException if the {@link Console} cannot be opened
      */
     @SuppressWarnings("unchecked")
     public static CharBiChannel<Console> console() throws IOException {
@@ -279,21 +279,8 @@ public class IoStream {
      * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesBiChannel<PipeResource> pipe() {
-        return proxy(new PipeResource(), BytesBiChannel.class);
-    }
-    
-    /**
-     * <p>
-     * Read from an existing PipeOutputStream.
-     * </p>
-     *
-     * @param connect a {@link java.io.PipedOutputStream} object.
-     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
-     */
-    @SuppressWarnings("unchecked")
-    public static BytesInChannel<PipeResource> pipe(PipedOutputStream connect) {
-        return proxy(new PipeResource(connect), BytesInChannel.class);
+    public static BytesBiChannel<Pipe> pipe() {
+        return proxy(new Pipe(), BytesBiChannel.class);
     }
     
     /**
@@ -305,8 +292,8 @@ public class IoStream {
      * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesBiChannel<PipeResource> pipe(int pipeSize) {
-        return proxy(new PipeResource(pipeSize), BytesBiChannel.class);
+    public static BytesBiChannel<Pipe> pipe(int pipeSize) {
+        return proxy(new Pipe(pipeSize), BytesBiChannel.class);
     }
     
     /**
@@ -318,8 +305,22 @@ public class IoStream {
      * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesOutChannel<PipeResource> pipe(PipedInputStream connect) {
-        return proxy(new PipeResource(connect), BytesOutChannel.class);
+    public static BytesOutChannel<Pipe> pipe(PipedInputStream connect) {
+        return proxy(new Pipe(connect), BytesOutChannel.class);
+    }
+    
+    /**
+     * <p>
+     * Write to an existing PipeInputStream to be built.
+     * </p>
+     *
+     * @param connect a {@link java.io.PipedInputStream} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
+     * @throws IOException if the {@link Pipe} cannot be created
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<Pipe> pipe(InputStreamOf<Pipe> connect) throws IOException {
+        return proxy(new Pipe(connect.getResource().getInputStream()), BytesOutChannel.class);
     }
     
     public static BytesInChannel<Random> random() {

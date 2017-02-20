@@ -3,9 +3,10 @@ package ca.rbon.iostream.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 
 import ca.rbon.iostream.CodeFlowError;
+import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -19,31 +20,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OutputStreamResource extends Resource<OutputStream> {
     
-    private static final String NO_INPUT = "%s does not provide input facilities.";
+    static final String NO_INPUT = "%s does not provide input facilities.";
     
+    @NonNull
+    @Getter
     final OutputStream outputStream;
     
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * <p>
+     * getOutputStream.
+     * </p>
+     * 
+     * @return a {@link java.io.OutputStream} object.
+     * @throws java.io.IOException if any.
+     */
     protected InputStream getInputStream() throws IOException {
-        throw new CodeFlowError(NO_INPUT, OutputStreamResource.class);
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected Reader getReader() throws IOException {
-        throw new CodeFlowError(NO_INPUT, OutputStreamResource.class);
+        throw new CodeFlowError(NO_INPUT, this.getClass());
     }
     
     /** {@inheritDoc} */
     @Override
     public OutputStream getResource() throws IOException {
         return getOutputStream();
-    }
-    
-    @Override
-    protected OutputStream getOutputStream() throws IOException {
-        return outputStream;
     }
     
 }

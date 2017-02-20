@@ -17,6 +17,11 @@ public class FileTest {
     
     private static final String A_TXT = "target/A.txt";
     
+    @Test(expected = NullPointerException.class)
+    public void nullFile() throws IOException {
+        IoStream.file((File) null);
+    }
+    
     @Test
     public void recreate() throws IOException {
         try (WriterOf<File> w = IoStream.file(A_TXT).writer()) {

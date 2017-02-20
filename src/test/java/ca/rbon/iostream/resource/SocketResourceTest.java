@@ -13,6 +13,11 @@ public class SocketResourceTest {
     
     Socket socket = Mockito.mock(Socket.class);
     
+    @Test(expected = NullPointerException.class)
+    public void nullSocket() throws IOException {
+        IoStream.socket(null);
+    }
+    
     @Test
     public void input() throws IOException {
         IoStream.socket(socket).inputStream();

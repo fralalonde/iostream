@@ -1,4 +1,4 @@
-package ca.rbon.iostream.proxy;
+package ca.rbon.iostream.resource;
 
 import java.io.IOException;
 import java.nio.CharBuffer;
@@ -6,11 +6,22 @@ import java.nio.CharBuffer;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.IoStream;
 import ca.rbon.iostream.wrap.ReaderOf;
 import ca.rbon.iostream.wrap.WriterOf;
 
 public class StringTest {
+    
+    @Test(expected = CodeFlowError.class)
+    public void nullString() throws IOException {
+        new StringResource(null, 0).getInputStream();
+    }
+    
+    @Test(expected = CodeFlowError.class)
+    public void nullBuffer() throws IOException {
+        new StringResource(null, 0).getResource();
+    }
     
     @Test
     public void create() throws IOException {

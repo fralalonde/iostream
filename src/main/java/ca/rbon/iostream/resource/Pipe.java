@@ -1,12 +1,9 @@
 package ca.rbon.iostream.resource;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * <p>
@@ -16,8 +13,7 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-@RequiredArgsConstructor
-public class PipeResource extends Resource<PipeResource> {
+public class Pipe extends Resource<Pipe> {
     
     PipedInputStream input;
     
@@ -25,23 +21,22 @@ public class PipeResource extends Resource<PipeResource> {
     
     final int pipeSize;
     
-    public PipeResource() {
+    public Pipe() {
         pipeSize = DEFAULT_BUFFER_SIZE;
     }
     
-    public PipeResource(PipedInputStream in) {
+    public Pipe(PipedInputStream in) {
         input = in;
         pipeSize = DEFAULT_BUFFER_SIZE;
     }
     
-    public PipeResource(PipedOutputStream out) {
-        output = out;
-        pipeSize = DEFAULT_BUFFER_SIZE;
+    public Pipe(int size) {
+        pipeSize = size;
     }
     
     /** {@inheritDoc} */
     @Override
-    protected InputStream getInputStream() throws IOException {
+    public PipedInputStream getInputStream() throws IOException {
         if (input == null) {
             input = output == null
                     ? pipeSize == DEFAULT_BUFFER_SIZE ? new PipedInputStream() : new PipedInputStream(pipeSize)
@@ -60,16 +55,14 @@ public class PipeResource extends Resource<PipeResource> {
     @Override
     protected PipedOutputStream getOutputStream() throws IOException {
         if (output == null) {
-            output = input == null
-                    ? new PipedOutputStream()
-                    : new PipedOutputStream(input);
+            output = new PipedOutputStream(getInputStream());
         }
         return output;
     }
     
     /** {@inheritDoc} */
     @Override
-    public PipeResource getResource() throws IOException {
+    public Pipe getResource() throws IOException {
         return this;
     }
     
