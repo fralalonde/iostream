@@ -14,10 +14,10 @@ Better ergonomics for Java IO streams building and disposal.
 * Composed objects expose underlying resource for retrieval of results / follow up operations
 
 ```java
-try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter()) {
-    File myFileTxt = pw.getResource();
-    pw.write("Hello from file " + myFileTxt);
-}        
+try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").printWriter()) {
+    File myFileTxt = myFile.get();
+    myFile.write("Hello from file " + myFileTxt.getName());
+}
 ```  
 
 _"It's the little things"_
@@ -54,7 +54,7 @@ Because streams and readers/writers are often paired together, the fluent builde
 ```java
 PrintWriter writer = IoStream.file("yesss.txt").printWriter();
 ```
-You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. All `IoStream` final methods return `*Of<File>` classes extending normal `java.io` classes. Their added functionality is explained below (hint: checkout their `getResource()` method.).
+You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. All `IoStream` final methods return `*Of<File>` classes extending normal `java.io` classes. Their added functionality is explained below (hint: checkout their `get()` method.).
 
 If a resource only implements streams (like `socket()`), and you require `Writer` or `Reader` char-oriented access, the builder will transparently insert an `OutputStreamWriter` or `InputStreamReader` adapter for you.
 ```java
@@ -70,12 +70,12 @@ try (Writer w = IoStream.file("mouha.txt").printWriter()) {
 ```
 
 ### Retrieving results using `*Of<>` classes 
-It is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays out streams, string writers or temp files. `IoStream` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Of<>` classes, which all subclass regular `java.io` classes. This done to provide you with the `getResource()` method, which return type follows the resource type you built.
+It is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays out streams, string writers or temp files. `IoStream` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Of<>` classes, which all subclass regular `java.io` classes. This done to provide you with the `get()` method, which return type follows the resource type you built.
 ```java
 PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
 // ...
 writer.close();
-byte[] myPrecious = writer.getResource();
+byte[] myPrecious = writer.get();
 ```
 The classic JDK code forces you to juggle with the inner and outer streams. 
 ```java
@@ -101,20 +101,29 @@ try (InputStreamOf<File> pw = IoStream.file("numbers.bin").inputStream()) {
 }
 ```
 
+### Byte Arrays, Random & IOUtils 
+```java
+IoStream.bytes().outputStream();
+byte[] bytes = IoStream.bytes().dataOutputStream().get();
+
+IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
+```
+
 ### Files
 ```java
 FileOutputStream out = IoStream.file("noooes.txt").outputStream();
 
-try (PrintWriter w = IoStream.file("mouha.txt").printWriter()) {
-    w.append("haha");
-}   
+try (PrintWriterOf<File> myFile = IoStream.file("mouha.txt").printWriter()) {
+    myFile.write("haha");
+}
+   
 
 IoStream.file("doum.zip").zipInputStream("UTF-8");
 IoStream.file("dam.txt", true).bufferedWriter();
 
 DataOutputOf<File> tmpout = IoStream.tempFile().dataOutputStream();
 tmpout.write(42);
-String tmpFilename = tmpout.getResource().getAbsolutePath();
+String tmpFilename = tmpout.get().getAbsolutePath();
 ```
 
 ### Strings
@@ -122,15 +131,7 @@ String tmpFilename = tmpout.getResource().getAbsolutePath();
 IoStream.string("agaga gogo").bufferedReader();
 IoStream.string("agaga gogo").reader();
 
-String str = IoStream.string().bufferedWriter().getResource();
-```
-
-### Byte Arrays
-```java
-IoStream.bytes().outputStream();
-byte[] bytes = IoStream.bytes().dataOutputStream().getResource();
-
-IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
+String str = IoStream.string().bufferedWriter().get();
 ```
 
 ### Sockets
@@ -166,7 +167,7 @@ IoStream.stream(providedOutput).printWriter(256);
 ```java
 // this example is pretty extreme
 try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
-    File myFileTxt = pw.getResource();
+    File myFileTxt = pw.get();
     pw.write("Hello from file " + myFileTxt.getName());
 }
 ```
@@ -193,7 +194,7 @@ public byte[] usingIoStream() throws IOException {
     PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
     writer.write("doodoo");
     writer.close();
-    return writer.getResource();
+    return writer.get();
 }
 ```
   
@@ -223,7 +224,7 @@ public byte[] fluent() throws IOException {
     writer.close();
 
     // extract result
-    return writer.getResource();
+    return writer.get();
 }
 ```
   
@@ -255,7 +256,7 @@ IoStream enabled-code
 ```java
 try (PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter()) {
     writer.write("doodoo");
-    return writer.getResource();
+    return writer.get();
 }
 ```
   
