@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.8.0</version>
+    <version>0.8.1-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Better ergonomics for Java IO stream handling</description>
