@@ -7,18 +7,24 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
-import lombok.RequiredArgsConstructor;
+import ca.rbon.iostream.CodeFlowError;
 
-@RequiredArgsConstructor
 /**
  * <p>
- * ConsolePicker class.
+ * ConsoleResource.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
  */
 public class ConsoleResource extends Resource<Console> {
+    
+    private static final String STREAM_NOT_SUPPORTED = "Byte-oriented stream operations not supported by Console resources.";
+    
+    private static final String NO_CONSOLE = "The system console is not available.";
+    
+    public ConsoleResource() throws IOException {
+        if (System.console() == null) {
+            throw new IOException(NO_CONSOLE);
+        }
+    }
     
     /**
      * <p>
@@ -34,7 +40,7 @@ public class ConsoleResource extends Resource<Console> {
     /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
-        return System.in;
+        throw new CodeFlowError(STREAM_NOT_SUPPORTED);
     }
     
     /** {@inheritDoc} */
@@ -46,7 +52,7 @@ public class ConsoleResource extends Resource<Console> {
     /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
-        return System.err;
+        throw new CodeFlowError(STREAM_NOT_SUPPORTED);
     }
     
     /** {@inheritDoc} */

@@ -23,8 +23,7 @@ import ca.rbon.iostream.resource.ConsoleResource;
 import ca.rbon.iostream.resource.FileResource;
 import ca.rbon.iostream.resource.InputStreamResource;
 import ca.rbon.iostream.resource.OutputStreamResource;
-import ca.rbon.iostream.resource.PipeInResource;
-import ca.rbon.iostream.resource.PipeOutResource;
+import ca.rbon.iostream.resource.PipeResource;
 import ca.rbon.iostream.resource.RandomInputStream;
 import ca.rbon.iostream.resource.Resource;
 import ca.rbon.iostream.resource.SocketResource;
@@ -158,6 +157,30 @@ public class IoStream {
     
     /**
      * <p>
+     * The {@link System#out} output stream.
+     * </p>
+     *
+     * @return an OutputStream channel
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<OutputStream> stdout() {
+        return proxy(new OutputStreamResource(System.out), BytesOutChannel.class);
+    }
+    
+    /**
+     * <p>
+     * The {@link System#in} input stream.
+     * </p>
+     *
+     * @return an InputStream channel
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesInChannel<InputStream> stdin() {
+        return proxy(new InputStreamResource(System.in), BytesInChannel.class);
+    }
+    
+    /**
+     * <p>
      * Write to a new byte array with default initial capacity.
      * </p>
      *
@@ -237,14 +260,15 @@ public class IoStream {
     
     /**
      * <p>
-     * Read or write from the console.
+     * Read or write characters from the system console, if it exists.
      * </p>
      *
      * @return a {@link ca.rbon.iostream.channel.BytesBiChannel} object.
+     * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    public static BytesBiChannel<Console> console() {
-        return proxy(new ConsoleResource(), BytesBiChannel.class);
+    public static CharBiChannel<Console> console() throws IOException {
+        return proxy(new ConsoleResource(), CharBiChannel.class);
     }
     
     /**
@@ -255,8 +279,8 @@ public class IoStream {
      * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesInChannel<PipedInputStream> pipeInput() {
-        return proxy(new PipeInResource(null), BytesInChannel.class);
+    public static BytesBiChannel<PipeResource> pipe() {
+        return proxy(new PipeResource(), BytesBiChannel.class);
     }
     
     /**
@@ -268,20 +292,21 @@ public class IoStream {
      * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesInChannel<PipedInputStream> pipeInput(PipedOutputStream connect) {
-        return proxy(new PipeInResource(connect), BytesInChannel.class);
+    public static BytesInChannel<PipeResource> pipe(PipedOutputStream connect) {
+        return proxy(new PipeResource(connect), BytesInChannel.class);
     }
     
     /**
      * <p>
-     * Write to a PipeInputStream to be built.
+     * Read from an existing PipeOutputStream.
      * </p>
-     *
-     * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
+     * 
+     * @param pipeSize size of the pipe
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesOutChannel<PipedOutputStream> pipeOutput() {
-        return proxy(new PipeOutResource(null), BytesOutChannel.class);
+    public static BytesBiChannel<PipeResource> pipe(int pipeSize) {
+        return proxy(new PipeResource(pipeSize), BytesBiChannel.class);
     }
     
     /**
@@ -293,8 +318,8 @@ public class IoStream {
      * @return a {@link ca.rbon.iostream.channel.BytesOutChannel} object.
      */
     @SuppressWarnings("unchecked")
-    public static BytesOutChannel<PipedOutputStream> pipeOutput(PipedInputStream connect) {
-        return proxy(new PipeOutResource(connect), BytesOutChannel.class);
+    public static BytesOutChannel<PipeResource> pipe(PipedInputStream connect) {
+        return proxy(new PipeResource(connect), BytesOutChannel.class);
     }
     
     public static BytesInChannel<Random> random() {

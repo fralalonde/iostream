@@ -6,10 +6,8 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 
-import ca.rbon.iostream.CodeFlowError;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 /**
  * <p>
  * PipeOutPicker class.
@@ -18,24 +16,44 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-public class PipeOutResource extends Resource<PipedOutputStream> {
+@RequiredArgsConstructor
+public class PipeResource extends Resource<PipeResource> {
     
-    private static final String NO_INPUT = "%s does not provide input facilities.";
-    
-    final PipedInputStream input;
+    PipedInputStream input;
     
     PipedOutputStream output;
+    
+    final int pipeSize;
+    
+    public PipeResource() {
+        pipeSize = DEFAULT_BUFFER_SIZE;
+    }
+    
+    public PipeResource(PipedInputStream in) {
+        input = in;
+        pipeSize = DEFAULT_BUFFER_SIZE;
+    }
+    
+    public PipeResource(PipedOutputStream out) {
+        output = out;
+        pipeSize = DEFAULT_BUFFER_SIZE;
+    }
     
     /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
-        throw new CodeFlowError(NO_INPUT, PipeOutResource.class);
+        if (input == null) {
+            input = output == null
+                    ? pipeSize == DEFAULT_BUFFER_SIZE ? new PipedInputStream() : new PipedInputStream(pipeSize)
+                    : pipeSize == DEFAULT_BUFFER_SIZE ? new PipedInputStream(output) : new PipedInputStream(output, pipeSize);
+        }
+        return input;
     }
     
     /** {@inheritDoc} */
     @Override
     protected Reader getReader() throws IOException {
-        throw new CodeFlowError(NO_INPUT, PipeOutResource.class);
+        return null;
     }
     
     /** {@inheritDoc} */
@@ -51,8 +69,8 @@ public class PipeOutResource extends Resource<PipedOutputStream> {
     
     /** {@inheritDoc} */
     @Override
-    public PipedOutputStream getResource() throws IOException {
-        return getOutputStream();
+    public PipeResource getResource() throws IOException {
+        return this;
     }
     
 }
