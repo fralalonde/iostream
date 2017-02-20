@@ -68,7 +68,7 @@ public class CloseFailTest {
         ObjectOutputOf<byte[]> o = IoStream.bytes().objectOutputStream();
         o.writeObject(new Integer(4));
         o.close();
-        InputStream objectInput = IoStream.bytes(o.getResource()).inputStream();
+        InputStream objectInput = IoStream.bytes(o.get()).inputStream();
         
         ObjectInputOf<InputStream> pis = IoStream.stream(objectInput).objectInputStream();
         pis.close();

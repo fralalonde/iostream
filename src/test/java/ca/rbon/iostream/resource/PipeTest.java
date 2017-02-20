@@ -47,7 +47,7 @@ public class PipeTest {
         BytesBiChannel<Pipe> pipe = IoStream.pipe();
         
         final OutputStreamOf<Pipe> output = pipe.outputStream();
-        final InputStreamOf<Pipe> input = output.getResource().inputStream();
+        final InputStreamOf<Pipe> input = output.get().inputStream();
         final AtomicInteger ai = new AtomicInteger();
         
         Thread t = new Thread(() -> {
@@ -105,7 +105,7 @@ public class PipeTest {
         BytesBiChannel<Pipe> pipe = IoStream.pipe(5);
         final InputStreamOf<Pipe> pipeInput = pipe.inputStream();
         
-        BytesOutChannel<Pipe> pipe2 = IoStream.pipe(pipeInput.getResource().getInputStream());
+        BytesOutChannel<Pipe> pipe2 = IoStream.pipe(pipeInput.get().getInputStream());
         final OutputStreamOf<Pipe> output = pipe2.outputStream();
         
         final AtomicInteger ai = new AtomicInteger();

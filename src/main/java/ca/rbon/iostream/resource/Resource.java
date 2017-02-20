@@ -15,8 +15,11 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.Cipher;
+
 import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.filter.Base64Filter;
+import ca.rbon.iostream.channel.filter.CipherFilter;
 import ca.rbon.iostream.channel.filter.FilterFactory;
 import ca.rbon.iostream.channel.filter.GzipFilter;
 import ca.rbon.iostream.channel.part.ByteIn;
@@ -837,6 +840,11 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
     @Override
     public Resource<T> base64() {
         return filter(new Base64Filter());
+    }
+    
+    @Override
+    public Resource<T> cipher(Cipher cipher) {
+        return filter(new CipherFilter(cipher));
     }
     
 }

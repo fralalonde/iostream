@@ -33,7 +33,7 @@ public class DataOutputOf<T> extends DataOutputStream implements WrapperOf<T> {
     
     /** {@inheritDoc} */
     @Override
-    public T getResource() throws IOException {
+    public T get() throws IOException {
         return closer.getResource();
     }
     

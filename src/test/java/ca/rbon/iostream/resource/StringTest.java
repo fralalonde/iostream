@@ -28,7 +28,7 @@ public class StringTest {
         WriterOf<String> w = IoStream.string().writer();
         try {
             w.append("eee");
-            Assertions.assertThat(w.getResource()).isEqualTo("eee");
+            Assertions.assertThat(w.get()).isEqualTo("eee");
         } finally {
             w.close();
         }
@@ -39,7 +39,7 @@ public class StringTest {
         WriterOf<String> w = IoStream.string("AA").writer();
         try {
             w.append("eee");
-            Assertions.assertThat(w.getResource()).isEqualTo("AAeee");
+            Assertions.assertThat(w.get()).isEqualTo("AAeee");
         } finally {
             w.close();
         }
@@ -50,7 +50,7 @@ public class StringTest {
         WriterOf<String> w = IoStream.string("AA", 3).writer();
         try {
             w.append("eee");
-            Assertions.assertThat(w.getResource()).isEqualTo("AAeee");
+            Assertions.assertThat(w.get()).isEqualTo("AAeee");
         } finally {
             w.close();
         }

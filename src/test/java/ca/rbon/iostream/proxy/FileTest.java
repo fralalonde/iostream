@@ -61,29 +61,29 @@ public class FileTest {
     public void defaultCharsetFileWriteRead() throws IOException {
         try (WriterOf<File> w = IoStream.file(A_TXT).writer()) {
             w.append('é');
-            assertThat(w.getResource().getName()).isEqualTo("A.txt");
+            assertThat(w.get().getName()).isEqualTo("A.txt");
         }
         
         try (ReaderOf<File> r = IoStream.file(A_TXT).reader()) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('é');
-            assertThat(r.getResource().getName()).isEqualTo("A.txt");
+            assertThat(r.get().getName()).isEqualTo("A.txt");
         }
     }
     
     @Test
     public void tmpFileWriteRead() throws IOException {
-        PrintWriterOf<File> w = IoStream.tempFile().printWriter();
+        PrintWriterOf<File> tmpFileOut = IoStream.tempFile().printWriter();
         try {
-            w.append("tmpé");
+            tmpFileOut.append("tmpé");
         } finally {
-            w.close();
+            tmpFileOut.close();
         }
         
-        try (ReaderOf<File> r = IoStream.file(w.getResource()).reader()) {
+        try (ReaderOf<File> tmpFileIn = IoStream.file(tmpFileOut.get()).reader()) {
             CharBuffer sb = CharBuffer.allocate(5);
-            assertThat(r.read(sb)).isEqualTo(4);
+            assertThat(tmpFileIn.read(sb)).isEqualTo(4);
             sb.flip();
             assertThat(sb.toString()).isEqualTo("tmpé");
         }
@@ -93,14 +93,14 @@ public class FileTest {
     public void specificCharsetFileWriteRead() throws IOException {
         try (WriterOf<File> w = IoStream.file(A_TXT).writer("UTF-16")) {
             w.append('à');
-            assertThat(w.getResource().getName()).isEqualTo("A.txt");
+            assertThat(w.get().getName()).isEqualTo("A.txt");
         }
         
         try (ReaderOf<File> r = IoStream.file(A_TXT).reader("UTF-16")) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('à');
-            assertThat(r.getResource().getName()).isEqualTo("A.txt");
+            assertThat(r.get().getName()).isEqualTo("A.txt");
         }
     }
     

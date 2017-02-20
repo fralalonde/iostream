@@ -13,6 +13,6 @@ public interface WrapperOf<T> {
      * @return The underlying resource
      * @throws IOException if something bad happens
      */
-    T getResource() throws IOException;
+    T get() throws IOException;
     
 }

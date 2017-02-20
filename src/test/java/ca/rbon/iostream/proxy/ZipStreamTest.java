@@ -25,7 +25,7 @@ public class ZipStreamTest {
             zos.close();
         }
         
-        ZipInputStream zis = IoStream.bytes(zos.getResource()).zipInputStream();
+        ZipInputStream zis = IoStream.bytes(zos.get()).zipInputStream();
         try {
             ZipEntry ze = zis.getNextEntry();
             assertThat(ze).isNotNull();
@@ -49,7 +49,7 @@ public class ZipStreamTest {
             zos.close();
         }
         
-        try (ZipInputStream zis = IoStream.bytes(zos.getResource()).zipInputStream()) {
+        try (ZipInputStream zis = IoStream.bytes(zos.get()).zipInputStream()) {
             ZipEntry ze = zis.getNextEntry();
             assertThat(ze).isNotNull();
             assertThat(ze.getName()).isEqualTo("a");
@@ -69,7 +69,7 @@ public class ZipStreamTest {
             zos.close();
         }
         
-        ZipInputStream zis = IoStream.bytes(zos.getResource()).zipInputStream("UTF-16");
+        ZipInputStream zis = IoStream.bytes(zos.get()).zipInputStream("UTF-16");
         try {
             ZipEntry ze = zis.getNextEntry();
             assertThat(ze.getName()).isEqualTo("ééé");
@@ -91,7 +91,7 @@ public class ZipStreamTest {
             zos.close();
         }
         
-        ZipInputStream zis = IoStream.bytes(zos.getResource()).zipInputStream("UTF-8");
+        ZipInputStream zis = IoStream.bytes(zos.get()).zipInputStream("UTF-8");
         try {
             ZipEntry ze = zis.getNextEntry();
             assertThat(ze.getName()).isEqualTo("ééé");

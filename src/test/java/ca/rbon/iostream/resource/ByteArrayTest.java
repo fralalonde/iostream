@@ -36,11 +36,11 @@ public class ByteArrayTest {
         BufferedWriterOf<byte[]> w = IoStream.bytes().bufferedWriter(4);
         try {
             w.append("eee");
-            assertThat(bytes(w.getResource()).reader().read()).isEqualTo(-1);
+            assertThat(bytes(w.get()).reader().read()).isEqualTo(-1);
             w.append("eee");
-            assertThat(bytes(w.getResource()).reader().read()).isEqualTo(-1);
+            assertThat(bytes(w.get()).reader().read()).isEqualTo(-1);
             w.flush();
-            assertThat(bytes(w.getResource()).reader().read()).isEqualTo(101);
+            assertThat(bytes(w.get()).reader().read()).isEqualTo(101);
         } finally {
             w.close();
         }
@@ -54,14 +54,14 @@ public class ByteArrayTest {
         } finally {
             w.close();
         }
-        assertThat(bytes(w.getResource()).reader().read()).isEqualTo(101);
+        assertThat(bytes(w.get()).reader().read()).isEqualTo(101);
     }
     
     @Test
     public void appendBytes() throws IOException {
         try (OutputStreamOf<byte[]> bos = IoStream.bytes(new byte[]{4, 5, 6}).outputStream()) {
             bos.write(new byte[]{7, 8, 9});
-            assertThat(bos.getResource()).isEqualTo(new byte[]{4, 5, 6, 7, 8, 9});
+            assertThat(bos.get()).isEqualTo(new byte[]{4, 5, 6, 7, 8, 9});
         }
     }
     
@@ -69,7 +69,7 @@ public class ByteArrayTest {
     public void appendBytesCapacity() throws IOException {
         try (OutputStreamOf<byte[]> bos = IoStream.bytes(new byte[]{4, 5, 6}, 4).outputStream()) {
             bos.write(new byte[]{7, 8, 9});
-            assertThat(bos.getResource()).isEqualTo(new byte[]{4, 5, 6, 7, 8, 9});
+            assertThat(bos.get()).isEqualTo(new byte[]{4, 5, 6, 7, 8, 9});
         }
     }
     
@@ -81,7 +81,7 @@ public class ByteArrayTest {
         } finally {
             bis.close();
         }
-        assertThat(bis.getResource()).isEqualTo(new byte[]{4, 5, 6});
+        assertThat(bis.get()).isEqualTo(new byte[]{4, 5, 6});
     }
     
     @Test
@@ -89,9 +89,9 @@ public class ByteArrayTest {
         BufferedOutputOf<byte[]> bos = IoStream.bytes(new byte[]{4, 5, 6}).bufferedOutputStream(4);
         try {
             bos.write(new byte[]{7, 8, 9});
-            assertThat(bos.getResource()).isEqualTo(new byte[]{4, 5, 6});
+            assertThat(bos.get()).isEqualTo(new byte[]{4, 5, 6});
             bos.flush();
-            assertThat(bos.getResource()).isEqualTo(new byte[]{4, 5, 6, 7, 8, 9});
+            assertThat(bos.get()).isEqualTo(new byte[]{4, 5, 6, 7, 8, 9});
         } finally {
             bos.close();
         }

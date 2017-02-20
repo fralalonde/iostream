@@ -23,7 +23,7 @@ public class DataStreamTest {
             zos.close();
         }
         
-        byte[] dataBytes = zos.getResource();
+        byte[] dataBytes = zos.get();
         try (DataInputStream zis = IoStream.bytes(dataBytes).dataInputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 2);
             assertThat(new String(bytes)).isEqualTo("AA");
@@ -39,7 +39,7 @@ public class DataStreamTest {
             zos.close();
         }
         
-        try (DataInputStream zis = IoStream.bytes(zos.getResource()).dataInputStream()) {
+        try (DataInputStream zis = IoStream.bytes(zos.get()).dataInputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 2);
             assertThat(new String(bytes)).isEqualTo("AA");
         }

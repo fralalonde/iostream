@@ -321,7 +321,7 @@ public class IoStream {
      */
     @SuppressWarnings("unchecked")
     public static BytesOutChannel<Pipe> pipe(InputStreamOf<Pipe> connect) throws IOException {
-        return proxy(new Pipe(connect.getResource().getInputStream()), BytesOutChannel.class);
+        return proxy(new Pipe(connect.get().getInputStream()), BytesOutChannel.class);
     }
     
     /**
@@ -358,7 +358,7 @@ public class IoStream {
      * Build a secure random byte input stream.
      * 
      * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException if no SecureRandom algorithm is available
      */
     public static BytesInChannel<Random> secureRandom() throws NoSuchAlgorithmException {
         return random(SecureRandom.getInstanceStrong());
@@ -369,7 +369,7 @@ public class IoStream {
      * 
      * @param algorithm the secure random algorithm
      * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException if the SecureRandom algorithm is available
      */
     public static BytesInChannel<Random> secureRandom(String algorithm) throws NoSuchAlgorithmException {
         return random(SecureRandom.getInstance(algorithm));

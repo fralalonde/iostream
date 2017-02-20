@@ -49,7 +49,7 @@ public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf
     
     /** {@inheritDoc} */
     @Override
-    public T getResource() throws IOException {
+    public T get() throws IOException {
         return closer.getResource();
     }
     

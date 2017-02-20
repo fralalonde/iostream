@@ -21,16 +21,16 @@ import ca.rbon.iostream.wrap.PrintWriterOf;
 public class Samples {
     
     public void smallSample() throws IOException {
-        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter()) {
-            File myFileTxt = pw.getResource();
-            pw.write("Hello from file " + myFileTxt.getName());
+        try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").printWriter()) {
+            File myFileTxt = myFile.get();
+            myFile.write("Hello from file " + myFileTxt.getName());
         }
     }
     
     public void extremeSample() throws IOException {
-        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
-            File myFileTxt = pw.getResource();
-            pw.write("Hello from file " + myFileTxt.getName());
+        try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
+            File myFileTxt = myFile.get();
+            myFile.write("Hello from file " + myFileTxt.getName());
         }
     }
     
@@ -50,7 +50,7 @@ public class Samples {
     public void smallSample2() throws IOException {
         try (DataOutputOf<File> dataFile = IoStream.tempFile().dataOutputStream()) {
             dataFile.write(42);
-            try (BufferedWriter bufFile = IoStream.file(dataFile.getResource()).bufferedWriter()) {
+            try (BufferedWriter bufFile = IoStream.file(dataFile.get()).bufferedWriter()) {
                 bufFile.append("is the answer");
             }
         }
@@ -72,10 +72,10 @@ public class Samples {
     
     public void iostreamResult() throws IOException {
         // IOSTREAMS
-        PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
+        PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
         // ...
-        writer.close();
-        byte[] myPrecious = writer.getResource();
+        bytes.close();
+        byte[] myPrecious = bytes.get();
     }
     
     public void jdkResult() throws IOException {
@@ -99,18 +99,18 @@ public class Samples {
         
         DataOutputOf<File> tmpout = IoStream.tempFile().dataOutputStream();
         tmpout.write(42);
-        String tmpFilename = tmpout.getResource().getAbsolutePath();
+        String tmpFilename = tmpout.get().getAbsolutePath();
     }
     
     public void strings() throws IOException {
         IoStream.string("agaga gogo").bufferedReader();
         IoStream.string("agaga gogo").reader();
-        String str = IoStream.string().bufferedWriter().getResource();
+        String str = IoStream.string().bufferedWriter().get();
     }
     
     public void byteArrays() throws IOException {
         IoStream.bytes().outputStream();
-        byte[] bytes = IoStream.bytes().dataOutputStream().getResource();
+        byte[] bytes = IoStream.bytes().dataOutputStream().get();
         IoStream.bytes(new byte[]{0, 1, 2}).objectInputStream();
     }
     
@@ -129,16 +129,16 @@ public class Samples {
     
     public byte[] fluent() throws IOException {
         // create and combine both objects
-        PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
+        PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
         
         // write the string
-        writer.write("doodoo");
+        bytes.write("doodoo");
         
         // close the writer and the inner stream at once
-        writer.close();
+        bytes.close();
         
         // extract result
-        return writer.getResource();
+        return bytes.get();
     }
     
     public byte[] classic() throws IOException {
@@ -162,10 +162,10 @@ public class Samples {
     }
     
     public byte[] fluent2() throws IOException {
-        PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
-        writer.write("doodoo");
-        writer.close();
-        return writer.getResource();
+        PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
+        bytes.write("doodoo");
+        bytes.close();
+        return bytes.get();
     }
     
     public byte[] classic2() throws IOException {
@@ -178,9 +178,9 @@ public class Samples {
     }
     
     public byte[] fluent3() throws IOException {
-        try (PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter()) {
-            writer.write("doodoo");
-            return writer.getResource();
+        try (PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter()) {
+            bytes.write("doodoo");
+            return bytes.get();
         }
     }
     
