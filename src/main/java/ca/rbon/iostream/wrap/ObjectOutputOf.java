@@ -1,33 +1,33 @@
-package wrap;
+package ca.rbon.iostream.wrap;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>
- * BufferedWriterOf class.
+ * ObjectOutputOf class.
  * </p>
  *
  * @param <T> The resource type
  */
-public class BufferedWriterOf<T> extends BufferedWriter implements WrapperOf<T> {
+public class ObjectOutputOf<T> extends ObjectOutputStream implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
      * <p>
-     * Constructor for BufferedWriterOf.
+     * Constructor for ObjectOutputOf.
      * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
-     * @param wr a {@link java.io.Writer} object.
+     * @param os a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    public BufferedWriterOf(Resource<T> cl, Writer wr) throws IOException {
-        super(wr);
+    public ObjectOutputOf(Resource<T> cl, OutputStream os) throws IOException {
+        super(os);
         closer = cl;
     }
     

@@ -8,8 +8,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
-import wrap.BufferedInputOf;
-import wrap.BufferedOutputOf;
+import ca.rbon.iostream.wrap.BufferedInputOf;
+import ca.rbon.iostream.wrap.BufferedOutputOf;
 
 public class ConsoleResourceTest {
     

@@ -12,10 +12,10 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Random;
 
-import wrap.DataOutputOf;
-import wrap.InputStreamOf;
-import wrap.OutputStreamOf;
-import wrap.PrintWriterOf;
+import ca.rbon.iostream.wrap.DataOutputOf;
+import ca.rbon.iostream.wrap.InputStreamOf;
+import ca.rbon.iostream.wrap.OutputStreamOf;
+import ca.rbon.iostream.wrap.PrintWriterOf;
 
 @SuppressWarnings("unused")
 public class Samples {
@@ -84,7 +84,6 @@ public class Samples {
         Writer writer = new PrintWriter(byteArrayOutputStream);
         // ...
         writer.close();
-        byteArrayOutputStream.close();
         byte[] myPrecious = byteArrayOutputStream.toByteArray();
     }
     

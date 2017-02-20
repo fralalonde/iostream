@@ -1,33 +1,33 @@
-package wrap;
+package ca.rbon.iostream.wrap;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 
 import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>
- * BufferedReaderOf class.
+ * ObjectInputOf class.
  * </p>
  *
  * @param <T> The resource type
  */
-public class BufferedReaderOf<T> extends BufferedReader implements WrapperOf<T> {
+public class ObjectInputOf<T> extends ObjectInputStream implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
      * <p>
-     * Constructor for BufferedReaderOf.
+     * Constructor for ObjectInputOf.
      * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
-     * @param r a {@link java.io.Reader} object.
+     * @param is a {@link java.io.InputStream} object.
      * @throws java.io.IOException if any.
      */
-    public BufferedReaderOf(Resource<T> cl, Reader r) throws IOException {
-        super(r);
+    public ObjectInputOf(Resource<T> cl, InputStream is) throws IOException {
+        super(is);
         closer = cl;
     }
     

@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ca.rbon.iostream.IoStream;
-import wrap.InputStreamOf;
+import ca.rbon.iostream.wrap.InputStreamOf;
 
 public class RandomInputStreamTest {
     

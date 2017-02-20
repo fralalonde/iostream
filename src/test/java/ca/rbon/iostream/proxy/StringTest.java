@@ -7,8 +7,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
-import wrap.ReaderOf;
-import wrap.WriterOf;
+import ca.rbon.iostream.wrap.ReaderOf;
+import ca.rbon.iostream.wrap.WriterOf;
 
 public class StringTest {
     

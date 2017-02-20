@@ -3,13 +3,13 @@ package ca.rbon.iostream.channel.part;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import wrap.BufferedInputOf;
-import wrap.BufferedReaderOf;
-import wrap.DataInputOf;
-import wrap.InputStreamOf;
-import wrap.ObjectInputOf;
-import wrap.ReaderOf;
-import wrap.ZipInputOf;
+import ca.rbon.iostream.wrap.BufferedInputOf;
+import ca.rbon.iostream.wrap.BufferedReaderOf;
+import ca.rbon.iostream.wrap.DataInputOf;
+import ca.rbon.iostream.wrap.InputStreamOf;
+import ca.rbon.iostream.wrap.ObjectInputOf;
+import ca.rbon.iostream.wrap.ReaderOf;
+import ca.rbon.iostream.wrap.ZipInputOf;
 
 public interface ByteIn<T> {
     

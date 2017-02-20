@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
 import ca.rbon.iostream.channel.BytesBiChannel;
-import wrap.ReaderOf;
-import wrap.WriterOf;
+import ca.rbon.iostream.wrap.ReaderOf;
+import ca.rbon.iostream.wrap.WriterOf;
 
 public class PipeResourceTest {
     
@@ -29,6 +29,7 @@ public class PipeResourceTest {
             }
         });
         t.start();
+        
         wri.write("AAA");
         t.join(500);
         

@@ -1,4 +1,4 @@
-package wrap;
+package ca.rbon.iostream.wrap;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

@@ -1,47 +1,48 @@
-package wrap;
+package ca.rbon.iostream.wrap;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.zip.ZipOutputStream;
 
 import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>
- * ZipOutputOf class.
+ * BufferedOutputOf class.
  * </p>
  *
- * @param <T> Resource type
+ * @param <T> The resource type
  */
-public class ZipOutputOf<T> extends ZipOutputStream implements WrapperOf<T> {
+public class BufferedOutputOf<T> extends BufferedOutputStream implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
      * <p>
-     * Constructor for ZipOutputOf.
+     * Constructor for BufferedOutputOf.
      * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
+     * @throws java.io.IOException if any.
      */
-    public ZipOutputOf(Resource<T> cl, OutputStream os) {
+    public BufferedOutputOf(Resource<T> cl, OutputStream os) throws IOException {
         super(os);
         closer = cl;
     }
     
     /**
      * <p>
-     * Constructor for ZipOutputOf.
+     * Constructor for BufferedOutputOf.
      * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
-     * @param cs a {@link java.nio.charset.Charset} object.
+     * @param bufferSize a int.
+     * @throws java.io.IOException if any.
      */
-    public ZipOutputOf(Resource<T> cl, OutputStream os, Charset cs) {
-        super(os, cs);
+    public BufferedOutputOf(Resource<T> cl, OutputStream os, int bufferSize) throws IOException {
+        super(os, bufferSize);
         closer = cl;
     }
     

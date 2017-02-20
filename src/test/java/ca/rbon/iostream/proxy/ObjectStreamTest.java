@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
-import wrap.ObjectOutputOf;
+import ca.rbon.iostream.wrap.ObjectOutputOf;
 
 public class ObjectStreamTest {
     

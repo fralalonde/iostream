@@ -22,21 +22,21 @@ import ca.rbon.iostream.channel.part.ByteOut;
 import ca.rbon.iostream.channel.part.CharIn;
 import ca.rbon.iostream.channel.part.CharOut;
 import ca.rbon.iostream.channel.part.Filter;
-import wrap.BufferedInputOf;
-import wrap.BufferedOutputOf;
-import wrap.BufferedReaderOf;
-import wrap.BufferedWriterOf;
-import wrap.DataInputOf;
-import wrap.DataOutputOf;
-import wrap.InputStreamOf;
-import wrap.ObjectInputOf;
-import wrap.ObjectOutputOf;
-import wrap.OutputStreamOf;
-import wrap.PrintWriterOf;
-import wrap.ReaderOf;
-import wrap.WriterOf;
-import wrap.ZipInputOf;
-import wrap.ZipOutputOf;
+import ca.rbon.iostream.wrap.BufferedInputOf;
+import ca.rbon.iostream.wrap.BufferedOutputOf;
+import ca.rbon.iostream.wrap.BufferedReaderOf;
+import ca.rbon.iostream.wrap.BufferedWriterOf;
+import ca.rbon.iostream.wrap.DataInputOf;
+import ca.rbon.iostream.wrap.DataOutputOf;
+import ca.rbon.iostream.wrap.InputStreamOf;
+import ca.rbon.iostream.wrap.ObjectInputOf;
+import ca.rbon.iostream.wrap.ObjectOutputOf;
+import ca.rbon.iostream.wrap.OutputStreamOf;
+import ca.rbon.iostream.wrap.PrintWriterOf;
+import ca.rbon.iostream.wrap.ReaderOf;
+import ca.rbon.iostream.wrap.WriterOf;
+import ca.rbon.iostream.wrap.ZipInputOf;
+import ca.rbon.iostream.wrap.ZipOutputOf;
 
 /**
  * <p>
@@ -259,7 +259,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link wrap.ZipInputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.ZipInputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -276,7 +276,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.BufferedInputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.BufferedInputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -292,7 +292,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * inputStream.
      * </p>
      *
-     * @return a {@link wrap.InputStreamOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.InputStreamOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -307,7 +307,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.DataInputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.DataInputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -322,7 +322,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.ObjectInputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.ObjectInputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -338,7 +338,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link wrap.BufferedReaderOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -353,7 +353,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
-     * @return a {@link wrap.ReaderOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -371,7 +371,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link wrap.ZipOutputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.ZipOutputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -388,7 +388,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.BufferedOutputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.BufferedOutputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -404,7 +404,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * outputStream.
      * </p>
      *
-     * @return a {@link wrap.OutputStreamOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.OutputStreamOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -419,7 +419,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.DataOutputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.DataOutputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -434,7 +434,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.ObjectOutputOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.ObjectOutputOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -450,7 +450,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link wrap.PrintWriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -467,7 +467,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
      * @param autoflush a boolean.
-     * @return a {@link wrap.PrintWriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -483,7 +483,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      *
      * @param charset a {@link java.nio.charset.Charset} object.
      * @param bufferSize a int.
-     * @return a {@link wrap.BufferedWriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -498,7 +498,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param charset a {@link java.nio.charset.Charset} object.
-     * @return a {@link wrap.WriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.WriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -514,7 +514,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * reader.
      * </p>
      *
-     * @return a {@link wrap.ReaderOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.ReaderOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -529,7 +529,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.BufferedReaderOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.BufferedReaderOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -543,7 +543,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * writer.
      * </p>
      *
-     * @return a {@link wrap.WriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.WriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -558,7 +558,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.BufferedWriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.BufferedWriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -573,7 +573,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @param bufferSize a int.
-     * @return a {@link wrap.PrintWriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     
@@ -589,7 +589,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      *
      * @param bufferSize a int.
      * @param autoflush a boolean.
-     * @return a {@link wrap.PrintWriterOf} object.
+     * @return a {@link ca.rbon.iostream.wrap.PrintWriterOf} object.
      * @throws java.io.IOException if any.
      */
     

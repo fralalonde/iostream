@@ -1,5 +1,6 @@
-package wrap;
+package ca.rbon.iostream.wrap;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -7,28 +8,26 @@ import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>
- * OutputStreamOf class.
+ * DataOutputOf class.
  * </p>
  *
  * @param <T> The resource type
  */
-public class OutputStreamOf<T> extends OutputStream implements WrapperOf<T> {
-    
-    final OutputStream delegate;
+public class DataOutputOf<T> extends DataOutputStream implements WrapperOf<T> {
     
     final Resource<T> closer;
     
     /**
      * <p>
-     * Constructor for OutputStreamOf.
+     * Constructor for DataOutputOf.
      * </p>
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
      * @throws java.io.IOException if any.
      */
-    public OutputStreamOf(Resource<T> cl, OutputStream os) throws IOException {
-        delegate = os;
+    public DataOutputOf(Resource<T> cl, OutputStream os) throws IOException {
+        super(os);
         closer = cl;
     }
     
@@ -38,14 +37,4 @@ public class OutputStreamOf<T> extends OutputStream implements WrapperOf<T> {
         return closer.getResource();
     }
     
-    /** {@inheritDoc} */
-    @Override
-    public void write(int b) throws IOException {
-        delegate.write(b);
-    }
-    
-    @Override
-    public void close() throws IOException {
-        delegate.close();
-    }
 }

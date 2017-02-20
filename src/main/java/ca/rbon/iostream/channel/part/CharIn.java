@@ -2,8 +2,8 @@ package ca.rbon.iostream.channel.part;
 
 import java.io.IOException;
 
-import wrap.BufferedReaderOf;
-import wrap.ReaderOf;
+import ca.rbon.iostream.wrap.BufferedReaderOf;
+import ca.rbon.iostream.wrap.ReaderOf;
 
 public interface CharIn<T> {
     

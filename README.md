@@ -82,7 +82,6 @@ ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 Writer writer = new PrintWriter(byteArrayOutputStream);
 // ...
 writer.close();
-byteArrayOutputStream.close();
 byte[] myPrecious = byteArrayOutputStream.toByteArray();
 ```
 

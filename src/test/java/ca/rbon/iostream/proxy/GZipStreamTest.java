@@ -9,8 +9,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
-import wrap.InputStreamOf;
-import wrap.OutputStreamOf;
+import ca.rbon.iostream.wrap.InputStreamOf;
+import ca.rbon.iostream.wrap.OutputStreamOf;
 
 public class GZipStreamTest {
     

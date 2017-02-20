@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IoStream;
-import wrap.ZipOutputOf;
+import ca.rbon.iostream.wrap.ZipOutputOf;
 
 public class ZipStreamTest {
     
