@@ -21,14 +21,14 @@ import ca.rbon.iostream.wrap.PrintWriterOf;
 public class Samples {
     
     public void smallSample() throws IOException {
-        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter("UTF-16")) {
+        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter()) {
             File myFileTxt = pw.getResource();
             pw.write("Hello from file " + myFileTxt.getName());
         }
     }
     
-    public void gzipSample() throws IOException {
-        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").gzip(55).printWriter("UTF-16")) {
+    public void extremeSample() throws IOException {
+        try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
             File myFileTxt = pw.getResource();
             pw.write("Hello from file " + myFileTxt.getName());
         }

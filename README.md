@@ -7,13 +7,14 @@
 
 Better ergonomics for Java IO streams building and disposal.
 * Compact, fluent, safe builder for JDK InputStream, OutputStream, Reader and Writer classes
-* Builds File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console resources and filters.
+* Handles File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console resources
+* Base64 and GZip filters
 * Retains default Java behavior and parameters  
 * Composed objects are unambiguously closed as one
 * Composed objects expose underlying resource for retrieval of results / follow up operations
 
 ```java
-try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter("UTF-16")) {
+try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").printWriter()) {
     File myFileTxt = pw.getResource();
     pw.write("Hello from file " + myFileTxt);
 }        
@@ -33,7 +34,7 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 <dependency>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.7.5</version>
+    <version>0.8.0</version>
 </dependency>
 ```
 
@@ -100,7 +101,6 @@ try (InputStreamOf<File> pw = IoStream.file("numbers.bin").inputStream()) {
 }
 ```
 
-
 ### Files
 ```java
 FileOutputStream out = IoStream.file("noooes.txt").outputStream();
@@ -154,6 +154,15 @@ IoStream.stream(providedInput).gzipInputStream();
 
 OutputStream providedOutput = new ByteArrayOutputStream();
 IoStream.stream(providedOutput).printWriter(256);
+```
+
+### Writing text to a File, GZipped, Base64, UTF-16 encoded. 256-byte buffer, autoflush.
+```java
+// this example is pretty extreme
+try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
+    File myFileTxt = pw.getResource();
+    pw.write("Hello from file " + myFileTxt.getName());
+}
 ```
 
 ## FAQ
