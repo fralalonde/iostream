@@ -11,21 +11,24 @@ import java.util.stream.StreamSupport;
 
 import lombok.SneakyThrows;
 
+/**
+ * @author fralalonde
+ */
 public class StreamInputAdapter {
-    
+
     static final IntPredicate END_OF_STREAM = x -> x != -1;
-    
+
     /**
-     * Adapted from StackOverflow, lost reference, apologies.
-     * 
+     * Adapted from StackOverflow {@linkplain so http://stackoverflow.com/questions/20746429/limit-a-stream-by-a-predicate}
+     *
      * @param splitr the original Spliterator
      * @param predicate the predicate
      * @return a Spliterator.OfInt
      */
-    public static Spliterator.OfInt takeIntWhile(Spliterator.OfInt splitr, IntPredicate predicate) {
+    private static Spliterator.OfInt takeIntWhile(Spliterator.OfInt splitr, IntPredicate predicate) {
         return new Spliterators.AbstractIntSpliterator(splitr.estimateSize(), 0) {
             boolean stillGoing = true;
-            
+
             @Override
             public boolean tryAdvance(IntConsumer consumer) {
                 if (stillGoing) {
@@ -42,18 +45,22 @@ public class StreamInputAdapter {
             }
         };
     }
-    
-    public static IntStream takeIntWhile(IntStream stream, IntPredicate predicate) {
+
+    private static IntStream takeIntWhile(IntStream stream, IntPredicate predicate) {
         return StreamSupport.intStream(takeIntWhile(stream.spliterator(), predicate), false);
     }
-    
+
+    /**
+     * @param input
+     * @return an {@link IntStream} iterating over the bytes of the {@link InputStream}
+     */
     public static IntStream toIntStream(InputStream input) {
         return takeIntWhile(IntStream.generate(() -> apparentlySafeRead(input)), END_OF_STREAM);
     }
-    
+
     @SneakyThrows(IOException.class)
     private static int apparentlySafeRead(InputStream input) {
         return input.read();
     }
-    
+
 }

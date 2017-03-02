@@ -9,11 +9,16 @@ import java.util.zip.GZIPOutputStream;
 import ca.rbon.iostream.resource.Resource;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * A gzip filter factory.
+ *
+ * @author fralalonde
+ */
 @RequiredArgsConstructor
 public class GzipFilter implements FilterFactory {
-    
+
     final int gzipBufferSize;
-    
+
     @Override
     public InputStream filterInput(InputStream input) throws IOException {
         switch (gzipBufferSize) {
@@ -23,7 +28,7 @@ public class GzipFilter implements FilterFactory {
                 return new GZIPInputStream(input, gzipBufferSize);
         }
     }
-    
+
     @Override
     public OutputStream filterOutput(OutputStream output) throws IOException {
         switch (gzipBufferSize) {
@@ -33,5 +38,5 @@ public class GzipFilter implements FilterFactory {
                 return new GZIPOutputStream(output, gzipBufferSize);
         }
     }
-    
+
 }

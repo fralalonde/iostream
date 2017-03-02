@@ -7,15 +7,12 @@ import ca.rbon.iostream.channel.part.CharOut;
 import ca.rbon.iostream.channel.part.Filter;
 
 /**
- * <p>
- * BytesBiChannel interface.
- * </p>
+ * A byte-oriented stream builder that can be used for input or output.
  *
- * @param <T> The resource type
+ * @author fralalonde
+ *
+ * @param <T> The backing resource type
  */
-public interface BytesBiChannel<T> extends Filter<BytesBiChannel<T>>,
-// FilterIn<BytesInChannel<T>>,
-// FilterOut<BytesOutChannel<T>>,
-        CharIn<T>, ByteIn<T>, CharOut<T>, ByteOut<T> {
-    
+public interface BytesBiChannel<T> extends Filter<BytesBiChannel<T>>, CharIn<T>, ByteIn<T>, CharOut<T>, ByteOut<T> {
+
 }

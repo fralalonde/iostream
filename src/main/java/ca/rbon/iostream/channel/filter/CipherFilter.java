@@ -11,20 +11,25 @@ import javax.crypto.CipherOutputStream;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * A {@link Cipher} filter factory.
+ *
+ * @author fralalonde
+ */
 @RequiredArgsConstructor
 public class CipherFilter implements FilterFactory {
-    
+
     @NonNull
     final Cipher cipher;
-    
+
     @Override
     public InputStream filterInput(InputStream input) throws IOException {
         return new CipherInputStream(input, cipher);
     }
-    
+
     @Override
     public OutputStream filterOutput(OutputStream output) throws IOException {
         return new CipherOutputStream(output, cipher);
     }
-    
+
 }

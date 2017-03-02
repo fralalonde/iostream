@@ -5,14 +5,12 @@ import ca.rbon.iostream.channel.part.CharOut;
 import ca.rbon.iostream.channel.part.Filter;
 
 /**
- * <p>
- * OutPick interface.
- * </p>
+ * A byte or char stream builder that can be used for output only.
  *
  * @author fralalonde
- * @version $Id: $Id
- * @param <T> The resource type
+ *
+ * @param <T> The backing resource type
  */
-public interface BytesOutChannel<T> extends Filter<BytesOutChannel<T>>, /* FilterOut<BytesInChannel<T>>, */ CharOut<T>, ByteOut<T> {
-    
+public interface BytesOutChannel<T> extends Filter<BytesOutChannel<T>>, CharOut<T>, ByteOut<T> {
+
 }

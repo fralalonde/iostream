@@ -5,11 +5,11 @@ import ca.rbon.iostream.channel.part.CharIn;
 import ca.rbon.iostream.channel.part.Filter;
 
 /**
- * <p>
- * BytesInChannel interface.
- * </p>
+  * A byte or char stream builder that can be used only for input.
  *
- * @param <T> The resource type
- */
-public interface BytesInChannel<T> extends Filter<BytesInChannel<T>>, /* FilterIn<BytesInChannel<T>>, */CharIn<T>, ByteIn<T> {
+ * @author fralalonde
+ *
+ * @param <T> The backing resource type
+*/
+public interface BytesInChannel<T> extends Filter<BytesInChannel<T>>, CharIn<T>, ByteIn<T> {
 }

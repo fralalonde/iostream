@@ -4,19 +4,23 @@
 [![Codecov](https://img.shields.io/codecov/c/github/fralalonde/iostream.svg)](https://codecov.io/gh/fralalonde/iostream)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/ca.rbon/iostream/badge.svg)](http://www.javadoc.io/doc/ca.rbon/iostream)
+[![Dependencies](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc/badge.svg)](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc?child=summary)
+[![Board](https://badge.waffle.io/fralalonde/iostream.svg)](https://waffle.io/fralalonde/iostream)
 
-Better ergonomics for Java IO streams building and disposal.
-* Compact, fluent, safe builder for JDK InputStream, OutputStream, Reader and Writer classes
-* Handles File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console resources
-* Base64 and GZip filters
+Better code handling of Java IO streams.
+
+* Fluent builder for Java standard InputStream, OutputStream, Reader and Writer and Filter classes
+* Provides File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console and generic stream wrapper resources
+* Supports Base64, GZip and Cipher filters
 * Retains default Java behavior and parameters  
 * Composed objects are unambiguously closed as one
 * Composed objects expose underlying resource for retrieval of results / follow up operations
 
 ```java
-try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").printWriter()) {
-    File myFileTxt = myFile.get();
-    myFile.write("Hello from file " + myFileTxt.getName());
+try (PrintWriterOf<File> fileWriter = IoStream.file("myfile.gz").gzip().printWriter()) {
+    File theFile = fileWriter.get();
+    fileWriter.write("Hello from file " + theFile.getName());
 }
 ```  
 
@@ -34,13 +38,13 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 <dependency>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.9.0`.
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.9.1`.
 
-This library requires Java 1.8 (and nothing but).
+Because it uses default interface methods, this library requires Java 1.8 (and nothing but).
       
 ## How does it work?
 

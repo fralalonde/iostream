@@ -4,14 +4,10 @@ import ca.rbon.iostream.channel.part.CharIn;
 import ca.rbon.iostream.channel.part.CharOut;
 
 /**
- * <p>
- * InOutCharPick interface.
- * </p>
+ * A char-oriented stream builder that can be used for output only.
  *
  * @author fralalonde
- * @version $Id: $Id
- * @param <T> The resource type
+ * @param <T> The backing resource type
  */
 public interface CharBiChannel<T> extends CharIn<T>, CharOut<T> {
-    
 }
