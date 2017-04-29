@@ -92,8 +92,13 @@ byte[] myPrecious = byteArrayOutputStream.toByteArray();
 
 ## Companion libraries
 
-`IoStream` is an excellent companion to [Apache Commons IO's](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) `IOUtils` class. There is little overlap between the libraries. `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()`.
+`IoStream` is an excellent companion to [Apache Commons IO's](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) `IOUtils` class. There is little overlap between the libraries. `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()` :
 
+```java
+try (Reader in = IoStream.file("A").reader(); Writer out = IoStream.file("B").writer()) {
+    IOUtils.copy(in, out);
+}
+```
 
 ## Things you can do with it
 

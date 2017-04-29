@@ -51,7 +51,7 @@ public class StreamInputAdapter {
     }
 
     /**
-     * @param input
+     * @param input the input stream
      * @return an {@link IntStream} iterating over the bytes of the {@link InputStream}
      */
     public static IntStream toIntStream(InputStream input) {
