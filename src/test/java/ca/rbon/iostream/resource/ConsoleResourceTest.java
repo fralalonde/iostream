@@ -26,10 +26,5 @@ public class ConsoleResourceTest {
             Assertions.assertThat(stream.get()).isSameAs(System.out);
         }
     }
-    
-    @Test(expected = IOException.class)
-    public void consoleOut() throws IOException {
-        IoStream.console().printWriter();
-    }
-    
+
 }

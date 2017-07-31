@@ -76,7 +76,6 @@
     </module>
     <module name="FileLength" />
     <module name="Translation" />
-    <module name="SuppressionCommentFilter" />
     <module name="FileTabCharacter">
         <property name="fileExtensions" value="java" />
     </module>
