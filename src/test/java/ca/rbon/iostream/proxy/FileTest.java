@@ -10,7 +10,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.wrap.*;
-import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
@@ -65,14 +64,14 @@ public class FileTest {
     public void defaultCharsetFileWriteRead() throws IOException {
         try (BufferedWriterOf<File> w = IoStream.file(A_TXT).bufferedWriter("UTF-8")) {
             w.append('é');
-            assertThat(w.get().getName()).isEqualTo("A.txt");
+            assertThat(w.getInner().getName()).isEqualTo("A.txt");
         }
         
         try (BufferedReaderOf<File> r = IoStream.file(A_TXT).bufferedReader(UTF_8)) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('é');
-            assertThat(r.get().getName()).isEqualTo("A.txt");
+            assertThat(r.getInner().getName()).isEqualTo("A.txt");
         }
     }
     
@@ -85,7 +84,7 @@ public class FileTest {
             tmpFileOut.close();
         }
         
-        try (BufferedReaderOf<File> tmpFileIn = IoStream.file(tmpFileOut.get()).bufferedReader(UTF_8)) {
+        try (BufferedReaderOf<File> tmpFileIn = IoStream.file(tmpFileOut.getInner()).bufferedReader(UTF_8)) {
             CharBuffer sb = CharBuffer.allocate(5);
             assertThat(tmpFileIn.read(sb)).isEqualTo(4);
             sb.flip();
@@ -97,14 +96,14 @@ public class FileTest {
     public void specificCharsetFileWriteRead() throws IOException {
         try (WriterOf<File> w = IoStream.file(A_TXT).writer("UTF-16")) {
             w.append('à');
-            assertThat(w.get().getName()).isEqualTo("A.txt");
+            assertThat(w.getInner().getName()).isEqualTo("A.txt");
         }
         
         try (ReaderOf<File> r = IoStream.file(A_TXT).reader("UTF-16")) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('à');
-            assertThat(r.get().getName()).isEqualTo("A.txt");
+            assertThat(r.getInner().getName()).isEqualTo("A.txt");
         }
     }
 

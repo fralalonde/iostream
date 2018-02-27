@@ -16,14 +16,14 @@ public class ConsoleResourceTest {
     @Test
     public void stdin() throws IOException {
         try (BufferedInputOf<InputStream> stream = IoStream.stdin().bufferedInputStream()) {
-            Assertions.assertThat(stream.get()).isSameAs(System.in);
+            Assertions.assertThat(stream.getInner()).isSameAs(System.in);
         }
     }
     
     @Test
     public void stdout() throws IOException {
         try (BufferedOutputOf<OutputStream> stream = IoStream.stdout().bufferedOutputStream()) {
-            Assertions.assertThat(stream.get()).isSameAs(System.out);
+            Assertions.assertThat(stream.getInner()).isSameAs(System.out);
         }
     }
 

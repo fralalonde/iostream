@@ -48,7 +48,7 @@ public class BufferedOutputOf<T> extends BufferedOutputStream implements Wrapper
     
     /** {@inheritDoc} */
     @Override
-    public T get() throws IOException {
+    public T getInner() throws IOException {
         return closer.getResource();
     }
     

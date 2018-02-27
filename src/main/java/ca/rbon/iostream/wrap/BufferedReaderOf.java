@@ -33,7 +33,7 @@ public class BufferedReaderOf<T> extends BufferedReader implements WrapperOf<T> 
     
     /** {@inheritDoc} */
     @Override
-    public T get() throws IOException {
+    public T getInner() throws IOException {
         return closer.getResource();
     }
     

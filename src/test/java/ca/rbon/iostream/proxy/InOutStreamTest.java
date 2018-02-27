@@ -96,7 +96,7 @@ public class InOutStreamTest {
         o.writeObject(new Integer(4));
         o.close();
         
-        InputStream i = IoStream.bytes(o.get()).inputStream();
+        InputStream i = IoStream.bytes(o.getInner()).inputStream();
         
         try (ObjectInputOf<InputStream> pis = IoStream.stream(i).objectInputStream()) {
             assertThat(pis.readObject()).isEqualTo(new Integer(4));

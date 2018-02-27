@@ -22,14 +22,14 @@ public class Samples {
     
     public void smallSample() throws IOException {
         try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").printWriter()) {
-            File myFileTxt = myFile.get();
+            File myFileTxt = myFile.getInner();
             myFile.write("Hello from file " + myFileTxt.getName());
         }
     }
     
     public void extremeSample() throws IOException {
         try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
-            File myFileTxt = myFile.get();
+            File myFileTxt = myFile.getInner();
             myFile.write("Hello from file " + myFileTxt.getName());
         }
     }
@@ -50,7 +50,7 @@ public class Samples {
     public void smallSample2() throws IOException {
         try (DataOutputOf<File> dataFile = IoStream.tempFile().dataOutputStream()) {
             dataFile.write(42);
-            try (BufferedWriter bufFile = IoStream.file(dataFile.get()).bufferedWriter()) {
+            try (BufferedWriter bufFile = IoStream.file(dataFile.getInner()).bufferedWriter()) {
                 bufFile.append("is the answer");
             }
         }
@@ -75,7 +75,7 @@ public class Samples {
         PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
         // ...
         bytes.close();
-        byte[] myPrecious = bytes.get();
+        byte[] myPrecious = bytes.getInner();
     }
     
     public void jdkResult() throws IOException {
@@ -99,18 +99,18 @@ public class Samples {
         
         DataOutputOf<File> tmpout = IoStream.tempFile().dataOutputStream();
         tmpout.write(42);
-        String tmpFilename = tmpout.get().getAbsolutePath();
+        String tmpFilename = tmpout.getInner().getAbsolutePath();
     }
     
     public void strings() throws IOException {
         IoStream.string("agaga gogo").bufferedReader();
         IoStream.string("agaga gogo").reader();
-        String str = IoStream.string().bufferedWriter().get();
+        String str = IoStream.string().bufferedWriter().getInner();
     }
     
     public void byteArrays() throws IOException {
         IoStream.bytes().outputStream();
-        byte[] bytes = IoStream.bytes().dataOutputStream().get();
+        byte[] bytes = IoStream.bytes().dataOutputStream().getInner();
         IoStream.bytes(new byte[]{0, 1, 2}).objectInputStream();
     }
     
@@ -138,7 +138,7 @@ public class Samples {
         bytes.close();
         
         // extract result
-        return bytes.get();
+        return bytes.getInner();
     }
     
     public byte[] classic() throws IOException {
@@ -165,7 +165,7 @@ public class Samples {
         PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
         bytes.write("doodoo");
         bytes.close();
-        return bytes.get();
+        return bytes.getInner();
     }
     
     public byte[] classic2() throws IOException {
@@ -180,7 +180,7 @@ public class Samples {
     public byte[] fluent3() throws IOException {
         try (PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter()) {
             bytes.write("doodoo");
-            return bytes.get();
+            return bytes.getInner();
         }
     }
     

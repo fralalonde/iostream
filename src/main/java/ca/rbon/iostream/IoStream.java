@@ -354,7 +354,7 @@ public class IoStream {
      */
     @SuppressWarnings("unchecked")
     public static BytesOutChannel<Pipe> pipe(InputStreamOf<Pipe> connect) throws IOException {
-        return proxy(new Pipe(connect.get().getInputStream()), BytesOutChannel.class);
+        return proxy(new Pipe(connect.getInner().getInputStream()), BytesOutChannel.class);
     }
 
     /**

@@ -32,7 +32,7 @@ public class SocketResourceTest {
     
     @Test
     public void resource() throws IOException {
-        Assertions.assertThat(IoStream.socket(socket).outputStream().get()).isSameAs(socket);
+        Assertions.assertThat(IoStream.socket(socket).outputStream().getInner()).isSameAs(socket);
     }
     
 }

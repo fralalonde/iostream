@@ -47,7 +47,7 @@ public class ZipOutputOf<T> extends ZipOutputStream implements WrapperOf<T> {
     
     /** {@inheritDoc} */
     @Override
-    public T get() throws IOException {
+    public T getInner() throws IOException {
         return closer.getResource();
     }
     

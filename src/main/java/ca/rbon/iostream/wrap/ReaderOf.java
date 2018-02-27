@@ -40,7 +40,7 @@ public class ReaderOf<T> extends Reader implements WrapperOf<T> {
     
     /** {@inheritDoc} */
     @Override
-    public T get() throws IOException {
+    public T getInner() throws IOException {
         return closer.getResource();
     }
     

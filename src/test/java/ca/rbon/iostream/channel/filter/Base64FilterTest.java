@@ -23,9 +23,9 @@ public class Base64FilterTest {
             zos.close();
         }
         
-        assertThat(new String(zos.get())).isEqualTo("YWFhYWFhYQ==");
+        assertThat(new String(zos.getInner())).isEqualTo("YWFhYWFhYQ==");
         
-        try (InputStreamOf<byte[]> zis = IoStream.bytes(zos.get()).base64().inputStream()) {
+        try (InputStreamOf<byte[]> zis = IoStream.bytes(zos.getInner()).base64().inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }

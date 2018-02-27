@@ -52,10 +52,10 @@ public class CipherFilterTest {
         encryptedBytes.close();
         
         OutputStreamOf<byte[]> bytes = IoStream.bytes().outputStream();
-        InputStreamOf<byte[]> in = IoStream.bytes(encryptedBytes.get()).cipher(inCipher).inputStream();
+        InputStreamOf<byte[]> in = IoStream.bytes(encryptedBytes.getInner()).cipher(inCipher).inputStream();
         
         IOUtils.copy(in, bytes);
-        Assertions.assertThat(new String(bytes.get())).isEqualTo(s);
+        Assertions.assertThat(new String(bytes.getInner())).isEqualTo(s);
     }
     
     @Test
@@ -64,7 +64,7 @@ public class CipherFilterTest {
         encryptedBytes.write(s);
         encryptedBytes.close();
         
-        BufferedReaderOf<byte[]> in = IoStream.bytes(encryptedBytes.get()).base64().cipher(inCipher).bufferedReader();
+        BufferedReaderOf<byte[]> in = IoStream.bytes(encryptedBytes.getInner()).base64().cipher(inCipher).bufferedReader();
         
         Assertions.assertThat(in.readLine()).isEqualTo(s);
     }

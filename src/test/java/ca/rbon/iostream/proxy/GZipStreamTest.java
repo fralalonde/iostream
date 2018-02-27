@@ -24,7 +24,7 @@ public class GZipStreamTest {
             zos.close();
         }
         
-        try (InputStreamOf<byte[]> zis = IoStream.bytes(zos.get()).gzip().inputStream()) {
+        try (InputStreamOf<byte[]> zis = IoStream.bytes(zos.getInner()).gzip().inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }
@@ -39,7 +39,7 @@ public class GZipStreamTest {
             zos.close();
         }
         
-        try (InputStream zis = IoStream.bytes(zos.get()).gzip(3).inputStream()) {
+        try (InputStream zis = IoStream.bytes(zos.getInner()).gzip(3).inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }

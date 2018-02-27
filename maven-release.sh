@@ -8,5 +8,5 @@ printf "\n"
 
 # this will ask for release version confirmation
 # if automated version bump is needed use "mvn -B ..." (batch)
-mvn -e release:prepare release:perform -Darguments=-Dgpg.passphrase=$GPG_PASSPHRASE | tee release.log
+mvn -e release:prepare release:perform -Darguments=-Dgpg.passphrase=${GPG_PASSPHRASE} | tee release.log
 

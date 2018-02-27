@@ -33,7 +33,7 @@ public class ObjectInputOf<T> extends ObjectInputStream implements WrapperOf<T> 
     
     /** {@inheritDoc} */
     @Override
-    public T get() throws IOException {
+    public T getInner() throws IOException {
         return closer.getResource();
     }
     

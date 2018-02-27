@@ -11,7 +11,7 @@ public class PipeStreamTest {
 //            ObjectOutputOf<PipedOutputStream> zos = IoStream.pipeOutput(pis.getResource()).objectOutputStream();
 //            try {
 //                zos.writeBytes("AA");
-//                assertThat(zos.closer.getLinks().get(0)).isInstanceOf(ByteArrayOutputStream.class);
+//                assertThat(zos.closer.getLinks().getInner(0)).isInstanceOf(ByteArrayOutputStream.class);
 //                assertThat(zos.closer.getLinks().size()).isEqualTo(1);
 //            } finally {
 //                zos.close();

@@ -4,9 +4,8 @@
 [![Codecov](https://img.shields.io/codecov/c/github/fralalonde/iostream.svg)](https://codecov.io/gh/fralalonde/iostream)
 [![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/ca.rbon/iostream/badge.svg)](http://www.javadoc.io/doc/ca.rbon/iostream)
+[![Javadocs](http://www.javadoc.io/badge/ca.rbon/iostream.svg)](http://www.javadoc.io/doc/ca.rbon/iostream)
 [![Dependencies](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc/badge.svg)](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc?child=summary)
-[![Board](https://badge.waffle.io/fralalonde/iostream.svg)](https://waffle.io/fralalonde/iostream)
 
 Better code handling of Java IO streams.
 
@@ -58,7 +57,7 @@ Because streams and readers/writers are often paired together, the fluent builde
 ```java
 PrintWriter writer = IoStream.file("yesss.txt").printWriter();
 ```
-You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. All `IoStream` final methods return `*Of<File>` classes extending normal `java.io` classes. Their added functionality is explained below (hint: checkout their `get()` method.).
+You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. All `IoStream` final methods return `*Of<File>` classes extending normal `java.io` classes. Their added functionality is explained below (hint: checkout their `getInner()` method.).
 
 If a resource only implements streams (like `socket()`), and you require `Writer` or `Reader` char-oriented access, the builder will transparently insert an `OutputStreamWriter` or `InputStreamReader` adapter for you.
 ```java
@@ -74,20 +73,20 @@ try (Writer w = IoStream.file("mouha.txt").printWriter()) {
 ```
 
 ### Retrieving results using `*Of<>` classes 
-It is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays out streams, string writers or temp files. `IoStream` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Of<>` classes, which all subclass regular `java.io` classes. This done to provide you with the `get()` method, which return type follows the resource type you built.
+It is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays out streams, string writers or temp files. `IoStream` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Of<>` classes, which all subclass regular `java.io` classes. This done to provide you with the `getInner()` method, which return type follows the resource type you built.
 ```java
 PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
 // ...
 writer.close();
-byte[] myPrecious = writer.get();
+byte[] myPrecious = writer.getInner();
 ```
-The classic JDK code forces you to juggle with the inner and outer streams. 
+By comparison, classic JDK code forces you to juggle with the inner and outer streams: 
 ```java
-ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-Writer writer = new PrintWriter(byteArrayOutputStream);
+ByteArrayOutputStream innerStream = new ByteArrayOutputStream();
+Writer outerStream = new PrintWriter(innerStream);
 // ...
-writer.close();
-byte[] myPrecious = byteArrayOutputStream.toByteArray();
+outerStream.close();
+byte[] myPrecious = innerStream.toByteArray();
 ```
 
 ## Companion libraries
@@ -113,7 +112,7 @@ try (InputStreamOf<File> pw = IoStream.file("numbers.bin").inputStream()) {
 ### Byte Arrays, Random & IOUtils 
 ```java
 IoStream.bytes().outputStream();
-byte[] bytes = IoStream.bytes().dataOutputStream().get();
+byte[] bytes = IoStream.bytes().dataOutputStream().getInner();
 
 IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```
@@ -132,7 +131,7 @@ IoStream.file("dam.txt", true).bufferedWriter();
 
 DataOutputOf<File> tmpout = IoStream.tempFile().dataOutputStream();
 tmpout.write(42);
-String tmpFilename = tmpout.get().getAbsolutePath();
+String tmpFilename = tmpout.getInner().getAbsolutePath();
 ```
 
 ### Strings
@@ -140,7 +139,7 @@ String tmpFilename = tmpout.get().getAbsolutePath();
 IoStream.string("agaga gogo").bufferedReader();
 IoStream.string("agaga gogo").reader();
 
-String str = IoStream.string().bufferedWriter().get();
+String str = IoStream.string().bufferedWriter().getInner();
 ```
 
 ### Sockets
@@ -176,7 +175,7 @@ IoStream.stream(providedOutput).printWriter(256);
 ```java
 // this example is pretty extreme
 try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
-    File myFileTxt = pw.get();
+    File myFileTxt = pw.getInner();
     pw.write("Hello from file " + myFileTxt.getName());
 }
 ```
@@ -203,7 +202,7 @@ public byte[] usingIoStream() throws IOException {
     PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
     writer.write("doodoo");
     writer.close();
-    return writer.get();
+    return writer.getInner();
 }
 ```
   
@@ -233,7 +232,7 @@ public byte[] fluent() throws IOException {
     writer.close();
 
     // extract result
-    return writer.get();
+    return writer.getInner();
 }
 ```
   
@@ -265,7 +264,7 @@ IoStream enabled-code
 ```java
 try (PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter()) {
     writer.write("doodoo");
-    return writer.get();
+    return writer.getInner();
 }
 ```
   
