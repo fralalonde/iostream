@@ -93,13 +93,13 @@ public class InOutStreamTest {
     public void objectInput() throws IOException, ClassNotFoundException {
         // input object streams are picky, preparing real object data for test
         ObjectOutputOf<byte[]> o = IoStream.bytes().objectOutputStream();
-        o.writeObject(new Integer(4));
+        o.writeObject(Integer.valueOf(4));
         o.close();
         
         InputStream i = IoStream.bytes(o.getInner()).inputStream();
         
         try (ObjectInputOf<InputStream> pis = IoStream.stream(i).objectInputStream()) {
-            assertThat(pis.readObject()).isEqualTo(new Integer(4));
+            assertThat(pis.readObject()).isEqualTo(Integer.valueOf(4));
         }
         Mockito.verify(input, Mockito.never()).close();
     }

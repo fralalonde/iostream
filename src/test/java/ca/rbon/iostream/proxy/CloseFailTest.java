@@ -66,13 +66,13 @@ public class CloseFailTest {
     public void objectInput() throws IOException, ClassNotFoundException {
         // input object streams are picky, preparing real object data for test
         ObjectOutputOf<byte[]> o = IoStream.bytes().objectOutputStream();
-        o.writeObject(new Integer(4));
+        o.writeObject(Integer.valueOf(4));
         o.close();
         InputStream objectInput = IoStream.bytes(o.getInner()).inputStream();
         
         ObjectInputOf<InputStream> pis = IoStream.stream(objectInput).objectInputStream();
         pis.close();
-        assertThat(pis.readObject()).isEqualTo(new Integer(4));
+        assertThat(pis.readObject()).isEqualTo(Integer.valueOf(4));
     }
     
     @Test(expected = IOException.class)
