@@ -13,11 +13,11 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> The resource type
  */
 public class OutputStreamOf<T> extends OutputStream implements WrapperOf<T> {
-    
+
     final OutputStream delegate;
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for OutputStreamOf.
@@ -31,19 +31,19 @@ public class OutputStreamOf<T> extends OutputStream implements WrapperOf<T> {
         delegate = os;
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void write(int b) throws IOException {
         delegate.write(b);
     }
-    
+
     @Override
     public void close() throws IOException {
         delegate.close();

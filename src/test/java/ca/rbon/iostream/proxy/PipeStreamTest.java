@@ -1,7 +1,7 @@
 package ca.rbon.iostream.proxy;
 
 public class PipeStreamTest {
-    
+
 //    @Test
 //    @Ignore
 //    public void pipeStreams() throws IOException {
@@ -22,5 +22,5 @@ public class PipeStreamTest {
 //            assertThat(new String(bytes)).isEqualTo("AA");
 //        }
 //    }   
-    
+
 }

@@ -14,9 +14,9 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> The resource type
  */
 public class ObjectOutputOf<T> extends ObjectOutputStream implements WrapperOf<T> {
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for ObjectOutputOf.
@@ -30,11 +30,11 @@ public class ObjectOutputOf<T> extends ObjectOutputStream implements WrapperOf<T
         super(os);
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
 }

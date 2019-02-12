@@ -12,14 +12,14 @@ import ca.rbon.iostream.wrap.BufferedInputOf;
 import ca.rbon.iostream.wrap.BufferedOutputOf;
 
 public class ConsoleResourceTest {
-    
+
     @Test
     public void stdin() throws IOException {
         try (BufferedInputOf<InputStream> stream = IoStream.stdin().bufferedInputStream()) {
             Assertions.assertThat(stream.getInner()).isSameAs(System.in);
         }
     }
-    
+
     @Test
     public void stdout() throws IOException {
         try (BufferedOutputOf<OutputStream> stream = IoStream.stdout().bufferedOutputStream()) {

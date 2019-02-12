@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RandomInputStream extends InputStream {
-    
+
     final Random random;
-    
+
     @Override
     public int read() throws IOException {
         return random.nextInt(256);
     }
-    
+
 }

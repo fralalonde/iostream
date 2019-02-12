@@ -19,18 +19,18 @@ import lombok.RequiredArgsConstructor;
  * @version $Id: $Id
  */
 public class StringResource extends Resource<String> {
-    
+
     /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
-    
+
     private static final String NO_STRING_SET = "No string was provided for this operation.";
-    
+
     final String str;
-    
+
     final int capacity;
-    
+
     StringWriter writer;
-    
+
     /** {@inheritDoc} */
     @Override
     public String getResource() {
@@ -42,7 +42,7 @@ public class StringResource extends Resource<String> {
         }
         return str;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected Reader getReader() throws IOException {
@@ -51,7 +51,7 @@ public class StringResource extends Resource<String> {
         }
         return new StringReader(str);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected Writer getWriter() throws IOException {
@@ -60,7 +60,7 @@ public class StringResource extends Resource<String> {
                     ? new StringWriter(str.length() + capacity)
                     : new StringWriter(str.length());
             writer.write(str);
-            
+
         } else {
             writer = capacity > DEFAULT_CAPACITY
                     ? new StringWriter(capacity)
@@ -68,5 +68,5 @@ public class StringResource extends Resource<String> {
         }
         return writer;
     }
-    
+
 }

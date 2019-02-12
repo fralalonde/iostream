@@ -8,7 +8,7 @@ import java.io.IOException;
  * @param <T> The underlying resource type
  */
 public interface WrapperOf<T> {
-    
+
     /**
      * Access the inner resource wrapped by the stream.
      *
@@ -28,5 +28,5 @@ public interface WrapperOf<T> {
      * @throws IOException if something bad happens
      */
     T getInner() throws IOException;
-    
+
 }

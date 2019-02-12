@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * <p>
- * InputStreamResource wraps an existing InputStream to be used as input to a built IoStream chain.
+ * InputStreamResource wraps an existing InputStream to be used as input to a
+ * built IoStream chain.
  * </p>
  *
  * @author fralalonde
@@ -19,13 +20,13 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class InputStreamResource extends Resource<InputStream> {
-    
+
     static final String NO_OUTPUT = "%s does not provide output facilities.";
-    
+
     @NonNull
     @Getter
     final InputStream inputStream;
-    
+
     /**
      * <p>
      * getOutputStream.
@@ -37,11 +38,11 @@ public class InputStreamResource extends Resource<InputStream> {
     protected OutputStream getOutputStream() throws IOException {
         throw new CodeFlowError(NO_OUTPUT, this.getClass());
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public InputStream getResource() throws IOException {
         return getInputStream();
     }
-    
+
 }

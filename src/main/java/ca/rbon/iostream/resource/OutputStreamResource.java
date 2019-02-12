@@ -19,13 +19,13 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class OutputStreamResource extends Resource<OutputStream> {
-    
+
     static final String NO_INPUT = "%s does not provide input facilities.";
-    
+
     @NonNull
     @Getter
     final OutputStream outputStream;
-    
+
     /**
      * <p>
      * getOutputStream.
@@ -37,11 +37,11 @@ public class OutputStreamResource extends Resource<OutputStream> {
     protected InputStream getInputStream() throws IOException {
         throw new CodeFlowError(NO_INPUT, this.getClass());
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public OutputStream getResource() throws IOException {
         return getOutputStream();
     }
-    
+
 }

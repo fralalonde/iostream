@@ -17,18 +17,18 @@ import lombok.RequiredArgsConstructor;
  * @version $Id: $Id
  */
 public class ByteArrayResource extends Resource<byte[]> {
-    
+
     /** Constant <code>DEFAULT_CAPACITY=-1</code> */
     public static final int DEFAULT_CAPACITY = -1;
-    
+
     private static final String NO_BYTE_ARRAY_SET = "No byte array was provided for this operation.";
-    
+
     final byte[] bytes;
-    
+
     final int initialCapacity;
-    
+
     ByteArrayOutputStream outStream;
-    
+
     /**
      * <p>
      * getResource.
@@ -46,7 +46,7 @@ public class ByteArrayResource extends Resource<byte[]> {
         }
         return bytes;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected ByteArrayInputStream getInputStream() throws IOException {
@@ -55,7 +55,7 @@ public class ByteArrayResource extends Resource<byte[]> {
         }
         return new ByteArrayInputStream(bytes);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected ByteArrayOutputStream getOutputStream() throws IOException {
@@ -71,5 +71,5 @@ public class ByteArrayResource extends Resource<byte[]> {
         }
         return outStream;
     }
-    
+
 }

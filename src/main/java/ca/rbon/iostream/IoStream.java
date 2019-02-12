@@ -35,8 +35,9 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * <p>
- * IoStream is the root object for IO streams builder methods.
- * Creating an IO stream involves selecting a resource such as {@link #file(String)} and a channel such as {@link ByteOut#dataOutputStream()}.
+ * IoStream is the root object for IO streams builder methods. Creating an IO
+ * stream involves selecting a resource such as {@link #file(String)} and a
+ * channel such as {@link ByteOut#dataOutputStream()}.
  * </p>
  *
  * @author fralalonde
@@ -74,8 +75,9 @@ public class IoStream {
      * Write to a file.
      * </p>
      *
-     * @param name Name of file to write to.
-     * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
+     * @param name   Name of file to write to.
+     * @param append True to append to an existing file. False to overwrite an
+     *               existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
     public static BytesOutChannel<File> file(String name, boolean append) {
@@ -87,8 +89,9 @@ public class IoStream {
      * Write to a file.
      * </p>
      *
-     * @param file File to write to.
-     * @param append True to append to an existing file. False to overwrite an existing file. If file doesn't exist it is just created.
+     * @param file   File to write to.
+     * @param append True to append to an existing file. False to overwrite an
+     *               existing file. If file doesn't exist it is just created.
      * @return An output picker
      */
     @SuppressWarnings("unchecked")
@@ -111,8 +114,8 @@ public class IoStream {
 
     /**
      * <p>
-     * Write to a temporary file with specified prefix and suffix.
-     * The file will be created in the system's default temp folder.
+     * Write to a temporary file with specified prefix and suffix. The file will be
+     * created in the system's default temp folder.
      * </p>
      *
      * @param prefix the file prefix
@@ -181,7 +184,7 @@ public class IoStream {
      * Append to an existing string.
      * </p>
      *
-     * @param str The string to append to
+     * @param str            The string to append to
      * @param intialCapacity The initial size of the buffer
      * @return An output char picker
      */
@@ -256,8 +259,9 @@ public class IoStream {
      * Append to an existing array with specfied additional capacity.
      * </p>
      *
-     * @param array The array to read from or append to
-     * @param additionalCapacity The appending buffer capacity after the first bytes have been added
+     * @param array              The array to read from or append to
+     * @param additionalCapacity The appending buffer capacity after the first bytes
+     *                           have been added
      * @return An input or output picker
      */
     @SuppressWarnings("unchecked")
@@ -443,7 +447,7 @@ public class IoStream {
     @SuppressWarnings("unchecked")
     static <T> T proxy(Resource<?> rez, Class<T> iface) {
         InvocationHandler h = new IoStreamBuilder(rez);
-        return (T) Proxy.newProxyInstance(IoStream.class.getClassLoader(), new Class<?>[]{iface}, h);
+        return (T) Proxy.newProxyInstance(IoStream.class.getClassLoader(), new Class<?>[] { iface }, h);
     }
 
     @RequiredArgsConstructor

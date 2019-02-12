@@ -20,28 +20,28 @@ import lombok.RequiredArgsConstructor;
  * @version $Id: $Id
  */
 public class FileResource extends Resource<File> {
-    
+
     @NonNull
     final File file;
-    
+
     final boolean append;
-    
+
     /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
         return new FileInputStream(file);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
         return new FileOutputStream(file, append);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public File getResource() {
         return file;
     }
-    
+
 }

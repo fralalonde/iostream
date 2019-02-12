@@ -13,11 +13,11 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> Resource type
  */
 public class ReaderOf<T> extends Reader implements WrapperOf<T> {
-    
+
     final Reader delegate;
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for ReaderOf.
@@ -31,23 +31,23 @@ public class ReaderOf<T> extends Reader implements WrapperOf<T> {
         delegate = os;
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void close() throws IOException {
         delegate.close();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         return delegate.read(cbuf, off, len);
     }
-    
+
 }
