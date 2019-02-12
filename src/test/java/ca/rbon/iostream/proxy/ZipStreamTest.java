@@ -13,10 +13,10 @@ import ca.rbon.iostream.IoStream;
 import ca.rbon.iostream.wrap.ZipOutputOf;
 
 public class ZipStreamTest {
-    
+
     @Test
     public void zipAndUnzipBytes() throws IOException {
-        
+
         ZipOutputOf<byte[]> zos = IoStream.bytes().zipOutputStream();
         try {
             zos.putNextEntry(new ZipEntry("a"));
@@ -24,7 +24,7 @@ public class ZipStreamTest {
         } finally {
             zos.close();
         }
-        
+
         ZipInputStream zis = IoStream.bytes(zos.getInner()).zipInputStream();
         try {
             ZipEntry ze = zis.getNextEntry();
@@ -35,10 +35,10 @@ public class ZipStreamTest {
             zis.close();
         }
     }
-    
+
     @Test
     public void zipAndUnzipBufferedBytes() throws IOException {
-        
+
         ZipOutputOf<byte[]> zos = IoStream.bytes().zipOutputStream(3);
         try {
             ZipEntry ze = new ZipEntry("a");
@@ -48,7 +48,7 @@ public class ZipStreamTest {
         } finally {
             zos.close();
         }
-        
+
         try (ZipInputStream zis = IoStream.bytes(zos.getInner()).zipInputStream()) {
             ZipEntry ze = zis.getNextEntry();
             assertThat(ze).isNotNull();
@@ -57,10 +57,10 @@ public class ZipStreamTest {
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }
     }
-    
+
     @Test
     public void zipAndUnzipEncodedBytes() throws IOException {
-        
+
         ZipOutputOf<byte[]> zos = IoStream.bytes().zipOutputStream("UTF-16");
         try {
             zos.putNextEntry(new ZipEntry("ééé"));
@@ -68,7 +68,7 @@ public class ZipStreamTest {
         } finally {
             zos.close();
         }
-        
+
         ZipInputStream zis = IoStream.bytes(zos.getInner()).zipInputStream("UTF-16");
         try {
             ZipEntry ze = zis.getNextEntry();
@@ -79,10 +79,10 @@ public class ZipStreamTest {
             zis.close();
         }
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void zipAndUnzipWrongEncodedBytes() throws IOException {
-        
+
         ZipOutputOf<byte[]> zos = IoStream.bytes().zipOutputStream("UTF-16");
         try {
             zos.putNextEntry(new ZipEntry("ééé"));
@@ -90,7 +90,7 @@ public class ZipStreamTest {
         } finally {
             zos.close();
         }
-        
+
         ZipInputStream zis = IoStream.bytes(zos.getInner()).zipInputStream("UTF-8");
         try {
             ZipEntry ze = zis.getNextEntry();
@@ -99,5 +99,5 @@ public class ZipStreamTest {
             zis.close();
         }
     }
-    
+
 }

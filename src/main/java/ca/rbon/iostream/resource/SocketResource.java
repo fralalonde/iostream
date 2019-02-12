@@ -18,26 +18,26 @@ import lombok.RequiredArgsConstructor;
  * @version $Id: $Id
  */
 public class SocketResource extends Resource<Socket> {
-    
+
     @NonNull
     final Socket socket;
-    
+
     /** {@inheritDoc} */
     @Override
     protected InputStream getInputStream() throws IOException {
         return socket.getInputStream();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     protected OutputStream getOutputStream() throws IOException {
         return socket.getOutputStream();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public Socket getResource() {
         return socket;
     }
-    
+
 }

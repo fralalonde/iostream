@@ -14,11 +14,11 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> The resource type
  */
 public class InputStreamOf<T> extends InputStream implements WrapperOf<T> {
-    
+
     final InputStream delegate;
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for InputStreamOf.
@@ -32,34 +32,34 @@ public class InputStreamOf<T> extends InputStream implements WrapperOf<T> {
         delegate = os;
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public int read() throws IOException {
         return delegate.read();
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void close() throws IOException {
         delegate.close();
     }
-    
+
     /**
-     * Create an IntStream from this InputStream's bytes.
-     * An IOException may be thrown while processing the IntStream.
-     * Consuming the IntStream entirely does not close this InputStream.
+     * Create an IntStream from this InputStream's bytes. An IOException may be
+     * thrown while processing the IntStream. Consuming the IntStream entirely does
+     * not close this InputStream.
      * 
      * @return an IntStream
      */
     public IntStream intStream() {
         return StreamInputAdapter.toIntStream(this);
     }
-    
+
 }

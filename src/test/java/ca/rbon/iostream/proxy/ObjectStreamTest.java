@@ -12,24 +12,24 @@ import ca.rbon.iostream.IoStream;
 import ca.rbon.iostream.wrap.ObjectOutputOf;
 
 public class ObjectStreamTest {
-    
+
     @Test
     public void objectStreams() throws IOException {
-        
+
         ObjectOutputOf<byte[]> zos = IoStream.bytes().objectOutputStream();
         try {
             zos.writeBytes("AA");
         } finally {
             zos.close();
         }
-        
+
         byte[] objectBytes = zos.getInner();
         try (ObjectInputStream zis = IoStream.bytes(objectBytes).objectInputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 2);
             assertThat(new String(bytes)).isEqualTo("AA");
         }
     }
-    
+
     @Test
     public void objectAndUnobjectBufferedBytes() throws IOException {
         ObjectOutputOf<byte[]> zos = IoStream.bytes().objectOutputStream(3);
@@ -38,11 +38,11 @@ public class ObjectStreamTest {
         } finally {
             zos.close();
         }
-        
+
         try (ObjectInputStream zis = IoStream.bytes(zos.getInner()).objectInputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 2);
             assertThat(new String(bytes)).isEqualTo("AA");
         }
     }
-    
+
 }

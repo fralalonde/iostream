@@ -22,20 +22,20 @@ public class GzipFilter implements FilterFactory {
     @Override
     public InputStream filterInput(InputStream input) throws IOException {
         switch (gzipBufferSize) {
-            case Resource.DEFAULT_BUFFER_SIZE:
-                return new GZIPInputStream(input);
-            default:
-                return new GZIPInputStream(input, gzipBufferSize);
+        case Resource.DEFAULT_BUFFER_SIZE:
+            return new GZIPInputStream(input);
+        default:
+            return new GZIPInputStream(input, gzipBufferSize);
         }
     }
 
     @Override
     public OutputStream filterOutput(OutputStream output) throws IOException {
         switch (gzipBufferSize) {
-            case Resource.DEFAULT_BUFFER_SIZE:
-                return new GZIPOutputStream(output);
-            default:
-                return new GZIPOutputStream(output, gzipBufferSize);
+        case Resource.DEFAULT_BUFFER_SIZE:
+            return new GZIPOutputStream(output);
+        default:
+            return new GZIPOutputStream(output, gzipBufferSize);
         }
     }
 

@@ -12,17 +12,17 @@ import ca.rbon.iostream.wrap.ReaderOf;
 import ca.rbon.iostream.wrap.WriterOf;
 
 public class StringTest {
-    
+
     @Test(expected = CodeFlowError.class)
     public void nullString() throws IOException {
         new StringResource(null, 0).getInputStream();
     }
-    
+
     @Test(expected = CodeFlowError.class)
     public void nullBuffer() throws IOException {
         new StringResource(null, 0).getResource();
     }
-    
+
     @Test
     public void create() throws IOException {
         WriterOf<String> w = IoStream.string().writer();
@@ -33,7 +33,7 @@ public class StringTest {
             w.close();
         }
     }
-    
+
     @Test
     public void append() throws IOException {
         WriterOf<String> w = IoStream.string("AA").writer();
@@ -44,7 +44,7 @@ public class StringTest {
             w.close();
         }
     }
-    
+
     @Test
     public void appendCapacity() throws IOException {
         WriterOf<String> w = IoStream.string("AA", 3).writer();
@@ -55,7 +55,7 @@ public class StringTest {
             w.close();
         }
     }
-    
+
     @Test
     public void read() throws IOException {
         ReaderOf<String> r = IoStream.string("AA").reader();
@@ -68,5 +68,5 @@ public class StringTest {
             r.close();
         }
     }
-    
+
 }

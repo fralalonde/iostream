@@ -15,9 +15,9 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> The resource type
  */
 public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf<T> {
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for BufferedInputOf.
@@ -31,14 +31,14 @@ public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf
         super(is);
         closer = cl;
     }
-    
+
     /**
      * <p>
      * Constructor for BufferedInputOf.
      * </p>
      *
-     * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
-     * @param is a {@link java.io.InputStream} object.
+     * @param cl         a {@link ca.rbon.iostream.resource.Resource} object.
+     * @param is         a {@link java.io.InputStream} object.
      * @param bufferSize a int.
      * @throws java.io.IOException if any.
      */
@@ -46,22 +46,22 @@ public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf
         super(is, bufferSize);
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
     /**
-     * Create an IntStream from this InputStream's bytes.
-     * An IOException may be thrown while processing the IntStream.
-     * Consuming the IntStream entirely does not close this InputStream.
+     * Create an IntStream from this InputStream's bytes. An IOException may be
+     * thrown while processing the IntStream. Consuming the IntStream entirely does
+     * not close this InputStream.
      * 
      * @return an IntStream
      */
     public IntStream intStream() {
         return StreamInputAdapter.toIntStream(this);
     }
-    
+
 }

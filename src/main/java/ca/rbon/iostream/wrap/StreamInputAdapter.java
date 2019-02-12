@@ -19,9 +19,10 @@ public class StreamInputAdapter {
     static final IntPredicate END_OF_STREAM = x -> x != -1;
 
     /**
-     * Adapted from StackOverflow {@linkplain so http://stackoverflow.com/questions/20746429/limit-a-stream-by-a-predicate}
+     * Adapted from StackOverflow {@linkplain so
+     * http://stackoverflow.com/questions/20746429/limit-a-stream-by-a-predicate}
      *
-     * @param splitr the original Spliterator
+     * @param splitr    the original Spliterator
      * @param predicate the predicate
      * @return a Spliterator.OfInt
      */
@@ -52,7 +53,8 @@ public class StreamInputAdapter {
 
     /**
      * @param input the input stream
-     * @return an {@link IntStream} iterating over the bytes of the {@link InputStream}
+     * @return an {@link IntStream} iterating over the bytes of the
+     *         {@link InputStream}
      */
     public static IntStream toIntStream(InputStream input) {
         return takeIntWhile(IntStream.generate(() -> apparentlySafeRead(input)), END_OF_STREAM);

@@ -15,9 +15,9 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> Resource type
  */
 public class ZipOutputOf<T> extends ZipOutputStream implements WrapperOf<T> {
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for ZipOutputOf.
@@ -30,7 +30,7 @@ public class ZipOutputOf<T> extends ZipOutputStream implements WrapperOf<T> {
         super(os);
         closer = cl;
     }
-    
+
     /**
      * <p>
      * Constructor for ZipOutputOf.
@@ -44,11 +44,11 @@ public class ZipOutputOf<T> extends ZipOutputStream implements WrapperOf<T> {
         super(os, cs);
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
 }

@@ -14,9 +14,9 @@ import ca.rbon.iostream.resource.Resource;
  * @param <T> The resource type
  */
 public class BufferedWriterOf<T> extends BufferedWriter implements WrapperOf<T> {
-    
+
     final Resource<T> closer;
-    
+
     /**
      * <p>
      * Constructor for BufferedWriterOf.
@@ -30,11 +30,11 @@ public class BufferedWriterOf<T> extends BufferedWriter implements WrapperOf<T> 
         super(wr);
         closer = cl;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
     }
-    
+
 }
