@@ -16,7 +16,7 @@ import lombok.SneakyThrows;
  */
 public class StreamInputAdapter {
 
-    static final IntPredicate END_OF_STREAM = x -> x != -1;
+    private static final IntPredicate END_OF_STREAM = x -> x != -1;
 
     /**
      * Adapted from StackOverflow {@linkplain so

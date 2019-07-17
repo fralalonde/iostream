@@ -21,14 +21,14 @@ import ca.rbon.iostream.wrap.PrintWriterOf;
 public class Samples {
 
     public void smallSample() throws IOException {
-        try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").printWriter()) {
+        try (var myFile = IoStream.file("myfile.txt").printWriter()) {
             File myFileTxt = myFile.getInner();
             myFile.write("Hello from file " + myFileTxt.getName());
         }
     }
 
     public void extremeSample() throws IOException {
-        try (PrintWriterOf<File> myFile = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256,
+        try (var myFile = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256,
                 true)) {
             File myFileTxt = myFile.getInner();
             myFile.write("Hello from file " + myFileTxt.getName());
@@ -36,20 +36,20 @@ public class Samples {
     }
 
     public void intStreamSum() throws IOException {
-        try (InputStreamOf<File> pw = IoStream.file("number.bin").inputStream()) {
+        try (var pw = IoStream.file("number.bin").inputStream()) {
             pw.intStream().sum();
         }
     }
 
     public void randomIntStreamSum() throws IOException {
-        try (InputStreamOf<Random> pw = IoStream.random().inputStream()) {
+        try (var pw = IoStream.random().inputStream()) {
             // add 5 random numbers
             pw.intStream().limit(5).sum();
         }
     }
 
     public void smallSample2() throws IOException {
-        try (DataOutputOf<File> dataFile = IoStream.tempFile().dataOutputStream()) {
+        try (var dataFile = IoStream.tempFile().dataOutputStream()) {
             dataFile.write(42);
             try (BufferedWriter bufFile = IoStream.file(dataFile.getInner()).bufferedWriter()) {
                 bufFile.append("is the answer");
@@ -73,7 +73,7 @@ public class Samples {
 
     public void iostreamResult() throws IOException {
         // IOSTREAMS
-        PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
+        var bytes = IoStream.bytes().printWriter();
         // ...
         bytes.close();
         byte[] myPrecious = bytes.getInner();
@@ -89,7 +89,7 @@ public class Samples {
     }
 
     public void files() throws IOException {
-        OutputStreamOf<File> out = IoStream.file("noooes.txt").outputStream();
+        var out = IoStream.file("noooes.txt").outputStream();
 
         try (PrintWriter w = IoStream.file("mouha.txt").printWriter()) {
             w.append("haha");
@@ -130,7 +130,7 @@ public class Samples {
 
     public byte[] fluent() throws IOException {
         // create and combine both objects
-        PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
+        var bytes = IoStream.bytes().printWriter();
 
         // write the string
         bytes.write("doodoo");
@@ -163,7 +163,7 @@ public class Samples {
     }
 
     public byte[] fluent2() throws IOException {
-        PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter();
+        var bytes = IoStream.bytes().printWriter();
         bytes.write("doodoo");
         bytes.close();
         return bytes.getInner();
@@ -179,15 +179,15 @@ public class Samples {
     }
 
     public byte[] fluent3() throws IOException {
-        try (PrintWriterOf<byte[]> bytes = IoStream.bytes().printWriter()) {
+        try (var bytes = IoStream.bytes().printWriter()) {
             bytes.write("doodoo");
             return bytes.getInner();
         }
     }
 
     public byte[] classic3() throws IOException {
-        try (ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-                PrintWriter writer = new PrintWriter(byteOutputStream)) {
+        try (var byteOutputStream = new ByteArrayOutputStream();
+                var writer = new PrintWriter(byteOutputStream)) {
             writer.write("doodoo");
             return byteOutputStream.toByteArray();
         }

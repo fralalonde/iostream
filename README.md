@@ -41,25 +41,35 @@ If you are using Maven, start by adding this snippet to your `pom.xml`
 </dependency>
 ```
 
-Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to insert what I believe to be `ca.rbon:iostream:0.9.1`.
+Sadly I do no have gradle at the ready, but I'm sure you smart foxes will know where to 
+insert what I believe to be `ca.rbon:iostream:0.9.1`.
 
 Because it uses default interface methods, this library requires Java 1.8 (and nothing but).
       
 ## How does it work?
 
-First, `IoStream` wraps the streams and their charset aware sibblings in a more palatable fluent-builder (or _Factory Method_, for you pattern freaks) so you don't have to `new` anything when you need to do some sweet blocking I/O. Start by typing `IoStream.` and autocomplete-away!
+First, `IoStream` wraps the streams and their charset aware sibblings in a more palatable 
+fluent-builder (or _Factory Method_, for you pattern freaks) so you don't have to `new` anything 
+when you need to do some sweet blocking I/O. Start by typing `IoStream.` and autocomplete-away!
 ```java
 import iostream.IoStream;
 ``` 
 
 ### Building
-Because streams and readers/writers are often paired together, the fluent builder guides you from the selection of the underlying resource (`File`, `byte[]`, `Socket`...) to the way of accessing it (`BufferedStream`, `ZipStream`, `Writer`...). 
+Because streams and readers/writers are often paired together, 
+the fluent builder guides you from the selection of the underlying resource (`File`, `byte[]`, `Socket`...) 
+to the way of accessing it (`BufferedStream`, `ZipStream`, `Writer`...). 
 ```java
 PrintWriter writer = IoStream.file("yesss.txt").printWriter();
 ```
-You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. All `IoStream` final methods return `*Of<File>` classes extending normal `java.io` classes. Their added functionality is explained below (hint: checkout their `getInner()` method.).
+You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. 
+This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. 
+All `IoStream` final methods return `*Of<File>` classes extending normal `java.io` classes. 
+Their added functionality is explained below (hint: checkout their `getInner()` method.).
 
-If a resource only implements streams (like `socket()`), and you require `Writer` or `Reader` char-oriented access, the builder will transparently insert an `OutputStreamWriter` or `InputStreamReader` adapter for you.
+If a resource only implements streams (like `socket()`), and you require `Writer` or `Reader` 
+char-oriented access, the builder will transparently insert an `OutputStreamWriter` or `InputStreamReader` 
+adapter for you.
 ```java
 BufferedWriter writer = IoStream.socket("spamaway.net", 25).bufferedWriter();
 ``` 
@@ -72,10 +82,17 @@ try (Writer w = IoStream.file("mouha.txt").printWriter()) {
 }
 ```
 
-### Retrieving results using `*Of<>` classes 
-It is often required to access the resource after all streams are closed in order to obtain the final operation result. This is a pattern especially common with auto-instantiated resources such as byte arrays out streams, string writers or temp files. `IoStream` makes the job easier by allowing access to the resulting resource from the outmost object. The only catch is that you need to use IoStream's `Of<>` classes, which all subclass regular `java.io` classes. This done to provide you with the `getInner()` method, which return type follows the resource type you built.
+### Retrieving inner results 
+It is often required to access the resource after all streams are closed in order to obtain the 
+final operation result. This is a pattern especially common with auto-instantiated resources such as byte 
+arrays out streams, string writers or temp files.
+
+`IoStream` makes the job easier by allowing access to the resulting resource straight from the outmost object. 
+This is done magically with IoStream's `*Of<T>` classes, which subclass regular `java.io` classes.
+Because we are modern, sane people, we can ignore this detail by using the `var` keyword from JDK 10+.
+ Then all you have to do is call the `getInner()` method to retrieve the inner resource you just built.
 ```java
-PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
+var writer = IoStream.bytes().printWriter();
 // ...
 writer.close();
 byte[] myPrecious = writer.getInner();
@@ -91,10 +108,13 @@ byte[] myPrecious = innerStream.toByteArray();
 
 ## Companion libraries
 
-`IoStream` is an excellent companion to [Apache Commons IO's](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html) `IOUtils` class. There is little overlap between the libraries. `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()` :
+`IoStream` is an excellent companion to Apache Commons IO's 
+[IOUtils class](https://commons.apache.org/proper/commons-io/javadocs/api-2.4/index.html?org/apache/commons/io/IOUtils.html). 
+There is little overlap between the libraries. 
+`IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()` :
 
 ```java
-try (Reader in = IoStream.file("A").reader(); Writer out = IoStream.file("B").writer()) {
+try (var in = IoStream.file("A").reader(); var out = IoStream.file("B").writer()) {
     IOUtils.copy(in, out);
 }
 ```
@@ -104,7 +124,7 @@ try (Reader in = IoStream.file("A").reader(); Writer out = IoStream.file("B").wr
 ### Convert to IntStream
 
 ```java
-try (InputStreamOf<File> pw = IoStream.file("numbers.bin").inputStream()) {
+try (var pw = IoStream.file("numbers.bin").inputStream()) {
     pw.intStream().sum();
 }
 ```
@@ -121,7 +141,7 @@ IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```java
 FileOutputStream out = IoStream.file("noooes.txt").outputStream();
 
-try (PrintWriterOf<File> myFile = IoStream.file("mouha.txt").printWriter()) {
+try (var myFile = IoStream.file("mouha.txt").printWriter()) {
     myFile.write("haha");
 }
    
@@ -129,7 +149,7 @@ try (PrintWriterOf<File> myFile = IoStream.file("mouha.txt").printWriter()) {
 IoStream.file("doum.zip").zipInputStream("UTF-8");
 IoStream.file("dam.txt", true).bufferedWriter();
 
-DataOutputOf<File> tmpout = IoStream.tempFile().dataOutputStream();
+var tmpout = IoStream.tempFile().dataOutputStream();
 tmpout.write(42);
 String tmpFilename = tmpout.getInner().getAbsolutePath();
 ```
@@ -156,7 +176,7 @@ InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream();
 
 ### Random 
 ```java
-try (InputStreamOf<Random> pw = IoStream.random().inputStream()) {
+try (var pw = IoStream.random().inputStream()) {
 	// add 5 random numbers
     pw.intStream().limit(5).sum();
 }
@@ -174,7 +194,7 @@ IoStream.stream(providedOutput).printWriter(256);
 ### Writing text to a File, GZipped, Base64, UTF-16 encoded. 256-byte buffer, autoflush.
 ```java
 // this example is pretty extreme
-try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
+try (var pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
     File myFileTxt = pw.getInner();
     pw.write("Hello from file " + myFileTxt.getName());
 }
@@ -184,13 +204,24 @@ try (PrintWriterOf<File> pw = IoStream.file("myfile.txt").base64().gzip(55).prin
 ### Why not guava?
 You mean [this](https://github.com/google/guava/wiki/IOExplained)?
 Sure, but it's bigger and comes with its own classes and superseded the original Java classes.
-Plus, I could not wrap my head around it in 10 seconds, which is all it should take for such a thing. So I spent 10 hours writing this lib instead.
+Plus, I could not wrap my head around it in 10 seconds, which is all it should take for such a thing. 
+So I spent 10 hours writing this lib instead.
 
 ### But my eyes are _still_ bleeding!
-Hey, Java can be a pain. We could push it further with compiler @Annotations or dynamically generated bytecode, but then we'd have a different set of problems. [Why](https://www.rust-lang.org/) [don't](https://clojure.org/) [you](https://www.ceylon-lang.org/) [try](https://nim-lang.org/) [a](http://fsharp.org/) [different](http://www.dangermouse.net/esoteric/piet.html) [language](http://lolcode.org/)?     
+Hey, Java can be a pain. We could push it further with compiler @Annotations or dynamically generated bytecode, 
+but then we'd have a different set of problems. 
+[Why](https://www.rust-lang.org/) 
+[don't](https://clojure.org/) 
+[you](https://www.ceylon-lang.org/) 
+[try](https://nim-lang.org/) 
+[a](http://fsharp.org/) 
+[different](http://www.dangermouse.net/esoteric/piet.html) 
+[language](http://lolcode.org/)?     
 
 ### Why doesn't `IoStream` support _$feature_
-The goal is to support just Java stream classes (Sockets, Pipes) with their original semantics. No additional transitive deps. No fixing of the original sins. Some parts are still missing, but once it's done, it's done. You'll know because it'll be version 1.0.   
+The goal is to support just Java stream classes (Sockets, Pipes) with their original semantics. 
+No additional transitive deps. No fixing of the original sins. 
+Some parts are still missing, but once it's done, it's done. You'll know because it'll be version 1.0.   
 
 ## Samples
 
@@ -199,7 +230,7 @@ The goal is to support just Java stream classes (Sockets, Pipes) with their orig
 IoStream enabled-code 
 ```java
 public byte[] usingIoStream() throws IOException {
-    PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
+    var writer = IoStream.bytes().printWriter();
     writer.write("doodoo");
     writer.close();
     return writer.getInner();
@@ -223,7 +254,7 @@ IoStream enabled-code
 ```java
 public byte[] fluent() throws IOException {
     // create and combine both objects
-    PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter();
+    var writer = IoStream.bytes().printWriter();
 
     // write the string
     writer.write("doodoo");
@@ -262,7 +293,7 @@ public byte[] classic() throws IOException {
 ### Using try-with-resources
 IoStream enabled-code 
 ```java
-try (PrintWriterOf<byte[]> writer = IoStream.bytes().printWriter()) {
+try (var writer = IoStream.bytes().printWriter()) {
     writer.write("doodoo");
     return writer.getInner();
 }

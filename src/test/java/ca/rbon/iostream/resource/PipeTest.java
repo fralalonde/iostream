@@ -16,10 +16,10 @@ public class PipeTest {
 
     @Test
     public void pipeSelf() throws IOException, InterruptedException {
-        BytesBiChannel<Pipe> pipe = IoStream.pipe(5);
+        var pipe = IoStream.pipe(5);
 
-        final OutputStreamOf<Pipe> output = pipe.outputStream();
-        final InputStreamOf<Pipe> input = pipe.inputStream();
+        final var output = pipe.outputStream();
+        final var input = pipe.inputStream();
         final AtomicInteger ai = new AtomicInteger();
 
         Thread t = new Thread(() -> {
@@ -44,10 +44,10 @@ public class PipeTest {
 
     @Test
     public void pipeResource() throws IOException, InterruptedException {
-        BytesBiChannel<Pipe> pipe = IoStream.pipe();
+        var pipe = IoStream.pipe();
 
-        final OutputStreamOf<Pipe> output = pipe.outputStream();
-        final InputStreamOf<Pipe> input = output.getInner().inputStream();
+        final var output = pipe.outputStream();
+        final var input = output.getInner().inputStream();
         final AtomicInteger ai = new AtomicInteger();
 
         Thread t = new Thread(() -> {
@@ -72,11 +72,11 @@ public class PipeTest {
 
     @Test
     public void pipeOf() throws IOException, InterruptedException {
-        BytesBiChannel<Pipe> pipe = IoStream.pipe(5);
-        final InputStreamOf<Pipe> pipeInput = pipe.inputStream();
+        var pipe = IoStream.pipe(5);
+        final var pipeInput = pipe.inputStream();
 
-        BytesOutChannel<Pipe> pipe2 = IoStream.pipe(pipeInput);
-        final OutputStreamOf<Pipe> output = pipe2.outputStream();
+        var pipe2 = IoStream.pipe(pipeInput);
+        final var output = pipe2.outputStream();
 
         final AtomicInteger ai = new AtomicInteger();
 
@@ -102,11 +102,11 @@ public class PipeTest {
 
     @Test
     public void pipeInput() throws IOException, InterruptedException {
-        BytesBiChannel<Pipe> pipe = IoStream.pipe(5);
-        final InputStreamOf<Pipe> pipeInput = pipe.inputStream();
+        var pipe = IoStream.pipe(5);
+        final var pipeInput = pipe.inputStream();
 
-        BytesOutChannel<Pipe> pipe2 = IoStream.pipe(pipeInput.getInner().getInputStream());
-        final OutputStreamOf<Pipe> output = pipe2.outputStream();
+        var pipe2 = IoStream.pipe(pipeInput.getInner().getInputStream());
+        final var output = pipe2.outputStream();
 
         final AtomicInteger ai = new AtomicInteger();
 
