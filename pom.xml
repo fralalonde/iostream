@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.10.0</version>
+    <version>0.10.1-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Better ergonomics for Java IO stream handling</description>
@@ -30,7 +30,7 @@
         <connection>scm:git:git@github.com:fralalonde/iostream.git</connection>
         <developerConnection>scm:git:git@github.com:fralalonde/iostream.git</developerConnection>
         <url>http://github.com/fralalonde/iostream/tree/master</url>
-        <tag>0.10.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <organization>
@@ -251,6 +251,7 @@
                         </executions>
                     </plugin>
 
+<!--
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -265,6 +266,7 @@
                             </execution>
                         </executions>
                     </plugin>
+-->
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
