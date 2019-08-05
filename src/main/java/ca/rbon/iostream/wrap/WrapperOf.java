@@ -4,7 +4,7 @@ import java.io.IOException;
 
 /**
  * Base interface for *Of wrappers.
- * 
+ *
  * @param <T> The underlying resource type
  */
 public interface WrapperOf<T> {

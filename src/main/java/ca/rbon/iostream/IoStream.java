@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 
 import ca.rbon.iostream.channel.BytesBiChannel;
 import ca.rbon.iostream.channel.BytesInChannel;
@@ -20,16 +22,7 @@ import ca.rbon.iostream.channel.BytesOutChannel;
 import ca.rbon.iostream.channel.CharBiChannel;
 import ca.rbon.iostream.channel.CharOutChannel;
 import ca.rbon.iostream.channel.part.ByteOut;
-import ca.rbon.iostream.resource.ByteArrayResource;
-import ca.rbon.iostream.resource.ConsoleResource;
-import ca.rbon.iostream.resource.FileResource;
-import ca.rbon.iostream.resource.InputStreamResource;
-import ca.rbon.iostream.resource.OutputStreamResource;
-import ca.rbon.iostream.resource.Pipe;
-import ca.rbon.iostream.resource.RandomInputStream;
-import ca.rbon.iostream.resource.Resource;
-import ca.rbon.iostream.resource.SocketResource;
-import ca.rbon.iostream.resource.StringResource;
+import ca.rbon.iostream.resource.*;
 import ca.rbon.iostream.wrap.InputStreamOf;
 import lombok.RequiredArgsConstructor;
 
@@ -444,8 +437,34 @@ public class IoStream {
         return proxy(new InputStreamResource(input), BytesInChannel.class);
     }
 
+    /**
+     * <p>
+     * Wrap an int supplier into an input stream.
+     * </p>
+     *
+     * @param input a {@link IntSupplier} object.
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
+     */
     @SuppressWarnings("unchecked")
-    static <T> T proxy(Resource<?> rez, Class<T> iface) {
+    public static BytesInChannel<InputStream> supplier(IntSupplier input) {
+        return proxy(new InputStreamResource(new IntSupplierInputStream(input)), BytesInChannel.class);
+    }
+
+    /**
+     * <p>
+     * Wrap an int consumer into an output stream.
+     * </p>
+     *
+     * @param output a {@link IntConsumer} object.
+     * @return a {@link BytesOutChannel} object.
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesOutChannel<InputStream> consumer(IntConsumer output) {
+        return proxy(new OutputStreamResource(new IntConsumerOutputStream(output)), BytesOutChannel.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T proxy(Resource<?> rez, Class<T> iface) {
         InvocationHandler h = new IoStreamBuilder(rez);
         return (T) Proxy.newProxyInstance(IoStream.class.getClassLoader(), new Class<?>[] { iface }, h);
     }
