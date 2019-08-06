@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
     <artifactId>iostream</artifactId>
-    <version>0.10.3</version>
+    <version>0.10.4-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Better ergonomics for Java IO stream handling</description>
@@ -30,7 +30,7 @@
         <connection>scm:git:git@github.com:fralalonde/iostream.git</connection>
         <developerConnection>scm:git:git@github.com:fralalonde/iostream.git</developerConnection>
         <url>http://github.com/fralalonde/iostream/tree/master</url>
-        <tag>iostream-0.10.3-SNAPSHOT</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <organization>
