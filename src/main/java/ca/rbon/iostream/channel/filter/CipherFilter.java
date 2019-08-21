@@ -1,26 +1,27 @@
 package ca.rbon.iostream.channel.filter;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
-
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * A {@link Cipher} filter factory.
  *
  * @author fralalonde
  */
-@RequiredArgsConstructor
 public class CipherFilter implements FilterFactory {
 
-    @NonNull
+
     final Cipher cipher;
+
+    public CipherFilter( Cipher cipher) {
+        this.cipher = cipher;
+    }
 
     @Override
     public InputStream filterInput(InputStream input) throws IOException {

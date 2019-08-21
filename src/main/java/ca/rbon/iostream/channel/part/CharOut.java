@@ -1,10 +1,10 @@
 package ca.rbon.iostream.channel.part;
 
-import java.io.IOException;
-
 import ca.rbon.iostream.wrap.BufferedWriterOf;
 import ca.rbon.iostream.wrap.PrintWriterOf;
 import ca.rbon.iostream.wrap.WriterOf;
+
+import java.io.IOException;
 
 public interface CharOut<T> {
 

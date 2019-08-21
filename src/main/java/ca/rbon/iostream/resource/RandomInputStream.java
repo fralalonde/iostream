@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class RandomInputStream extends InputStream {
 
     final Random random;
+
+    public RandomInputStream(Random random) {
+        this.random = random;
+    }
 
     @Override
     public int read() throws IOException {

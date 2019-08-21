@@ -63,7 +63,7 @@ public class CloseFailTest {
      * @throws ClassNotFoundException
      */
     // @Test(expected = IOException.class)
-    public void objectInput() throws IOException, ClassNotFoundException {
+    private void objectInput() throws IOException, ClassNotFoundException {
         // input object streams are picky, preparing real object data for test
         ObjectOutputOf<byte[]> o = IoStream.bytes().objectOutputStream();
         o.writeObject(Integer.valueOf(4));

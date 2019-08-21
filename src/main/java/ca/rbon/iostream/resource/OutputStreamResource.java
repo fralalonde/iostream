@@ -1,13 +1,11 @@
 package ca.rbon.iostream.resource;
 
+import ca.rbon.iostream.CodeFlowError;
+
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import ca.rbon.iostream.CodeFlowError;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /**
  * <p>
@@ -17,14 +15,15 @@ import lombok.RequiredArgsConstructor;
  * @author fralalonde
  * @version $Id: $Id
  */
-@RequiredArgsConstructor
 public class OutputStreamResource extends Resource<OutputStream> {
 
     static final String NO_INPUT = "%s does not provide input facilities.";
 
-    @NonNull
-    @Getter
     final OutputStream outputStream;
+
+    public OutputStreamResource(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
 
     /**
      * <p>
@@ -44,4 +43,7 @@ public class OutputStreamResource extends Resource<OutputStream> {
         return getOutputStream();
     }
 
+    public OutputStream getOutputStream() {
+        return this.outputStream;
+    }
 }

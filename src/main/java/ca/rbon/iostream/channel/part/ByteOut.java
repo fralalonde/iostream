@@ -1,8 +1,5 @@
 package ca.rbon.iostream.channel.part;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-
 import ca.rbon.iostream.wrap.BufferedOutputOf;
 import ca.rbon.iostream.wrap.BufferedWriterOf;
 import ca.rbon.iostream.wrap.DataOutputOf;
@@ -11,6 +8,9 @@ import ca.rbon.iostream.wrap.OutputStreamOf;
 import ca.rbon.iostream.wrap.PrintWriterOf;
 import ca.rbon.iostream.wrap.WriterOf;
 import ca.rbon.iostream.wrap.ZipOutputOf;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 public interface ByteOut<T> {
 

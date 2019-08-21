@@ -1,5 +1,6 @@
 package ca.rbon.iostream.wrap;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Spliterator;
@@ -8,8 +9,6 @@ import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
-
-import lombok.SneakyThrows;
 
 /**
  * @author fralalonde
@@ -60,9 +59,12 @@ public class StreamInputAdapter {
         return takeIntWhile(IntStream.generate(() -> apparentlySafeRead(input)), END_OF_STREAM);
     }
 
-    @SneakyThrows(IOException.class)
     private static int apparentlySafeRead(InputStream input) {
-        return input.read();
+        try {
+            return input.read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

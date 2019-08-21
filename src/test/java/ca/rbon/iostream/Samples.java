@@ -35,16 +35,16 @@ public class Samples {
         }
     }
 
-    public void intStreamSum() throws IOException {
+    public int intStreamSum() throws IOException {
         try (var pw = IoStream.file("number.bin").inputStream()) {
-            pw.intStream().sum();
+            return pw.intStream().sum();
         }
     }
 
-    public void randomIntStreamSum() throws IOException {
+    public int randomIntStreamSum() throws IOException {
         try (var pw = IoStream.random().inputStream()) {
             // add 5 random numbers
-            pw.intStream().limit(5).sum();
+            return pw.intStream().limit(5).sum();
         }
     }
 

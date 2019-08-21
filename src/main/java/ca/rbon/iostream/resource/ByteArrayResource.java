@@ -1,13 +1,11 @@
 package ca.rbon.iostream.resource;
 
+import ca.rbon.iostream.CodeFlowError;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import ca.rbon.iostream.CodeFlowError;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 /**
  * <p>
  * BytesPicker class.
@@ -28,6 +26,11 @@ public class ByteArrayResource extends Resource<byte[]> {
     final int initialCapacity;
 
     ByteArrayOutputStream outStream;
+
+    public ByteArrayResource(byte[] bytes, int initialCapacity) {
+        this.bytes = bytes;
+        this.initialCapacity = initialCapacity;
+    }
 
     /**
      * <p>

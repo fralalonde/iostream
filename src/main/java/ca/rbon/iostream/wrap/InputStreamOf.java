@@ -1,10 +1,10 @@
 package ca.rbon.iostream.wrap;
 
+import ca.rbon.iostream.resource.Resource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.stream.IntStream;
-
-import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>
@@ -43,6 +43,12 @@ public class InputStreamOf<T> extends InputStream implements WrapperOf<T> {
     @Override
     public int read() throws IOException {
         return delegate.read();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        return delegate.read(b, off, len);
     }
 
     /** {@inheritDoc} */

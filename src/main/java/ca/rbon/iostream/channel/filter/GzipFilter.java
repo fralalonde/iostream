@@ -1,23 +1,25 @@
 package ca.rbon.iostream.channel.filter;
 
+import ca.rbon.iostream.resource.Resource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import ca.rbon.iostream.resource.Resource;
-import lombok.RequiredArgsConstructor;
-
 /**
  * A gzip filter factory.
  *
  * @author fralalonde
  */
-@RequiredArgsConstructor
 public class GzipFilter implements FilterFactory {
 
     final int gzipBufferSize;
+
+    public GzipFilter(int gzipBufferSize) {
+        this.gzipBufferSize = gzipBufferSize;
+    }
 
     @Override
     public InputStream filterInput(InputStream input) throws IOException {

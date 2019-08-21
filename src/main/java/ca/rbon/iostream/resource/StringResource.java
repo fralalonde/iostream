@@ -1,15 +1,13 @@
 package ca.rbon.iostream.resource;
 
+import ca.rbon.iostream.CodeFlowError;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import ca.rbon.iostream.CodeFlowError;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 /**
  * <p>
  * StringPicker class.
@@ -30,6 +28,11 @@ public class StringResource extends Resource<String> {
     final int capacity;
 
     StringWriter writer;
+
+    public StringResource(String str, int capacity) {
+        this.str = str;
+        this.capacity = capacity;
+    }
 
     /** {@inheritDoc} */
     @Override

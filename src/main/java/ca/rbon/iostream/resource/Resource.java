@@ -1,22 +1,5 @@
 package ca.rbon.iostream.resource;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.crypto.Cipher;
-
 import ca.rbon.iostream.CodeFlowError;
 import ca.rbon.iostream.channel.filter.Base64Filter;
 import ca.rbon.iostream.channel.filter.CipherFilter;
@@ -42,6 +25,22 @@ import ca.rbon.iostream.wrap.ReaderOf;
 import ca.rbon.iostream.wrap.WriterOf;
 import ca.rbon.iostream.wrap.ZipInputOf;
 import ca.rbon.iostream.wrap.ZipOutputOf;
+
+import javax.crypto.Cipher;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -79,13 +78,13 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
     List<FilterFactory> filters = new ArrayList<>();
 
     static InputStreamReader streamReader(InputStream stream, Charset charset) {
-        return charset == DEFAULT_CHARSET
+        return charset == null
                 ? new InputStreamReader(stream)
                 : new InputStreamReader(stream, charset);
     }
 
     static OutputStreamWriter streamWriter(OutputStream stream, Charset charset) {
-        return charset == DEFAULT_CHARSET
+        return charset == null
                 ? new OutputStreamWriter(stream)
                 : new OutputStreamWriter(stream, charset);
     }
@@ -225,7 +224,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
 
     // SOURCE
 
-    private InputStream wrappedBufferedInput(Charset charset, int bufferSize) throws IOException {
+    private InputStream wrappedBufferedInput(int bufferSize) throws IOException {
         return buffer(filteredIn(), bufferSize);
     }
 
@@ -244,7 +243,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
 
     // SINK
 
-    private OutputStream wrappedBufferOut(Charset charset, int bufferSize) throws IOException {
+    private OutputStream wrappedBufferOut(int bufferSize) throws IOException {
         return buffer(filteredOut(), bufferSize);
     }
 
@@ -277,8 +276,8 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
     @Override
     public ZipInputOf<T> zipInputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
-                ? new ZipInputOf<>(this, wrappedBufferedInput(null, bufferSize))
-                : new ZipInputOf<>(this, wrappedBufferedInput(null, bufferSize), charset);
+                ? new ZipInputOf<>(this, wrappedBufferedInput(bufferSize))
+                : new ZipInputOf<>(this, wrappedBufferedInput(bufferSize), charset);
     }
 
     /**
@@ -324,7 +323,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
 
     @Override
     public DataInputOf<T> dataInputStream(int bufferSize) throws IOException {
-        return new DataInputOf<>(this, wrappedBufferedInput(null, bufferSize));
+        return new DataInputOf<>(this, wrappedBufferedInput(bufferSize));
     }
 
     /**
@@ -339,7 +338,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
 
     @Override
     public ObjectInputOf<T> objectInputStream(int bufferSize) throws IOException {
-        return new ObjectInputOf<>(this, wrappedBufferedInput(null, bufferSize));
+        return new ObjectInputOf<>(this, wrappedBufferedInput(bufferSize));
     }
 
     /**
@@ -389,8 +388,8 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
     @Override
     public ZipOutputOf<T> zipOutputStream(Charset charset, int bufferSize) throws IOException {
         return charset == null
-                ? new ZipOutputOf<>(this, wrappedBufferOut(null, bufferSize))
-                : new ZipOutputOf<>(this, wrappedBufferOut(null, bufferSize), charset);
+                ? new ZipOutputOf<>(this, wrappedBufferOut(bufferSize))
+                : new ZipOutputOf<>(this, wrappedBufferOut(bufferSize), charset);
     }
 
     /**
@@ -436,7 +435,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
 
     @Override
     public DataOutputOf<T> dataOutputStream(int bufferSize) throws IOException {
-        return new DataOutputOf<>(this, wrappedBufferOut(null, bufferSize));
+        return new DataOutputOf<>(this, wrappedBufferOut(bufferSize));
     }
 
     /**
@@ -451,7 +450,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
 
     @Override
     public ObjectOutputOf<T> objectOutputStream(int bufferSize) throws IOException {
-        return new ObjectOutputOf<>(this, wrappedBufferOut(null, bufferSize));
+        return new ObjectOutputOf<>(this, wrappedBufferOut(bufferSize));
     }
 
     /**

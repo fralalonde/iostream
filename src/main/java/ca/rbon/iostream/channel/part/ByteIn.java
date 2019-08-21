@@ -1,8 +1,5 @@
 package ca.rbon.iostream.channel.part;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-
 import ca.rbon.iostream.wrap.BufferedInputOf;
 import ca.rbon.iostream.wrap.BufferedReaderOf;
 import ca.rbon.iostream.wrap.DataInputOf;
@@ -10,6 +7,9 @@ import ca.rbon.iostream.wrap.InputStreamOf;
 import ca.rbon.iostream.wrap.ObjectInputOf;
 import ca.rbon.iostream.wrap.ReaderOf;
 import ca.rbon.iostream.wrap.ZipInputOf;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 public interface ByteIn<T> {
 

@@ -1,14 +1,12 @@
 package ca.rbon.iostream.resource;
 
+
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 /**
  * <p>
  * SocketPicker class.
@@ -19,8 +17,12 @@ import lombok.RequiredArgsConstructor;
  */
 public class SocketResource extends Resource<Socket> {
 
-    @NonNull
+
     final Socket socket;
+
+    public SocketResource( Socket socket) {
+        this.socket = socket;
+    }
 
     /** {@inheritDoc} */
     @Override

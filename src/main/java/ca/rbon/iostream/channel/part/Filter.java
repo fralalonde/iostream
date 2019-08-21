@@ -1,10 +1,9 @@
 package ca.rbon.iostream.channel.part;
 
-import java.util.Base64;
+import ca.rbon.iostream.channel.filter.FilterFactory;
 
 import javax.crypto.Cipher;
-
-import ca.rbon.iostream.channel.filter.FilterFactory;
+import java.util.Base64;
 
 public interface Filter<SAME> {
 

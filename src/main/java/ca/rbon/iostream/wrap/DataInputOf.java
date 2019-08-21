@@ -1,10 +1,10 @@
 package ca.rbon.iostream.wrap;
 
+import ca.rbon.iostream.resource.Resource;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import ca.rbon.iostream.resource.Resource;
 
 /**
  * <p>

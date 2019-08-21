@@ -1,5 +1,25 @@
 package ca.rbon.iostream;
 
+import ca.rbon.iostream.channel.BytesBiChannel;
+import ca.rbon.iostream.channel.BytesInChannel;
+import ca.rbon.iostream.channel.BytesOutChannel;
+import ca.rbon.iostream.channel.CharBiChannel;
+import ca.rbon.iostream.channel.CharOutChannel;
+import ca.rbon.iostream.channel.part.ByteOut;
+import ca.rbon.iostream.resource.ByteArrayResource;
+import ca.rbon.iostream.resource.ConsoleResource;
+import ca.rbon.iostream.resource.FileResource;
+import ca.rbon.iostream.resource.InputStreamResource;
+import ca.rbon.iostream.resource.IntConsumerOutputStream;
+import ca.rbon.iostream.resource.IntSupplierInputStream;
+import ca.rbon.iostream.resource.OutputStreamResource;
+import ca.rbon.iostream.resource.Pipe;
+import ca.rbon.iostream.resource.RandomInputStream;
+import ca.rbon.iostream.resource.Resource;
+import ca.rbon.iostream.resource.SocketResource;
+import ca.rbon.iostream.resource.StringResource;
+import ca.rbon.iostream.wrap.InputStreamOf;
+
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
@@ -15,16 +35,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
-
-import ca.rbon.iostream.channel.BytesBiChannel;
-import ca.rbon.iostream.channel.BytesInChannel;
-import ca.rbon.iostream.channel.BytesOutChannel;
-import ca.rbon.iostream.channel.CharBiChannel;
-import ca.rbon.iostream.channel.CharOutChannel;
-import ca.rbon.iostream.channel.part.ByteOut;
-import ca.rbon.iostream.resource.*;
-import ca.rbon.iostream.wrap.InputStreamOf;
-import lombok.RequiredArgsConstructor;
 
 /**
  * <p>
@@ -469,10 +479,13 @@ public class IoStream {
         return (T) Proxy.newProxyInstance(IoStream.class.getClassLoader(), new Class<?>[] { iface }, h);
     }
 
-    @RequiredArgsConstructor
     static class IoStreamBuilder implements InvocationHandler {
 
         final Resource<?> rez;
+
+        public IoStreamBuilder(Resource<?> rez) {
+            this.rez = rez;
+        }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

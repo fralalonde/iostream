@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.rbon</groupId>
@@ -53,12 +54,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -107,7 +102,7 @@
                         <!-- Verbose compiler messages -->
                         <arg>-Xdiags:verbose</arg>
                         <!-- treat warnings as errors : NOTE this is hard, javac is picky -->
-                        <arg>-Werror</arg>
+<!--                        <arg>-Werror</arg>-->
                         <!-- disable anachronic serialization warnings -->
                         <arg>-Xlint:-serial</arg>
                         <!-- disable misguided annotation warnings -->
@@ -116,7 +111,19 @@
                         <arg>-Xlint:-options</arg>
                         <!-- disable pedantic try-with-resource unreferenced warnings -->
                         <arg>-Xlint:-try</arg>
+
+                        <!-- enable errorprone -->
+                        <arg>-XDcompilePolicy=simple</arg>
+                        <arg>-Xplugin:ErrorProne -Xep:DefaultCharset:OFF</arg>
                     </compilerArgs>
+
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>2.3.3</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
