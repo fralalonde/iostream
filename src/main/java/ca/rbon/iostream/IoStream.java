@@ -463,6 +463,19 @@ public class IoStream {
         return proxy(new OutputStreamResource(new IntConsumerOutputStream(output)), BytesOutChannel.class);
     }
 
+    /**
+     * <p>
+     * Read from a resource on the classpath using the default classloader.
+     * </p>
+     *
+     * @param path The path to the resource.
+     * @return a {@link ca.rbon.iostream.channel.BytesInChannel} object.
+     */
+    @SuppressWarnings("unchecked")
+    public static BytesInChannel<InputStream> classpath(String path) {
+        return proxy(new InputStreamResource(IoStream.class.getClassLoader().getResourceAsStream(path)), BytesInChannel.class);
+    }
+
     @SuppressWarnings("unchecked")
     private static <T> T proxy(Resource<?> rez, Class<T> iface) {
         InvocationHandler h = new IoStreamBuilder(rez);
