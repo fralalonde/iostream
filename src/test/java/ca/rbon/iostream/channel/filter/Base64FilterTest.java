@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import ca.rbon.iostream.IoStream;
+import ca.rbon.iostream.IO;
 import ca.rbon.iostream.wrap.InputStreamOf;
 import ca.rbon.iostream.wrap.OutputStreamOf;
 
@@ -16,16 +16,14 @@ public class Base64FilterTest {
     @Test
     public void base64Bytes() throws IOException {
 
-        OutputStreamOf<byte[]> zos = IoStream.bytes().base64().outputStream();
-        try {
+        OutputStreamOf<byte[]> zos = IO.bytes().base64().outputStream();
+        try (zos) {
             zos.write("aaaaaaa".getBytes());
-        } finally {
-            zos.close();
         }
 
         assertThat(new String(zos.getInner())).isEqualTo("YWFhYWFhYQ==");
 
-        try (InputStreamOf<byte[]> zis = IoStream.bytes(zos.getInner()).base64().inputStream()) {
+        try (InputStreamOf<byte[]> zis = IO.bytes(zos.getInner()).base64().inputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 7);
             assertThat(new String(bytes)).isEqualTo("aaaaaaa");
         }

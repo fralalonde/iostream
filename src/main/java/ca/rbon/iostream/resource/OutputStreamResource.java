@@ -13,9 +13,7 @@ import lombok.RequiredArgsConstructor;
  * <p>
  * PipeOutPicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  */
 @RequiredArgsConstructor
 public class OutputStreamResource extends Resource<OutputStream> {
@@ -32,15 +30,14 @@ public class OutputStreamResource extends Resource<OutputStream> {
      * </p>
      * 
      * @return a {@link java.io.OutputStream} object.
-     * @throws java.io.IOException if any.
      */
-    protected InputStream getInputStream() throws IOException {
+    protected InputStream getInputStream() {
         throw new CodeFlowError(NO_INPUT, this.getClass());
     }
 
     /** {@inheritDoc} */
     @Override
-    public OutputStream getResource() throws IOException {
+    public OutputStream getResource() {
         return getOutputStream();
     }
 

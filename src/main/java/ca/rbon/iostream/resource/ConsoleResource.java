@@ -22,13 +22,13 @@ public class ConsoleResource extends Resource<Console> {
 
     /** {@inheritDoc} */
     @Override
-    protected Reader getReader() throws IOException {
+    protected Reader getReader() {
         return System.console().reader();
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Writer getWriter() throws IOException {
+    protected Writer getWriter() {
         return System.console().writer();
     }
 

@@ -47,9 +47,7 @@ import ca.rbon.iostream.wrap.ZipOutputOf;
  * <p>
  * Abstract BasePicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  * @param <T> The resource type
  */
 public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, CharOut<T>, Filter<Resource<T>> {
@@ -141,7 +139,7 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
         }
     }
 
-    public abstract T getResource() throws IOException;
+    public abstract T getResource();
 
     /**
      * <p>
@@ -149,9 +147,8 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @return a {@link java.io.Reader} object.
-     * @throws java.io.IOException if any.
      */
-    protected Reader getReader() throws IOException {
+    protected Reader getReader() {
         return null;
     }
 
@@ -161,9 +158,8 @@ public abstract class Resource<T> implements ByteIn<T>, ByteOut<T>, CharIn<T>, C
      * </p>
      *
      * @return a {@link java.io.Writer} object.
-     * @throws java.io.IOException if any.
      */
-    protected Writer getWriter() throws IOException {
+    protected Writer getWriter() {
         return null;
     }
 

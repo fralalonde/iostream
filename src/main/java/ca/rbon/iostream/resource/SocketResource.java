@@ -13,9 +13,7 @@ import lombok.RequiredArgsConstructor;
  * <p>
  * SocketPicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  */
 public class SocketResource extends Resource<Socket> {
 

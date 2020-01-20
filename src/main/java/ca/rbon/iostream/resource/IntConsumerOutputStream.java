@@ -14,7 +14,7 @@ public final class IntConsumerOutputStream extends OutputStream {
     final IntConsumer consumer;
 
     @Override
-    public void write(int b) throws IOException {
+    public void write(int b) {
         consumer.accept(b);
     }
 }

@@ -24,9 +24,8 @@ public class DataInputOf<T> extends DataInputStream implements WrapperOf<T> {
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param is a {@link java.io.InputStream} object.
-     * @throws java.io.IOException if any.
      */
-    public DataInputOf(Resource<T> cl, InputStream is) throws IOException {
+    public DataInputOf(Resource<T> cl, InputStream is) {
         super(is);
         closer = cl;
     }

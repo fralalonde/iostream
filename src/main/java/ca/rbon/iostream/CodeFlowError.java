@@ -4,9 +4,7 @@ package ca.rbon.iostream;
  * <p>
  * CodeFlowError class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  */
 public class CodeFlowError extends RuntimeException {
 

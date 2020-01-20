@@ -24,9 +24,8 @@ public class DataOutputOf<T> extends DataOutputStream implements WrapperOf<T> {
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
-     * @throws java.io.IOException if any.
      */
-    public DataOutputOf(Resource<T> cl, OutputStream os) throws IOException {
+    public DataOutputOf(Resource<T> cl, OutputStream os) {
         super(os);
         closer = cl;
     }

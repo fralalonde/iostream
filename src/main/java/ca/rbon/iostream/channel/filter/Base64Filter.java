@@ -13,12 +13,12 @@ import java.util.Base64;
 public class Base64Filter implements FilterFactory {
 
     @Override
-    public InputStream filterInput(InputStream input) throws IOException {
+    public InputStream filterInput(InputStream input) {
         return Base64.getDecoder().wrap(input);
     }
 
     @Override
-    public OutputStream filterOutput(OutputStream output) throws IOException {
+    public OutputStream filterOutput(OutputStream output) {
         return Base64.getEncoder().wrap(output);
     }
 

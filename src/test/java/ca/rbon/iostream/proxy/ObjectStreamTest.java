@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import ca.rbon.iostream.IoStream;
+import ca.rbon.iostream.IO;
 import ca.rbon.iostream.wrap.ObjectOutputOf;
 
 public class ObjectStreamTest {
@@ -16,15 +16,13 @@ public class ObjectStreamTest {
     @Test
     public void objectStreams() throws IOException {
 
-        ObjectOutputOf<byte[]> zos = IoStream.bytes().objectOutputStream();
-        try {
+        ObjectOutputOf<byte[]> zos = IO.bytes().objectOutputStream();
+        try (zos) {
             zos.writeBytes("AA");
-        } finally {
-            zos.close();
         }
 
         byte[] objectBytes = zos.getInner();
-        try (ObjectInputStream zis = IoStream.bytes(objectBytes).objectInputStream()) {
+        try (ObjectInputStream zis = IO.bytes(objectBytes).objectInputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 2);
             assertThat(new String(bytes)).isEqualTo("AA");
         }
@@ -32,14 +30,12 @@ public class ObjectStreamTest {
 
     @Test
     public void objectAndUnobjectBufferedBytes() throws IOException {
-        ObjectOutputOf<byte[]> zos = IoStream.bytes().objectOutputStream(3);
-        try {
+        ObjectOutputOf<byte[]> zos = IO.bytes().objectOutputStream(3);
+        try (zos) {
             zos.writeBytes("AA");
-        } finally {
-            zos.close();
         }
 
-        try (ObjectInputStream zis = IoStream.bytes(zos.getInner()).objectInputStream()) {
+        try (ObjectInputStream zis = IO.bytes(zos.getInner()).objectInputStream()) {
             byte[] bytes = IOUtils.readFully(zis, 2);
             assertThat(new String(bytes)).isEqualTo("AA");
         }

@@ -24,9 +24,8 @@ public class BufferedWriterOf<T> extends BufferedWriter implements WrapperOf<T> 
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param wr a {@link java.io.Writer} object.
-     * @throws java.io.IOException if any.
      */
-    public BufferedWriterOf(Resource<T> cl, Writer wr) throws IOException {
+    public BufferedWriterOf(Resource<T> cl, Writer wr) {
         super(wr);
         closer = cl;
     }

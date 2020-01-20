@@ -9,9 +9,7 @@ import java.io.Reader;
  * <p>
  * PipeOutPicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  */
 public class Pipe extends Resource<Pipe> {
 
@@ -48,7 +46,7 @@ public class Pipe extends Resource<Pipe> {
 
     /** {@inheritDoc} */
     @Override
-    protected Reader getReader() throws IOException {
+    protected Reader getReader() {
         return null;
     }
 
@@ -63,7 +61,7 @@ public class Pipe extends Resource<Pipe> {
 
     /** {@inheritDoc} */
     @Override
-    public Pipe getResource() throws IOException {
+    public Pipe getResource() {
         return this;
     }
 

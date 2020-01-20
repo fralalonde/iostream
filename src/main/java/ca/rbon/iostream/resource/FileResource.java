@@ -15,9 +15,7 @@ import lombok.RequiredArgsConstructor;
  * <p>
  * FilePicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  */
 public class FileResource extends Resource<File> {
 

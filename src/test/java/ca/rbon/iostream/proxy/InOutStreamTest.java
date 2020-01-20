@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ca.rbon.iostream.CodeFlowError;
-import ca.rbon.iostream.IoStream;
+import ca.rbon.iostream.IO;
 import ca.rbon.iostream.resource.InputStreamResource;
 import ca.rbon.iostream.resource.OutputStreamResource;
 import ca.rbon.iostream.wrap.BufferedInputOf;
@@ -31,7 +31,7 @@ public class InOutStreamTest {
 
     @Test
     public void inputStream() throws IOException {
-        try (BufferedInputOf<InputStream> pis = IoStream.stream(input).bufferedInputStream()) {
+        try (BufferedInputOf<InputStream> pis = IO.stream(input).bufferedInputStream()) {
             assertThat(pis.read()).isEqualTo(-1);
             Mockito.verify(input).read(Mockito.any(byte[].class), Mockito.eq(0), Mockito.eq(8192));
         }
@@ -50,7 +50,7 @@ public class InOutStreamTest {
 
     @Test
     public void outputStream() throws IOException {
-        try (BufferedOutputOf<OutputStream> pis = IoStream.stream(output).bufferedOutputStream()) {
+        try (BufferedOutputOf<OutputStream> pis = IO.stream(output).bufferedOutputStream()) {
             pis.write(new byte[] { 1 });
             Mockito.verify(output, never()).write(Mockito.any(byte[].class));
             pis.flush();
@@ -71,7 +71,7 @@ public class InOutStreamTest {
 
     @Test
     public void dataInput() throws IOException {
-        try (DataInputOf<InputStream> pis = IoStream.stream(input).dataInputStream()) {
+        try (DataInputOf<InputStream> pis = IO.stream(input).dataInputStream()) {
             assertThat(pis.read()).isEqualTo(0);
             Mockito.verify(input).read();
         }
@@ -80,7 +80,7 @@ public class InOutStreamTest {
 
     @Test
     public void dataOutput() throws IOException {
-        try (DataOutputOf<OutputStream> pis = IoStream.stream(output).dataOutputStream()) {
+        try (DataOutputOf<OutputStream> pis = IO.stream(output).dataOutputStream()) {
             pis.write(new byte[] { 1 });
             Mockito.verify(output, never()).write(Mockito.any(byte[].class));
             pis.flush();
@@ -92,13 +92,13 @@ public class InOutStreamTest {
     @Test
     public void objectInput() throws IOException, ClassNotFoundException {
         // input object streams are picky, preparing real object data for test
-        ObjectOutputOf<byte[]> o = IoStream.bytes().objectOutputStream();
+        ObjectOutputOf<byte[]> o = IO.bytes().objectOutputStream();
         o.writeObject(Integer.valueOf(4));
         o.close();
 
-        InputStream i = IoStream.bytes(o.getInner()).inputStream();
+        InputStream i = IO.bytes(o.getInner()).inputStream();
 
-        try (ObjectInputOf<InputStream> pis = IoStream.stream(i).objectInputStream()) {
+        try (ObjectInputOf<InputStream> pis = IO.stream(i).objectInputStream()) {
             assertThat(pis.readObject()).isEqualTo(Integer.valueOf(4));
         }
         Mockito.verify(input, Mockito.never()).close();
@@ -106,7 +106,7 @@ public class InOutStreamTest {
 
     @Test
     public void objectOutput() throws IOException {
-        try (ObjectOutputOf<OutputStream> pis = IoStream.stream(output).objectOutputStream()) {
+        try (ObjectOutputOf<OutputStream> pis = IO.stream(output).objectOutputStream()) {
             pis.write(new byte[] { 1 });
             Mockito.verify(output, never()).write(Mockito.any(byte[].class));
             pis.flush();
@@ -117,7 +117,7 @@ public class InOutStreamTest {
 
     @Test
     public void bufferedInput() throws IOException {
-        try (BufferedInputOf<InputStream> pis = IoStream.stream(input).bufferedInputStream()) {
+        try (BufferedInputOf<InputStream> pis = IO.stream(input).bufferedInputStream()) {
             assertThat(pis.read()).isEqualTo(-1);
             Mockito.verify(input).read(Mockito.any(byte[].class), Mockito.anyInt(), Mockito.anyInt());
         }
@@ -126,7 +126,7 @@ public class InOutStreamTest {
 
     @Test
     public void bufferedOutput() throws IOException {
-        try (BufferedOutputOf<OutputStream> pis = IoStream.stream(output).bufferedOutputStream()) {
+        try (BufferedOutputOf<OutputStream> pis = IO.stream(output).bufferedOutputStream()) {
             pis.write(new byte[] { 1 });
             Mockito.verify(output, never()).write(Mockito.any(byte[].class));
             pis.flush();
@@ -137,7 +137,7 @@ public class InOutStreamTest {
 
     @Test
     public void bufferedReaderInput() throws IOException {
-        try (BufferedReaderOf<InputStream> pis = IoStream.stream(input).bufferedReader("UTF-16")) {
+        try (BufferedReaderOf<InputStream> pis = IO.stream(input).bufferedReader("UTF-16")) {
             Mockito.when(input.read(Mockito.any(byte[].class), Mockito.anyInt(), Mockito.anyInt())).thenReturn(2);
             assertThat(pis.read()).isEqualTo(0);
             Mockito.verify(input).read(Mockito.any(byte[].class), Mockito.anyInt(), Mockito.anyInt());
@@ -147,7 +147,7 @@ public class InOutStreamTest {
 
     @Test
     public void printWriterOutput() throws IOException {
-        try (PrintWriterOf<OutputStream> pis = IoStream.stream(output).printWriter("UTF-16")) {
+        try (PrintWriterOf<OutputStream> pis = IO.stream(output).printWriter("UTF-16")) {
             pis.write("JGJHGJH");
             Mockito.verify(output, never()).write(Mockito.any(byte[].class));
             pis.flush();

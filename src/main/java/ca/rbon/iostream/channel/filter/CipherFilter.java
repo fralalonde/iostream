@@ -23,12 +23,12 @@ public class CipherFilter implements FilterFactory {
     final Cipher cipher;
 
     @Override
-    public InputStream filterInput(InputStream input) throws IOException {
+    public InputStream filterInput(InputStream input) {
         return new CipherInputStream(input, cipher);
     }
 
     @Override
-    public OutputStream filterOutput(OutputStream output) throws IOException {
+    public OutputStream filterOutput(OutputStream output) {
         return new CipherOutputStream(output, cipher);
     }
 

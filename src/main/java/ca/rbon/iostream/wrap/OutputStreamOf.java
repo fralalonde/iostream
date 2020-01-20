@@ -25,9 +25,8 @@ public class OutputStreamOf<T> extends OutputStream implements WrapperOf<T> {
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
-     * @throws java.io.IOException if any.
      */
-    public OutputStreamOf(Resource<T> cl, OutputStream os) throws IOException {
+    public OutputStreamOf(Resource<T> cl, OutputStream os) {
         delegate = os;
         closer = cl;
     }

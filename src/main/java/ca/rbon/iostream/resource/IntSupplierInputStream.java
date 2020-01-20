@@ -12,7 +12,7 @@ public final class IntSupplierInputStream extends InputStream {
     final IntSupplier supplier;
 
     @Override
-    public int read() throws IOException {
+    public int read() {
         return supplier.getAsInt();
     }
 

@@ -14,9 +14,7 @@ import lombok.RequiredArgsConstructor;
  * <p>
  * StringPicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
+
  */
 public class StringResource extends Resource<String> {
 
@@ -45,7 +43,7 @@ public class StringResource extends Resource<String> {
 
     /** {@inheritDoc} */
     @Override
-    protected Reader getReader() throws IOException {
+    protected Reader getReader() {
         if (str == null) {
             throw new CodeFlowError(NO_STRING_SET);
         }
@@ -54,7 +52,7 @@ public class StringResource extends Resource<String> {
 
     /** {@inheritDoc} */
     @Override
-    protected Writer getWriter() throws IOException {
+    protected Writer getWriter() {
         if (str != null) {
             writer = capacity > DEFAULT_CAPACITY
                     ? new StringWriter(str.length() + capacity)

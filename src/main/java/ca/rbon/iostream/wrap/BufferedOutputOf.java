@@ -24,9 +24,8 @@ public class BufferedOutputOf<T> extends BufferedOutputStream implements Wrapper
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.OutputStream} object.
-     * @throws java.io.IOException if any.
      */
-    public BufferedOutputOf(Resource<T> cl, OutputStream os) throws IOException {
+    public BufferedOutputOf(Resource<T> cl, OutputStream os) {
         super(os);
         closer = cl;
     }
@@ -39,9 +38,8 @@ public class BufferedOutputOf<T> extends BufferedOutputStream implements Wrapper
      * @param cl         a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os         a {@link java.io.OutputStream} object.
      * @param bufferSize a int.
-     * @throws java.io.IOException if any.
      */
-    public BufferedOutputOf(Resource<T> cl, OutputStream os, int bufferSize) throws IOException {
+    public BufferedOutputOf(Resource<T> cl, OutputStream os, int bufferSize) {
         super(os, bufferSize);
         closer = cl;
     }

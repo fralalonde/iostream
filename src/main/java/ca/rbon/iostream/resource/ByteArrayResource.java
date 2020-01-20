@@ -7,15 +7,12 @@ import java.io.IOException;
 import ca.rbon.iostream.CodeFlowError;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 /**
  * <p>
  * BytesPicker class.
  * </p>
- *
- * @author fralalonde
- * @version $Id: $Id
  */
+@RequiredArgsConstructor
 public class ByteArrayResource extends Resource<byte[]> {
 
     /** Constant <code>DEFAULT_CAPACITY=-1</code> */
@@ -49,7 +46,7 @@ public class ByteArrayResource extends Resource<byte[]> {
 
     /** {@inheritDoc} */
     @Override
-    protected ByteArrayInputStream getInputStream() throws IOException {
+    protected ByteArrayInputStream getInputStream() {
         if (bytes == null) {
             throw new CodeFlowError(NO_BYTE_ARRAY_SET);
         }
@@ -58,7 +55,7 @@ public class ByteArrayResource extends Resource<byte[]> {
 
     /** {@inheritDoc} */
     @Override
-    protected ByteArrayOutputStream getOutputStream() throws IOException {
+    protected ByteArrayOutputStream getOutputStream() {
         if (bytes != null) {
             outStream = initialCapacity > DEFAULT_CAPACITY
                     ? new ByteArrayOutputStream(initialCapacity + bytes.length)

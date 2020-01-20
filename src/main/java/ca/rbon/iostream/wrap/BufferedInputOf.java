@@ -25,9 +25,8 @@ public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param is a {@link java.io.InputStream} object.
-     * @throws java.io.IOException if any.
      */
-    public BufferedInputOf(Resource<T> cl, InputStream is) throws IOException {
+    public BufferedInputOf(Resource<T> cl, InputStream is) {
         super(is);
         closer = cl;
     }
@@ -40,9 +39,8 @@ public class BufferedInputOf<T> extends BufferedInputStream implements WrapperOf
      * @param cl         a {@link ca.rbon.iostream.resource.Resource} object.
      * @param is         a {@link java.io.InputStream} object.
      * @param bufferSize a int.
-     * @throws java.io.IOException if any.
      */
-    public BufferedInputOf(Resource<T> cl, InputStream is, int bufferSize) throws IOException {
+    public BufferedInputOf(Resource<T> cl, InputStream is, int bufferSize) {
         super(is, bufferSize);
         closer = cl;
     }

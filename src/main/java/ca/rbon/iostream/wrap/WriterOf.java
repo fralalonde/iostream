@@ -25,9 +25,8 @@ public class WriterOf<T> extends Writer implements WrapperOf<T> {
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.Writer} object.
-     * @throws java.io.IOException if any.
      */
-    public WriterOf(Resource<T> cl, Writer os) throws IOException {
+    public WriterOf(Resource<T> cl, Writer os) {
         delegate = os;
         closer = cl;
     }

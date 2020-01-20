@@ -13,7 +13,7 @@ import ca.rbon.iostream.wrap.*;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import ca.rbon.iostream.IoStream;
+import ca.rbon.iostream.IO;
 
 public class FileTest {
 
@@ -21,21 +21,21 @@ public class FileTest {
     private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     @Test(expected = NullPointerException.class)
-    public void nullFile() throws IOException {
-        IoStream.file((File) null);
+    public void nullFile() {
+        IO.file((File) null);
     }
 
     @Test
     public void recreate() throws IOException {
-        try (BufferedWriterOf<File> w = IoStream.file(A_TXT).bufferedWriter("ISO-8859-1")) {
+        try (BufferedWriterOf<File> w = IO.file(A_TXT).bufferedWriter("ISO-8859-1")) {
             w.append('é');
         }
 
-        try (BufferedWriterOf<File> w = IoStream.file(A_TXT).bufferedWriter("ISO-8859-1")) {
+        try (BufferedWriterOf<File> w = IO.file(A_TXT).bufferedWriter("ISO-8859-1")) {
             w.append('é');
         }
 
-        try (BufferedReaderOf<File> r = IoStream.file(A_TXT).bufferedReader("ISO-8859-1")) {
+        try (BufferedReaderOf<File> r = IO.file(A_TXT).bufferedReader("ISO-8859-1")) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('é');
@@ -44,15 +44,15 @@ public class FileTest {
 
     @Test
     public void append() throws IOException {
-        try (BufferedWriterOf<File> w = IoStream.file(A_TXT).bufferedWriter("UTF-8")) {
+        try (BufferedWriterOf<File> w = IO.file(A_TXT).bufferedWriter("UTF-8")) {
             w.append('é');
         }
 
-        try (BufferedWriterOf<File> w = IoStream.file(A_TXT, true).bufferedWriter("UTF-8")) {
+        try (BufferedWriterOf<File> w = IO.file(A_TXT, true).bufferedWriter("UTF-8")) {
             w.append('à');
         }
 
-        try (BufferedReaderOf<File> r = IoStream.file(A_TXT).bufferedReader("UTF-8")) {
+        try (BufferedReaderOf<File> r = IO.file(A_TXT).bufferedReader("UTF-8")) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(2);
             assertThat(cbuf[0]).isEqualTo('é');
@@ -62,12 +62,12 @@ public class FileTest {
 
     @Test
     public void defaultCharsetFileWriteRead() throws IOException {
-        try (BufferedWriterOf<File> w = IoStream.file(A_TXT).bufferedWriter("UTF-8")) {
+        try (BufferedWriterOf<File> w = IO.file(A_TXT).bufferedWriter("UTF-8")) {
             w.append('é');
             assertThat(w.getInner().getName()).isEqualTo("A.txt");
         }
 
-        try (BufferedReaderOf<File> r = IoStream.file(A_TXT).bufferedReader(UTF_8)) {
+        try (BufferedReaderOf<File> r = IO.file(A_TXT).bufferedReader(UTF_8)) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('é');
@@ -77,14 +77,12 @@ public class FileTest {
 
     @Test
     public void tmpFileWriteRead() throws IOException {
-        PrintWriterOf<File> tmpFileOut = IoStream.tempFile().printWriter("UTF-8");
-        try {
+        PrintWriterOf<File> tmpFileOut = IO.tempFile().printWriter("UTF-8");
+        try (tmpFileOut) {
             tmpFileOut.append("tmpé");
-        } finally {
-            tmpFileOut.close();
         }
 
-        try (BufferedReaderOf<File> tmpFileIn = IoStream.file(tmpFileOut.getInner()).bufferedReader(UTF_8)) {
+        try (BufferedReaderOf<File> tmpFileIn = IO.file(tmpFileOut.getInner()).bufferedReader(UTF_8)) {
             CharBuffer sb = CharBuffer.allocate(5);
             assertThat(tmpFileIn.read(sb)).isEqualTo(4);
             sb.flip();
@@ -94,12 +92,12 @@ public class FileTest {
 
     @Test
     public void specificCharsetFileWriteRead() throws IOException {
-        try (WriterOf<File> w = IoStream.file(A_TXT).writer("UTF-16")) {
+        try (WriterOf<File> w = IO.file(A_TXT).writer("UTF-16")) {
             w.append('à');
             assertThat(w.getInner().getName()).isEqualTo("A.txt");
         }
 
-        try (ReaderOf<File> r = IoStream.file(A_TXT).reader("UTF-16")) {
+        try (ReaderOf<File> r = IO.file(A_TXT).reader("UTF-16")) {
             char[] cbuf = new char[4];
             assertThat(r.read(cbuf)).isEqualTo(1);
             assertThat(cbuf[0]).isEqualTo('à');
@@ -108,7 +106,7 @@ public class FileTest {
     }
 
     protected void showIoUtilsCopy() throws IOException {
-        try (Reader in = IoStream.file("A").reader(); Writer out = IoStream.file("B").writer()) {
+        try (Reader in = IO.file("A").reader(); Writer out = IO.file("B").writer()) {
             IOUtils.copy(in, out);
         }
     }

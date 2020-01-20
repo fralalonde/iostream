@@ -24,9 +24,8 @@ public class BufferedReaderOf<T> extends BufferedReader implements WrapperOf<T> 
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param r  a {@link java.io.Reader} object.
-     * @throws java.io.IOException if any.
      */
-    public BufferedReaderOf(Resource<T> cl, Reader r) throws IOException {
+    public BufferedReaderOf(Resource<T> cl, Reader r) {
         super(r);
         closer = cl;
     }

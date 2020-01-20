@@ -1,10 +1,10 @@
 # IoStream
 
-[![Build Status](https://travis-ci.org/fralalonde/iostream.svg?branch=master)](https://travis-ci.org/fralalonde/iostream)
-[![Codecov](https://img.shields.io/codecov/c/github/fralalonde/iostream.svg)](https://codecov.io/gh/fralalonde/iostream)
-[![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/iostream.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
+[![Build Status](https://travis-ci.org/fralalonde/IO.svg?branch=master)](https://travis-ci.org/fralalonde/iostream)
+[![Codecov](https://img.shields.io/codecov/c/github/fralalonde/IO.svg)](https://codecov.io/gh/fralalonde/iostream)
+[![Maven Central](https://img.shields.io/maven-central/v/ca.rbon/IO.svg)](http://search.maven.org/#search%7Cga%7C1%7Crbon)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
-[![Javadocs](http://www.javadoc.io/badge/ca.rbon/iostream.svg)](http://www.javadoc.io/doc/ca.rbon/iostream)
+[![Javadocs](http://www.javadoc.io/badge/ca.rbon/IO.svg)](http://www.javadoc.io/doc/ca.rbon/iostream)
 [![Dependencies](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc/badge.svg)](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc?child=summary)
 
 Better code handling of Java IO streams.
@@ -17,7 +17,7 @@ Better code handling of Java IO streams.
 * Composed objects expose underlying resource for retrieval of results / follow up operations
 
 ```java
-try (PrintWriterOf<File> fileWriter = IoStream.file("myfile.gz").gzip().printWriter()) {
+try (PrintWriterOf<File> fileWriter = IO.file("myfile.gz").gzip().printWriter()) {
     File theFile = fileWriter.get();
     fileWriter.write("Hello from file " + theFile.getName());
 }
@@ -50,9 +50,9 @@ Because it uses default interface methods, this library requires Java 1.8 (and n
 
 First, `IoStream` wraps the streams and their charset aware sibblings in a more palatable 
 fluent-builder (or _Factory Method_, for you pattern freaks) so you don't have to `new` anything 
-when you need to do some sweet blocking I/O. Start by typing `IoStream.` and autocomplete-away!
+when you need to do some sweet blocking I/O. Start by typing `IO.` and autocomplete-away!
 ```java
-import iostream.IoStream;
+import IO.IoStream;
 ``` 
 
 ### Building
@@ -60,7 +60,7 @@ Because streams and readers/writers are often paired together,
 the fluent builder guides you from the selection of the underlying resource (`File`, `byte[]`, `Socket`...) 
 to the way of accessing it (`BufferedStream`, `ZipStream`, `Writer`...). 
 ```java
-PrintWriter writer = IoStream.file("yesss.txt").printWriter();
+PrintWriter writer = IO.file("yesss.txt").printWriter();
 ```
 You will notice that `printWriter()` above actually returns something called `PrintWriterOf<File>`. 
 This is a subclass of the standard `java.io.PrintWriter` that  can be safely use as such. 
@@ -71,13 +71,13 @@ If a resource only implements streams (like `socket()`), and you require `Writer
 char-oriented access, the builder will transparently insert an `OutputStreamWriter` or `InputStreamReader` 
 adapter for you.
 ```java
-BufferedWriter writer = IoStream.socket("spamaway.net", 25).bufferedWriter();
+BufferedWriter writer = IO.socket("spamaway.net", 25).bufferedWriter();
 ``` 
 
 ### try-with syntax
 Obviously, `IoStream` goes hand in hand with the try-with syntax introduced in JDK 7.
 ```java
-try (Writer w = IoStream.file("mouha.txt").printWriter()) {
+try (Writer w = IO.file("mouha.txt").printWriter()) {
     w.append("haha");
 }
 ```
@@ -92,7 +92,7 @@ This is done magically with IoStream's `*Of<T>` classes, which subclass regular 
 Because we are modern, sane people, we can ignore this detail by using the `var` keyword from JDK 10+.
  Then all you have to do is call the `getInner()` method to retrieve the inner resource you just built.
 ```java
-var writer = IoStream.bytes().printWriter();
+var writer = IO.bytes().printWriter();
 // ...
 writer.close();
 byte[] myPrecious = writer.getInner();
@@ -114,7 +114,7 @@ There is little overlap between the libraries.
 `IoStream` helps to build the streams while `IOUtils` takes care of the operations, such as `copy()` :
 
 ```java
-try (var in = IoStream.file("A").reader(); var out = IoStream.file("B").writer()) {
+try (var in = IO.file("A").reader(); var out = IO.file("B").writer()) {
     IOUtils.copy(in, out);
 }
 ```
@@ -124,59 +124,59 @@ try (var in = IoStream.file("A").reader(); var out = IoStream.file("B").writer()
 ### Convert to IntStream
 
 ```java
-try (var pw = IoStream.file("numbers.bin").inputStream()) {
+try (var pw = IO.file("numbers.bin").inputStream()) {
     pw.intStream().sum();
 }
 ```
 
 ### Byte Arrays, Random & IOUtils 
 ```java
-IoStream.bytes().outputStream();
-byte[] bytes = IoStream.bytes().dataOutputStream().getInner();
+IO.bytes().outputStream();
+byte[] bytes = IO.bytes().dataOutputStream().getInner();
 
-IoStream.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
+IO.bytes(new byte[] { 0, 1, 2 }).objectInputStream();
 ```
 
 ### Files
 ```java
-FileOutputStream out = IoStream.file("noooes.txt").outputStream();
+FileOutputStream out = IO.file("noooes.txt").outputStream();
 
-try (var myFile = IoStream.file("mouha.txt").printWriter()) {
+try (var myFile = IO.file("mouha.txt").printWriter()) {
     myFile.write("haha");
 }
    
 
-IoStream.file("doum.zip").zipInputStream("UTF-8");
-IoStream.file("dam.txt", true).bufferedWriter();
+IO.file("doum.zip").zipInputStream("UTF-8");
+IO.file("dam.txt", true).bufferedWriter();
 
-var tmpout = IoStream.tempFile().dataOutputStream();
+var tmpout = IO.tempFile().dataOutputStream();
 tmpout.write(42);
 String tmpFilename = tmpout.getInner().getAbsolutePath();
 ```
 
 ### Strings
 ```java
-IoStream.string("agaga gogo").bufferedReader();
-IoStream.string("agaga gogo").reader();
+IO.string("agaga gogo").bufferedReader();
+IO.string("agaga gogo").reader();
 
-String str = IoStream.string().bufferedWriter().getInner();
+String str = IO.string().bufferedWriter().getInner();
 ```
 
 ### Sockets
 ```java
-IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
-InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream(); 
+IO.socket("gloogloo.com", 80).bufferedOutputStream();
+InputStream smtpHoneypot = IO.socket("localhost", 25).inputStream(); 
 ```
 
 ### Pipe
 ```java
-IoStream.socket("gloogloo.com", 80).bufferedOutputStream();
-InputStream smtpHoneypot = IoStream.socket("localhost", 25).inputStream(); 
+IO.socket("gloogloo.com", 80).bufferedOutputStream();
+InputStream smtpHoneypot = IO.socket("localhost", 25).inputStream(); 
 ```
 
 ### Random 
 ```java
-try (var pw = IoStream.random().inputStream()) {
+try (var pw = IO.random().inputStream()) {
 	// add 5 random numbers
     pw.intStream().limit(5).sum();
 }
@@ -185,16 +185,16 @@ try (var pw = IoStream.random().inputStream()) {
 ### Existing input and output streams integration
 ```java
 InputStream providedInput = new ByteArrayInputStream(new byte[7]);
-IoStream.stream(providedInput).gzipInputStream();
+IO.stream(providedInput).gzipInputStream();
 
 OutputStream providedOutput = new ByteArrayOutputStream();
-IoStream.stream(providedOutput).printWriter(256);
+IO.stream(providedOutput).printWriter(256);
 ```
 
 ### Writing text to a File, GZipped, Base64, UTF-16 encoded. 256-byte buffer, autoflush.
 ```java
 // this example is pretty extreme
-try (var pw = IoStream.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
+try (var pw = IO.file("myfile.txt").base64().gzip(55).printWriter("UTF-16", 256, true)) {
     File myFileTxt = pw.getInner();
     pw.write("Hello from file " + myFileTxt.getName());
 }
@@ -230,7 +230,7 @@ Some parts are still missing, but once it's done, it's done. You'll know because
 IoStream enabled-code 
 ```java
 public byte[] usingIoStream() throws IOException {
-    var writer = IoStream.bytes().printWriter();
+    var writer = IO.bytes().printWriter();
     writer.write("doodoo");
     writer.close();
     return writer.getInner();
@@ -254,7 +254,7 @@ IoStream enabled-code
 ```java
 public byte[] fluent() throws IOException {
     // create and combine both objects
-    var writer = IoStream.bytes().printWriter();
+    var writer = IO.bytes().printWriter();
 
     // write the string
     writer.write("doodoo");
@@ -293,7 +293,7 @@ public byte[] classic() throws IOException {
 ### Using try-with-resources
 IoStream enabled-code 
 ```java
-try (var writer = IoStream.bytes().printWriter()) {
+try (var writer = IO.bytes().printWriter()) {
     writer.write("doodoo");
     return writer.getInner();
 }

@@ -6,17 +6,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import ca.rbon.iostream.IoStream;
-import ca.rbon.iostream.channel.BytesBiChannel;
-import ca.rbon.iostream.channel.BytesOutChannel;
-import ca.rbon.iostream.wrap.InputStreamOf;
-import ca.rbon.iostream.wrap.OutputStreamOf;
+import ca.rbon.iostream.IO;
 
 public class PipeTest {
 
     @Test
     public void pipeSelf() throws IOException, InterruptedException {
-        var pipe = IoStream.pipe(5);
+        var pipe = IO.pipe(5);
 
         final var output = pipe.outputStream();
         final var input = pipe.inputStream();
@@ -44,7 +40,7 @@ public class PipeTest {
 
     @Test
     public void pipeResource() throws IOException, InterruptedException {
-        var pipe = IoStream.pipe();
+        var pipe = IO.pipe();
 
         final var output = pipe.outputStream();
         final var input = output.getInner().inputStream();
@@ -72,10 +68,10 @@ public class PipeTest {
 
     @Test
     public void pipeOf() throws IOException, InterruptedException {
-        var pipe = IoStream.pipe(5);
+        var pipe = IO.pipe(5);
         final var pipeInput = pipe.inputStream();
 
-        var pipe2 = IoStream.pipe(pipeInput);
+        var pipe2 = IO.pipe(pipeInput);
         final var output = pipe2.outputStream();
 
         final AtomicInteger ai = new AtomicInteger();
@@ -102,10 +98,10 @@ public class PipeTest {
 
     @Test
     public void pipeInput() throws IOException, InterruptedException {
-        var pipe = IoStream.pipe(5);
+        var pipe = IO.pipe(5);
         final var pipeInput = pipe.inputStream();
 
-        var pipe2 = IoStream.pipe(pipeInput.getInner().getInputStream());
+        var pipe2 = IO.pipe(pipeInput.getInner().getInputStream());
         final var output = pipe2.outputStream();
 
         final AtomicInteger ai = new AtomicInteger();

@@ -25,9 +25,8 @@ public class ReaderOf<T> extends Reader implements WrapperOf<T> {
      *
      * @param cl a {@link ca.rbon.iostream.resource.Resource} object.
      * @param os a {@link java.io.Reader} object.
-     * @throws java.io.IOException if any.
      */
-    public ReaderOf(Resource<T> cl, Reader os) throws IOException {
+    public ReaderOf(Resource<T> cl, Reader os) {
         delegate = os;
         closer = cl;
     }
