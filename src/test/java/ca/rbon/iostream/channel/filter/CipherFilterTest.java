@@ -4,7 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.io.IOUtils;
+import ca.rbon.iostream.utils.IOUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +14,6 @@ import ca.rbon.iostream.wrap.BufferedReaderOf;
 import ca.rbon.iostream.wrap.InputStreamOf;
 import ca.rbon.iostream.wrap.OutputStreamOf;
 import ca.rbon.iostream.wrap.PrintWriterOf;
-
-import java.nio.charset.StandardCharsets;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

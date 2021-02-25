@@ -1,7 +1,9 @@
 package ca.rbon.iostream.wrap;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.util.function.BiConsumer;
 
 import ca.rbon.iostream.resource.Resource;
 
@@ -47,6 +49,17 @@ public class ReaderOf<T> extends Reader implements WrapperOf<T> {
     @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         return delegate.read(cbuf, off, len);
+    }
+
+    /**
+     * Use the Reader inline and return the inner resource.
+     * @param operation The operation to apply.
+     * @return The inner resource.
+     * @throws IOException if the passed in closure throws
+     */
+    public T with(BiConsumer<ReaderOf<T>, T> operation) throws IOException {
+        operation.accept(this, getInner());
+        return getInner();
     }
 
 }

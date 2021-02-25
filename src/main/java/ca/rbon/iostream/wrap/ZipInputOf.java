@@ -2,7 +2,9 @@ package ca.rbon.iostream.wrap;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.util.function.BiConsumer;
 import java.util.zip.ZipInputStream;
 
 import ca.rbon.iostream.resource.Resource;
@@ -49,6 +51,17 @@ public class ZipInputOf<T> extends ZipInputStream implements WrapperOf<T> {
     @Override
     public T getInner() throws IOException {
         return closer.getResource();
+    }
+
+    /**
+     * Use the ZipInputStream inline and return the inner resource.
+     * @param operation The operation to apply.
+     * @return The inner resource.
+     * @throws IOException if the passed in closure throws
+     */
+    public T with(BiConsumer<ZipInputOf<T>, T> operation) throws IOException {
+        operation.accept(this, getInner());
+        return getInner();
     }
 
 }

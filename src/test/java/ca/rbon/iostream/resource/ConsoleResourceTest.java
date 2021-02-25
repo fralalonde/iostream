@@ -3,6 +3,7 @@ package ca.rbon.iostream.resource;
 import java.io.IOException;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.rbon.iostream.IO;

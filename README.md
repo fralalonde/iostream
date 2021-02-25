@@ -50,10 +50,11 @@ Because it uses default interface methods, this library requires Java 1.8 (and n
 
 First, `IoStream` wraps the streams and their charset aware sibblings in a more palatable 
 fluent-builder (or _Factory Method_, for you pattern freaks) so you don't have to `new` anything 
-when you need to do some sweet blocking I/O. Start by typing `IO.` and autocomplete-away!
+when you need to do some sweet blocking I/O. 
 ```java
-import IO.IoStream;
+import ca.rbon.iostream.IO;
 ``` 
+Then start by typing `IO.` and autocomplete-away!
 
 ### Building
 Because streams and readers/writers are often paired together, 

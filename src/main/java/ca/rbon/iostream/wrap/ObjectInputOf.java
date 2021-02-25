@@ -3,6 +3,8 @@ package ca.rbon.iostream.wrap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.function.BiConsumer;
 
 import ca.rbon.iostream.resource.Resource;
 
@@ -37,4 +39,14 @@ public class ObjectInputOf<T> extends ObjectInputStream implements WrapperOf<T> 
         return closer.getResource();
     }
 
+    /**
+     * Use the ObjectInputStream inline and return the inner resource.
+     * @param operation The operation to apply.
+     * @return The inner resource.
+     * @throws IOException if the passed in closure throws
+     */
+    public T with(BiConsumer<ObjectInputOf<T>, T> operation) throws IOException {
+        operation.accept(this, getInner());
+        return getInner();
+    }
 }

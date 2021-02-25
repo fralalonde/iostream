@@ -1,7 +1,9 @@
 package ca.rbon.iostream.wrap;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.function.BiConsumer;
 
 import ca.rbon.iostream.resource.Resource;
 
@@ -55,4 +57,14 @@ public class WriterOf<T> extends Writer implements WrapperOf<T> {
         delegate.flush();
     }
 
+    /**
+     * Use the Writer inline and return the inner resource.
+     * @param operation The operation to apply.
+     * @return The inner resource.
+     * @throws IOException if the passed in closure throws
+     */
+    public T with(BiConsumer<WriterOf<T>, T> operation) throws IOException {
+        operation.accept(this, getInner());
+        return getInner();
+    }
 }

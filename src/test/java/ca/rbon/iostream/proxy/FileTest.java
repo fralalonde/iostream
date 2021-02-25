@@ -10,7 +10,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 import ca.rbon.iostream.wrap.*;
-import org.apache.commons.io.IOUtils;
+import ca.rbon.iostream.utils.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IO;

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.IOUtils;
+import ca.rbon.iostream.utils.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.IO;

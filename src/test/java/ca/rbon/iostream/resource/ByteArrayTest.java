@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
+import ca.rbon.iostream.utils.IOUtils;
 import org.junit.Test;
 
 import ca.rbon.iostream.CodeFlowError;

@@ -1,8 +1,10 @@
 package ca.rbon.iostream.wrap;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.function.BiConsumer;
 
 import ca.rbon.iostream.resource.Resource;
 
@@ -50,4 +52,14 @@ public class BufferedOutputOf<T> extends BufferedOutputStream implements Wrapper
         return closer.getResource();
     }
 
+    /**
+     * Use the BufferedOutputStream inline and return the inner resource.
+     * @param operation The operation to apply.
+     * @return The inner resource.
+     * @throws IOException if the passed in closure throws
+     */
+    public T with(BiConsumer<BufferedOutputOf<T>, T> operation) throws IOException {
+        operation.accept(this, getInner());
+        return getInner();
+    }
 }
