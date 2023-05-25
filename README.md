@@ -7,7 +7,7 @@
 [![Javadocs](http://www.javadoc.io/badge/ca.rbon/IO.svg)](http://www.javadoc.io/doc/ca.rbon/iostream)
 [![Dependencies](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc/badge.svg)](https://www.versioneye.com/user/projects/58b8255d01b5b7003d6201bc?child=summary)
 
-Better code handling of Java IO streams.
+A fun experiment revisiting classic Java I/O API.
 
 * Fluent builder for Java standard InputStream, OutputStream, Reader and Writer and Filter classes
 * Provides File, ByteArray, String, Socket, Pipe, Buffered, Zip, Console and generic stream wrapper resources
